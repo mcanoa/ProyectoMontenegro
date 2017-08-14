@@ -45,7 +45,7 @@ import logica.dataConnection;
  * @author Aleja
  */
 public class VentanaModificarEstudiante extends javax.swing.JFrame {
-    
+
     private final String[] genero = {"FEMENINO", "MASCULINO"};
     private final String[] metodologias = {"TRADICIONAL", "FLEXIBLE"};
     private final String[] tipoPoblacion = {"AFRO COLOMBIANO", "DESPLAZADOS", "INDIGENA", "OTRA", "N/A"};
@@ -60,6 +60,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
      */
     public VentanaModificarEstudiante() {
         initComponents();
+        jButtonAñadirHuella.setEnabled(false);
     }
 
     /**
@@ -362,7 +363,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         // TODO add your handling code here:
         cn = dataConnection.conexion();
         try {
-            
+
             pst = cn.prepareStatement(
                     "update estudiante set nombres=?,apellidos=?,grado=?,tipoPoblacion=?,modeloPedagogico=? where documento=?");
             pst.setString(1, jTextFieldNombres.getText());
@@ -396,7 +397,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                         "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
                 pst.setInt(1, documento);
                 result = pst.executeQuery();
-                
+
                 if (result.next()) {
                     jTextFieldDocumento.setText(String.valueOf(result.getInt("documento")));
                     jTextFieldNombres.setText(result.getString("nombres"));
@@ -410,6 +411,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                     jTextFieldNombres.setEditable(true);
                     jTextFieldApellido.setEditable(true);
                     jTextFieldGrado.setEditable(true);
+                    jButtonAñadirHuella.setEnabled(true);
 //                jComboBoxTipoPoblacion.setSelectedIndex();
 //                jComboBoxMetodologia.setText();
 
@@ -426,22 +428,31 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
 
     private void jButtonAñadirHuellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAñadirHuellaActionPerformed
+
         try {
-            // TODO add your handling code here:
-            boolean temp=buscarHuella(Integer.parseInt(jTextFieldBuscarEstudiante.getText()));
-            if(temp){
-                System.out.println("Encontre una huella");
-                
+            //1. buscar si el estudiante ya tiene una huella
+            boolean temp = buscarHuella(Integer.parseInt(jTextFieldDocumento.getText()));
+            //2.si no tienen una huella se procede a tomar la huella y se guarda
+            if (!temp) {
+                start();
                 Iniciar();
-            }else{
-                System.out.println("No se encontro una huella");
+                JOptionPane.showMessageDialog(null, "Por favor, colocar el dedo indice 4 veces\n en el lector de huellas");
+
+                guardarHuella(jTextFieldDocumento.getText());
+                Reclutador.clear();
+                jLabelImagenHuella.setIcon(null);
+                stop();
             }
+            else{
+                JOptionPane.showMessageDialog(null, "El estudiante ya tiene una huella registrada" );
+            }
+            //3. si ya tiene una huella se le informa al usuario y que el tome la decision
+            //de actualizar la huella o dejar la que esta en ese momento
+            
         } catch (SQLException ex) {
             Logger.getLogger(VentanaModificarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Iniciar();
-        //start();
-        
+
     }//GEN-LAST:event_jButtonAñadirHuellaActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -451,7 +462,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_formKeyTyped
 
     private void jTextFieldBuscarEstudianteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteKeyTyped
@@ -480,14 +491,14 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
     private void jTextFieldGradoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldGradoKeyTyped
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jTextFieldGradoKeyTyped
-    
+
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ClassLoader.getSystemResource("imagenes/Escudo.png"));
-        
+
         return retValue;
     }
 
@@ -495,10 +506,10 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         switch (s) {
             case "M":
                 return 1;
-            
+
             case "F":
                 return 0;
-            
+
         }
         return -1;
     }
@@ -538,7 +549,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 });
             }
         });
-        
+
         Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
             @Override
             public void readerConnected(final DPFPReaderStatusEvent e) {
@@ -549,7 +560,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                     }
                 });
             }
-            
+
             @Override
             public void readerDisconnected(final DPFPReaderStatusEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -560,7 +571,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 });
             }
         });
-        
+
         Lector.addSensorListener(new DPFPSensorAdapter() {
             @Override
             public void fingerTouched(final DPFPSensorEvent e) {
@@ -571,7 +582,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                     }
                 });
             }
-            
+
             @Override
             public void fingerGone(final DPFPSensorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -582,7 +593,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 });
             }
         });
-        
+
         Lector.addErrorListener(new DPFPErrorAdapter() {
             public void errorReader(final DPFPErrorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -593,10 +604,10 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public DPFPFeatureSet featuresinscripcion;
     public DPFPFeatureSet featuresverificacion;
-    
+
     public void ProcesarCaptura(DPFPSample sample) {
         // Procesar la muestra de la huella y crear un conjunto de
         // caracter�sticas con el proposito de inscripcion.
@@ -640,7 +651,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                         jButtonGuardar.setEnabled(true);
                         jButtonGuardar.grabFocus();
                         break;
-                    
+
                     case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la
                         // captura de huellas
                         Reclutador.clear();
@@ -656,37 +667,37 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             }
         }
     }
-    
+
     public void start() {
         Lector.startCapture();
         // EnviarTexto("Utilizando el Lector de Huella Dactilar ");
     }
-    
+
     public void stop() {
         Lector.stopCapture();
         // EnviarTexto("No se esta usando el Lector de Huella Dactilar ");
     }
-    
+
     public Image CrearImagenHuella(DPFPSample sample) {
         return DPFPGlobal.getSampleConversionFactory().createImage(sample);
     }
-    
+
     public void DibujarHuella(Image image) {
         jLabelImagenHuella.setIcon(new ImageIcon(
                 image.getScaledInstance(jLabelImagenHuella.getWidth(), jLabelImagenHuella.getHeight(), Image.SCALE_DEFAULT)));
         repaint();
     }
-    
+
     public DPFPTemplate getTemplate() {
         return template;
     }
-    
+
     public void setTemplate(DPFPTemplate template) {
         DPFPTemplate old = this.template;
         this.template = template;
         firePropertyChange(TEMPLATE_PROPERTY, old, template);
     }
-    
+
     public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
         DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
         try {
@@ -710,11 +721,11 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         try {
             //Establece los valores para la sentencia SQL
             cn = dataConnection.conexion();
-            PreparedStatement guardarStmt = cn.prepareStatement("INSERT INTO huella(huelladocumneto, huella,estudiante_documento) values(?,?,?)");
-            
+             PreparedStatement guardarStmt = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
+
             guardarStmt.setString(1, documento);
-            guardarStmt.setBinaryStream(2, datosHuella, tamanoHuella);
-            guardarStmt.setInt(3, doc);
+            guardarStmt.setBinaryStream(3, datosHuella, tamanoHuella);
+            guardarStmt.setInt(2, doc);
             //Ejecuta la sentencia
             guardarStmt.execute();
             guardarStmt.close();
@@ -816,7 +827,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldGrado;
     private javax.swing.JTextField jTextFieldNombres;
     // End of variables declaration//GEN-END:variables
-    
+
     public void noteclearCaracteres(KeyEvent evt) {
         int cadena = (int) evt.getKeyChar();
         if (cadena >= 33 && cadena <= 47
@@ -826,7 +837,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "no ingrese caracteres especiales en los campos de texto");
             evt.setKeyChar((char) KeyEvent.VK_CLEAR);
         }
-        
+
     }
 
     /**
@@ -852,20 +863,29 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             evt.setKeyChar((char) KeyEvent.VK_CLEAR);
         }
     }
-    
-    public boolean buscarHuella(int documento) throws SQLException{
-            //Establece los valores para la sentencia SQL
-            cn = dataConnection.conexion();
 
-            //Obtiene todas las huellas de la bd
-            PreparedStatement identificarStmt = cn.prepareStatement("SELECT documento FROM huella where documento=?");
-            
-            identificarStmt.setInt(1, documento);
-            
-            ResultSet rs = identificarStmt.executeQuery();
-            if(rs.next()){
-                return true;
-            }
+    /**
+     * Metodo que sirve para buscar la huella del estudiante que se esta
+     * buscando
+     *
+     * @param documento, documento del estudiante que se le desea buscar la
+     * huella
+     * @return, verdadero si existe una huella para ese estudiante y falso si no
+     * @throws SQLException
+     */
+    public boolean buscarHuella(int documento) throws SQLException {
+        //Establece los valores para la sentencia SQL
+        cn = dataConnection.conexion();
+
+        //Obtiene todas las huellas de la bd
+        PreparedStatement identificarStmt = cn.prepareStatement("SELECT documento FROM huella where documento=?");
+
+        identificarStmt.setInt(1, documento);
+
+        ResultSet rs = identificarStmt.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
         return false;
     }
 }
