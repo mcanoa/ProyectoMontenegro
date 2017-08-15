@@ -310,7 +310,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
             String metodologia = (String) jComboBoxMetodologia.getSelectedItem();
 
             int documento;
-            if (validarDocumento(doc)) {
+            if (validarDocumento(doc) && validarNombreCompleto(apellidos)) {
                 documento = Integer.parseInt(doc);
                 if (!validarDoc(documento)) {
                     // Validar que ingrese los campos obligatorios para registrarlo en
@@ -815,5 +815,15 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         }
 
         return false;
+    }
+    
+    /**
+     * Metodo que permite verificar que el estudiante tenga los dos apellidos
+     * @return 
+     */
+    public boolean validarNombreCompleto(String apell){
+        
+        String[] apellidos=apell.split(" ");
+        return apellidos.length==2;
     }
 }
