@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -31,6 +32,7 @@ public class VentanaEliminarEstudiante extends javax.swing.JFrame {
      */
     public VentanaEliminarEstudiante() {
         initComponents();
+        this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -50,6 +52,7 @@ public class VentanaEliminarEstudiante extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Elinimar Estudiante");
+        setBackground(new java.awt.Color(255, 255, 255));
         setIconImage(getIconImage());
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -61,6 +64,7 @@ public class VentanaEliminarEstudiante extends javax.swing.JFrame {
         jLabelTitulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelTitulo.setText("Eliminar Estudiantes");
 
+        jLabelTexto.setBackground(new java.awt.Color(255, 255, 255));
         jLabelTexto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabelTexto.setText("<html>Para eliminar un estudiante, debe buscar el estudiante por <br> el número de Documento de Identidad</html>");
 

@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -38,6 +39,7 @@ public class VentanaInciarSesionDocumento extends javax.swing.JFrame {
      */
     public VentanaInciarSesionDocumento() {
         initComponents();
+        this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -98,6 +100,7 @@ public class VentanaInciarSesionDocumento extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Registrar Estudiante"));
 
         jLabelMensaje.setBackground(new java.awt.Color(255, 51, 51));

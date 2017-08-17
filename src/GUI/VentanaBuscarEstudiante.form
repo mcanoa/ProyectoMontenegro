@@ -74,6 +74,9 @@
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jPanelBuscarEstudiante">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder justification="1" title="Buscar Estudiante"/>
@@ -91,10 +94,10 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jTextFieldDocumentoABuscar" min="-2" pref="240" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jComboBoxTipoBusqueda" pref="152" max="32767" attributes="0"/>
+                          <Component id="jComboBoxTipoBusqueda" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="425" max="32767" attributes="0"/>
                           <Component id="jButtonBuscarEstudiante" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -149,6 +152,9 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBoxTipoBusqueda">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="f0" green="f0" red="f0" type="rgb"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
                 <StringItem index="0" value="Nombre"/>
@@ -164,6 +170,9 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPanelDatosEstudiante">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Datos Estudiante"/>
@@ -385,6 +394,9 @@
     </Container>
     <Container class="javax.swing.JPanel" name="jPanelHuellaEstudiante">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Huella Estudiante"/>
@@ -406,6 +418,11 @@
       </Layout>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="jPanelContenedorHuella">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -429,6 +446,11 @@
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabelImagenHuella">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

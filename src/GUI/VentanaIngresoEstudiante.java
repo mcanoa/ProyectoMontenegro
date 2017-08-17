@@ -24,6 +24,7 @@ import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.ByteArrayInputStream;
@@ -61,6 +62,7 @@ public class VentanaIngresoEstudiante extends javax.swing.JFrame {
         Iniciar();
         start();
         initComponents();
+        this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -90,13 +92,18 @@ public class VentanaIngresoEstudiante extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Registrar Ingreso del Estudiante");
 
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("<html>Si desea registrar el ingreso con la huella dactilar, favor colocar <br> el dedo índice en el lector de huellas.</html>");
 
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("<html>Si desea registrar el ingreso con el documento de identidad del estudiante hacer clic en el botón Registrar Ingreso por Documento.</html>");
 
+        jPanelHuella.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuella.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Huella Dactilar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jPanelContenedorHuella.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanelContenedorHuellaLayout = new javax.swing.GroupLayout(jPanelContenedorHuella);
         jPanelContenedorHuella.setLayout(jPanelContenedorHuellaLayout);

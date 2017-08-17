@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 
@@ -19,6 +20,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
+         this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -39,6 +41,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Comedor Estudiantil");
+        setBackground(new java.awt.Color(204, 204, 204));
         setIconImage(getIconImage());
         setName("ventanaPrincipal"); // NOI18N
         setResizable(false);
