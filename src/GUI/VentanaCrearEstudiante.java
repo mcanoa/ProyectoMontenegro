@@ -54,7 +54,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
 
     private final String[] genero = {"FEMENINO", "MASCULINO"};
     private final String[] metodologias = {"TRADICIONAL", "FLEXIBLE"};
-    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION","INDIGENA","AFRO COLOMBIANO", "OTRA", "N/A"};
+    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION","INDIGENA","VEREDA","AFRO COLOMBIANO", "OTRA", "N/A"};
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
