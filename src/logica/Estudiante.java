@@ -82,6 +82,6 @@ public class Estudiante {
 		this.modeloPedagogico = modeloPedagogico;
 	}
 
-//HI everybody
+//HI 
 
 }
