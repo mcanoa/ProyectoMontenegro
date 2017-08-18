@@ -5,15 +5,14 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
-import static java.sql.JDBCType.BLOB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import static java.sql.Types.BLOB;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -35,7 +34,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
      */
     public VentanaBuscarEstudiante() {
         initComponents();
-
+        this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -51,7 +50,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jLabelDocumentoBuscar = new javax.swing.JLabel();
         jTextFieldDocumentoABuscar = new javax.swing.JTextField();
         jButtonBuscarEstudiante = new javax.swing.JButton();
-        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
+        jComboBoxTipoBusqueda = new javax.swing.JComboBox<String>();
         jPanelDatosEstudiante = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -83,6 +82,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             }
         });
 
+        jPanelBuscarEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelBuscarEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar Estudiante", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jLabelDocumentoBuscar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -103,7 +103,8 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.setBackground(new java.awt.Color(240, 240, 240));
+        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Documento" }));
 
         javax.swing.GroupLayout jPanelBuscarEstudianteLayout = new javax.swing.GroupLayout(jPanelBuscarEstudiante);
         jPanelBuscarEstudiante.setLayout(jPanelBuscarEstudianteLayout);
@@ -116,9 +117,9 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldDocumentoABuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBoxTipoBusqueda, 0, 152, Short.MAX_VALUE))
+                        .addComponent(jComboBoxTipoBusqueda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBuscarEstudianteLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 425, Short.MAX_VALUE)
                         .addComponent(jButtonBuscarEstudiante)))
                 .addContainerGap())
         );
@@ -134,6 +135,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 .addComponent(jButtonBuscarEstudiante))
         );
 
+        jPanelDatosEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDatosEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Estudiante"));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -251,7 +253,12 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 .addGap(29, 29, 29))
         );
 
+        jPanelHuellaEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuellaEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder("Huella Estudiante"));
+
+        jPanelContenedorHuella.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabelImagenHuella.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanelContenedorHuellaLayout = new javax.swing.GroupLayout(jPanelContenedorHuella);
         jPanelContenedorHuella.setLayout(jPanelContenedorHuellaLayout);
@@ -326,7 +333,12 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         String docu=jTextFieldDocumentoABuscar.getText();
         
         String tipoBusqueda=(String) jComboBoxTipoBusqueda.getSelectedItem();
-        
+         switch(tipoBusqueda){
+             case "Documento":
+                 break;
+             case "Nombre":
+                 break;
+         }
         if(tipoBusqueda.equals("Documento")){
             try {
                 // TODO add your handling code here:

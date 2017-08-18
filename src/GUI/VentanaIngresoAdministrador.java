@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -29,6 +30,7 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
      */
     public VentanaIngresoAdministrador() {
         initComponents();
+        this.getContentPane().setBackground(Color.white);
     }
 
     /**

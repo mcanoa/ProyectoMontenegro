@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,7 @@ public class VentanaModificarDatosAdmin extends javax.swing.JFrame {
      */
     public VentanaModificarDatosAdmin() {
         initComponents();
+        this.getContentPane().setBackground(Color.white);
         jButtonGuardar.setEnabled(false);
         
     }
@@ -73,6 +75,7 @@ public class VentanaModificarDatosAdmin extends javax.swing.JFrame {
         jLabelTitulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelTitulo.setText("Modificar Datos del Administrador");
 
+        jPanelDatosAdmin.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDatosAdmin.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Administrador"));
 
         jLabelNombres.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -191,6 +194,7 @@ public class VentanaModificarDatosAdmin extends javax.swing.JFrame {
                 .addComponent(jButtonGuardar))
         );
 
+        jPanelBuscarAdmin.setBackground(new java.awt.Color(255, 255, 255));
         jPanelBuscarAdmin.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar Administrador"));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N

@@ -24,6 +24,7 @@ import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -54,7 +55,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
 
     private final String[] genero = {"FEMENINO", "MASCULINO"};
     private final String[] metodologias = {"TRADICIONAL", "FLEXIBLE"};
-    private final String[] tipoPoblacion = {"AFRO COLOMBIANO", "DESPLAZADOS", "INDIGENA", "OTRA", "N/A"};
+    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION","INDIGENA","VEREDA","AFRO COLOMBIANO", "OTRA", "N/A"};
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
@@ -66,7 +67,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
      */
     public VentanaCrearEstudiante() {
         initComponents();
-       
+       this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -101,6 +102,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Crear Estudiante");
+        setBackground(new java.awt.Color(255, 255, 255));
         setIconImage(getIconImage());
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -168,7 +170,10 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
             }
         });
 
+        jPanelHuella.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuella.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Huella Dactilar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jLabelImagenHuella.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanelContenedorHuellaLayout = new javax.swing.GroupLayout(jPanelContenedorHuella);
         jPanelContenedorHuella.setLayout(jPanelContenedorHuellaLayout);
@@ -368,7 +373,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Ya existe un estudiante con ese documento");
                 }
             } else {
-                 JOptionPane.showMessageDialog(null, "Por favor, ingrese un documento valido");
+                 JOptionPane.showMessageDialog(null, "Por favor, ingrese un documento valido y \nel nombre completo del estudiante");
             }
         } else {
             JOptionPane.showMessageDialog(null, "El estudiante no se guardó");
