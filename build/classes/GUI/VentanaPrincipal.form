@@ -107,6 +107,7 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdministradorActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jButtonAdministradorKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonEstudiante">
@@ -118,6 +119,7 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEstudianteActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jButtonEstudianteKeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonSalir">

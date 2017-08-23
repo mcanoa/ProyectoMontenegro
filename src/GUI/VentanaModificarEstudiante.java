@@ -49,7 +49,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
     private final String[] genero = {"FEMENINO", "MASCULINO"};
     private final String[] metodologias = {"TRADICIONAL", "FLEXIBLE"};
-    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION","INDIGENA","VEREDA","AFRO COLOMBIANO","OTRA", "N/A"};
+    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION", "INDIGENA", "VEREDA", "AFRO COLOMBIANO", "OTRA", "N/A"};
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
@@ -79,10 +79,10 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldBuscarEstudianteDoc = new javax.swing.JTextField();
         jButtonBuscarEstudiante = new javax.swing.JButton();
+        jTextFieldBuscarEstudianteDoc = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jComboBoxBuscarPor = new javax.swing.JComboBox<>();
+        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
         jTextFieldBuscarNombre = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -132,13 +132,6 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jLabel1.setText("Buscar Estudiante:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 30));
 
-        jTextFieldBuscarEstudianteDoc.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextFieldBuscarEstudianteDocKeyTyped(evt);
-            }
-        });
-        jPanel1.add(jTextFieldBuscarEstudianteDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 244, 26));
-
         jButtonBuscarEstudiante.setText("Buscar");
         jButtonBuscarEstudiante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,17 +140,36 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         });
         jPanel1.add(jButtonBuscarEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, -1, -1));
 
-        jLabel11.setText("Buscar Estudiante Por:");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
-
-        jComboBoxBuscarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
-        jComboBoxBuscarPor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxBuscarPorActionPerformed(evt);
+        jTextFieldBuscarEstudianteDoc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldBuscarEstudianteDocKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldBuscarEstudianteDocKeyTyped(evt);
             }
         });
-        jPanel1.add(jComboBoxBuscarPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 180, -1));
-        jPanel1.add(jTextFieldBuscarNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 240, -1));
+        jPanel1.add(jTextFieldBuscarEstudianteDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 350, 30));
+
+        jLabel11.setText("Buscar Estudiante Por:");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 180, 30));
+
+        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoBusquedaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jComboBoxTipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 180, 30));
+
+        jTextFieldBuscarNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldBuscarNombreKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldBuscarNombreKeyTyped(evt);
+            }
+        });
+        jPanel1.add(jTextFieldBuscarNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 350, 30));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del Estudiante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
@@ -293,7 +305,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jPanelHuella.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuella.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Huella Dactilar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
-        jLabelImagenHuella.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelImagenHuella.setBackground(new java.awt.Color(240, 240, 240));
 
         javax.swing.GroupLayout jPanelContenedorHuellaLayout = new javax.swing.GroupLayout(jPanelContenedorHuella);
         jPanelContenedorHuella.setLayout(jPanelContenedorHuellaLayout);
@@ -339,7 +351,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                         .addGap(213, 213, 213)
                         .addComponent(jLabel10))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,12 +359,12 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         pack();
@@ -386,45 +398,74 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jButtonBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
 
-        if (jTextFieldBuscarEstudianteDoc.getText().length() < 11) {
-            try {
-                
-                int documento = Integer.parseInt(jTextFieldBuscarEstudianteDoc.getText());
-                cn = dataConnection.conexion();
-                pst = cn.prepareStatement(
-                        "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
-                pst.setInt(1, documento);
-                result = pst.executeQuery();
+        String buscarNombre = jTextFieldBuscarNombre.getText();
+        String buscarDocumento = jTextFieldBuscarEstudianteDoc.getText();
 
-                if (result.next()) {
-                    jTextFieldDocumento.setText(String.valueOf(result.getInt("documento")));
-                    jTextFieldNombres.setText(result.getString("nombres"));
-                    jTextFieldApellido.setText(result.getString("apellidos"));
-                    jTextFieldGrado.setText(result.getString("grado"));
-                    String sexo = result.getString("sexo");
-                    String tipoPoblacion = result.getString("tipoPoblacion");
-                    String metodologia = result.getString("modeloPedagogico");
-                    jComboBoxSexo.setSelectedIndex(sexo(sexo));
-                    jTextFieldDocumento.setEditable(true);
-                    jTextFieldNombres.setEditable(true);
-                    jTextFieldApellido.setEditable(true);
-                    jTextFieldGrado.setEditable(true);
-                    jButtonAñadirHuella.setEnabled(true);
+        String tipoBusqueda = (String) jComboBoxTipoBusqueda.getSelectedItem();
 
-                } else {
-                    JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+        if (tipoBusqueda.equals("Documento")) {
+            if (buscarDocumento.length() < 11) {
+                try {
+
+                    int documento = Integer.parseInt(jTextFieldBuscarEstudianteDoc.getText());
+                    cn = dataConnection.conexion();
+                    pst = cn.prepareStatement(
+                            "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
+                    pst.setInt(1, documento);
+                    result = pst.executeQuery();
+
+                    if (result.next()) {
+                        jTextFieldDocumento.setText(String.valueOf(result.getInt("documento")));
+                        jTextFieldNombres.setText(result.getString("nombres"));
+                        jTextFieldApellido.setText(result.getString("apellidos"));
+                        jTextFieldGrado.setText(result.getString("grado"));
+                        String sexo = result.getString("sexo");
+                        String tipoPoblacion = result.getString("tipoPoblacion");
+                        String metodologia = result.getString("modeloPedagogico");
+                        jComboBoxSexo.setSelectedIndex(sexo(sexo));
+                        jTextFieldDocumento.setEditable(true);
+                        jTextFieldNombres.setEditable(true);
+                        jTextFieldApellido.setEditable(true);
+                        jTextFieldGrado.setEditable(true);
+                        jButtonAñadirHuella.setEnabled(true);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Documento invalido");
+                jTextFieldBuscarEstudianteDoc.setText("");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Codigo con mas de 11 digitos, ingrese de nuevo");
-            jTextFieldBuscarEstudianteDoc.setText("");
+        } else if (tipoBusqueda.equals("Nombre")) {
+            //separar la cadena en nombres y apellidos
+            String[] partes = buscarNombre.split(" ");
+
+            if (partes.length <= 2) {
+                JOptionPane.showMessageDialog(null, "Por favor ingrear el nombre completo", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String apellidos = partes[partes.length - 2] + " " + partes[partes.length - 1];
+
+                String nombres = "";
+                for (int i = 0; i < partes.length - 2; i++) {
+                    nombres = nombres + partes[i] + " ";
+                }
+
+                try {
+                    buscarNombre(nombres, apellidos);
+                    jButtonAñadirHuella.setEnabled(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
 
@@ -443,13 +484,12 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 Reclutador.clear();
                 jLabelImagenHuella.setIcon(null);
                 stop();
-            }
-            else{
-                JOptionPane.showMessageDialog(null, "El estudiante ya tiene una huella registrada" );
+            } else {
+                JOptionPane.showMessageDialog(null, "El estudiante ya tiene una huella registrada");
             }
             //3. si ya tiene una huella se le informa al usuario y que el tome la decision
             //de actualizar la huella o dejar la que esta en ese momento
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(VentanaModificarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -495,22 +535,41 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTextFieldGradoKeyTyped
 
-    private void jComboBoxBuscarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxBuscarPorActionPerformed
-        if(jComboBoxBuscarPor.getSelectedItem().equals("Nombre")){
-            System.out.println("Nombre");
+    private void jComboBoxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoBusquedaActionPerformed
+        if (jComboBoxTipoBusqueda.getSelectedItem().equals("Nombre")) {
+
             jTextFieldBuscarNombre.setVisible(true);
             jTextFieldBuscarEstudianteDoc.setVisible(false);
             jTextFieldBuscarEstudianteDoc.setText("");
             jTextFieldBuscarNombre.setText("");
-        }
-        else if(jComboBoxBuscarPor.getSelectedItem().equals("Documento")){
-            System.out.println("Documento");
+        } else if (jComboBoxTipoBusqueda.getSelectedItem().equals("Documento")) {
+
             jTextFieldBuscarEstudianteDoc.setVisible(true);
             jTextFieldBuscarNombre.setVisible(false);
             jTextFieldBuscarEstudianteDoc.setText("");
             jTextFieldBuscarNombre.setText("");
         }
-    }//GEN-LAST:event_jComboBoxBuscarPorActionPerformed
+    }//GEN-LAST:event_jComboBoxTipoBusquedaActionPerformed
+
+    private void jTextFieldBuscarNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarNombreKeyTyped
+        // TODO add your handling code here:
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldBuscarNombreKeyTyped
+
+    private void jTextFieldBuscarEstudianteDocKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteDocKeyPressed
+        // TODO add your handling code here:
+         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+             jButtonBuscarEstudianteActionPerformed(null);
+        }
+    }//GEN-LAST:event_jTextFieldBuscarEstudianteDocKeyPressed
+
+    private void jTextFieldBuscarNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarNombreKeyPressed
+        // TODO add your handling code here:
+          if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+             jButtonBuscarEstudianteActionPerformed(null);
+        }
+    }//GEN-LAST:event_jTextFieldBuscarNombreKeyPressed
 
     @Override
     public Image getIconImage() {
@@ -739,7 +798,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         try {
             //Establece los valores para la sentencia SQL
             cn = dataConnection.conexion();
-             PreparedStatement guardarStmt = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
+            PreparedStatement guardarStmt = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
 
             guardarStmt.setString(1, documento);
             guardarStmt.setBinaryStream(3, datosHuella, tamanoHuella);
@@ -821,9 +880,9 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAñadirHuella;
     private javax.swing.JButton jButtonBuscarEstudiante;
     private javax.swing.JButton jButtonGuardar;
-    private javax.swing.JComboBox<String> jComboBoxBuscarPor;
     private javax.swing.JComboBox jComboBoxMetodologia;
     private javax.swing.JComboBox jComboBoxSexo;
+    private javax.swing.JComboBox<String> jComboBoxTipoBusqueda;
     private javax.swing.JComboBox jComboBoxTipoPoblacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -909,4 +968,48 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         }
         return false;
     }
+
+    /**
+     * Metodo que permite buscar un estudiante por el nombres y apellidos
+     *
+     * @param nombre, nombre del estudiante.
+     * @param apellidos, apellidos del estudiante.
+     * @throws java.lang.Exception
+     */
+    public void buscarNombre(String nombre, String apellidos) throws Exception {
+
+        if (nombre != null && apellidos != null) {
+            cn = dataConnection.conexion();
+            pst = cn.prepareStatement(
+                    "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE nombres=? && apellidos=?");
+            pst.setString(1, nombre);
+            pst.setString(2, apellidos);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+
+                jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
+                jTextFieldNombres.setText(res.getString("nombres"));
+                jTextFieldApellido.setText(res.getString("apellidos"));
+                jTextFieldGrado.setText(res.getString("grado"));
+                jComboBoxSexo.setSelectedItem(sexo(res.getString("sexo")));
+                jComboBoxTipoPoblacion.setSelectedItem(res.getString("tipoPoblacion"));
+                jComboBoxMetodologia.setSelectedItem(res.getString("modeloPedagogico"));
+
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }
+
+    /**
+     *
+     */
+    public void limpiar() {
+        jTextFieldBuscarEstudianteDoc.setText("");
+        jTextFieldBuscarNombre.setText("");
+    }
+    
+    
 }

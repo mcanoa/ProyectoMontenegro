@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JTextFieldDateEditor;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -32,7 +33,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import logica.dataConnection;
 import logica.institutoMontenegro;
-import sun.applet.Main;
 
 /**
  *
@@ -52,6 +52,7 @@ public class VentanaGenerarInforme extends javax.swing.JFrame {
      */
     public VentanaGenerarInforme() {
         initComponents();
+        this.getContentPane().setBackground(Color.white);
         editarDate1();;
         editarDate2();
     }

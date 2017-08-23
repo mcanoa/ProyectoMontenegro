@@ -173,7 +173,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jPanelHuella.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuella.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Huella Dactilar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jLabelImagenHuella.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelImagenHuella.setBackground(new java.awt.Color(240, 240, 240));
 
         javax.swing.GroupLayout jPanelContenedorHuellaLayout = new javax.swing.GroupLayout(jPanelContenedorHuella);
         jPanelContenedorHuella.setLayout(jPanelContenedorHuellaLayout);

@@ -8,6 +8,7 @@ package GUI;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -61,12 +62,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 jButtonAdministradorActionPerformed(evt);
             }
         });
+        jButtonAdministrador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButtonAdministradorKeyPressed(evt);
+            }
+        });
 
         jButtonEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonEstudiante.setText("Estudiante");
         jButtonEstudiante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEstudianteActionPerformed(evt);
+            }
+        });
+        jButtonEstudiante.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButtonEstudianteKeyPressed(evt);
             }
         });
 
@@ -142,6 +153,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButtonSalirActionPerformed
+
+    private void jButtonAdministradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonAdministradorKeyPressed
+        // TODO add your handling code here:
+         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+             jButtonAdministradorActionPerformed(null);
+        }
+    }//GEN-LAST:event_jButtonAdministradorKeyPressed
+
+    private void jButtonEstudianteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonEstudianteKeyPressed
+        // TODO add your handling code here:
+         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+             jButtonEstudianteActionPerformed(null);
+        }
+    }//GEN-LAST:event_jButtonEstudianteKeyPressed
 
     @Override
     public Image getIconImage() {

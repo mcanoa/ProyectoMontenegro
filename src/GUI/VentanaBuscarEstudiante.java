@@ -124,7 +124,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 jTextFieldNombreBuscarKeyTyped(evt);
             }
         });
-        jPanelBuscarEstudiante.add(jTextFieldNombreBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 490, -1));
+        jPanelBuscarEstudiante.add(jTextFieldNombreBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 490, 30));
 
         jLabel9.setText("Buscar Estudiante Por:");
         jPanelBuscarEstudiante.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 66, -1, 20));
@@ -365,17 +365,22 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
 
             //separar la cadena en nombres y apellidos
             String[] partes = nombreBuscar.split(" ");
-            String apellidos = partes[partes.length - 2] + " " + partes[partes.length - 1];
 
-            String nombres = "";
-            for (int i = 0; i < partes.length - 2; i++) {
-                nombres = nombres + partes[i] + " ";
-            }
+            if (partes.length <= 2) {
+                JOptionPane.showMessageDialog(null, "Por favor ingrear el nombre completo","ERROR",JOptionPane.ERROR_MESSAGE);
+            } else {
+                String apellidos = partes[partes.length - 2] + " " + partes[partes.length - 1];
 
-            try {
-                buscarNombre(nombres, apellidos);
-            } catch (Exception ex) {
-                Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+                String nombres = "";
+                for (int i = 0; i < partes.length - 2; i++) {
+                    nombres = nombres + partes[i] + " ";
+                }
+
+                try {
+                    buscarNombre(nombres, apellidos);
+                } catch (Exception ex) {
+                    Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         } else if (tipoBusqueda.equals("DOCUMENTOINVALIDO")) {
             jTextFieldDocumentoABuscar.setText("");
@@ -396,7 +401,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldDocumentoABuscarKeyTyped
 
     private void jComboBoxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoBusquedaActionPerformed
-        // TODO add your handling code here:
+
         if (jComboBoxTipoBusqueda.getSelectedItem().equals("Nombre")) {
             System.out.println("Nombre");
             jTextFieldNombreBuscar.setVisible(true);

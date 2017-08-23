@@ -6,9 +6,9 @@
 package GUI;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +32,7 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
      */
     public VentanaIngresoAdministrador() {
         initComponents();
-
+        
         this.getContentPane().setBackground(Color.white);
     }
 
@@ -45,12 +45,12 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPasswordAdministrador = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldNickname = new javax.swing.JTextField();
-        jPasswordAdministrador = new javax.swing.JPasswordField();
         jButtonIniciarSesion = new javax.swing.JButton();
         jButtonAtras = new javax.swing.JButton();
 
@@ -59,6 +59,12 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
         setIconImage(getIconImage());
         setName("VentanaLogInAdminstrador"); // NOI18N
         setResizable(false);
+
+        jPasswordAdministrador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordAdministradorKeyPressed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Ingreso Administrador");
@@ -75,12 +81,6 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
         jTextFieldNickname.setEditable(false);
         jTextFieldNickname.setText("administrador");
 
-        jPasswordAdministrador.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPasswordAdministradorKeyPressed(evt);
-            }
-        });
-
         jButtonIniciarSesion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonIniciarSesion.setText("Iniciar Sesión");
         jButtonIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -90,7 +90,7 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
         });
 
         jButtonAtras.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButtonAtras.setText("Atras");
+        jButtonAtras.setText("Atrás");
         jButtonAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAtrasActionPerformed(evt);
@@ -111,15 +111,14 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonIniciarSesion)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonIniciarSesion)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonAtras))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextFieldNickname)
                                 .addComponent(jPasswordAdministrador, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButtonAtras)
-                .addGap(32, 32, 32))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
@@ -130,9 +129,7 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonAtras)
-                .addGap(18, 18, 18)
+                .addGap(57, 57, 57)
                 .addComponent(jLabel2)
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -143,7 +140,9 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jPasswordAdministrador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33)
-                .addComponent(jButtonIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18))
         );
 
@@ -158,7 +157,8 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
 
         char[] arrayC = jPasswordAdministrador.getPassword();
         if (arrayC.length == 0) {
-            System.out.println("No ingreso el password");
+            JOptionPane.showMessageDialog(null, "Por favor Ingrear una contraseña.", "ERROR", JOptionPane.ERROR_MESSAGE);
+
         } else {
             String password = new String(arrayC);
             cn = dataConnection.conexion();
@@ -193,7 +193,7 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
 
     private void jPasswordAdministradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordAdministradorKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButtonIniciarSesionActionPerformed(null);
         }
     }//GEN-LAST:event_jPasswordAdministradorKeyPressed
@@ -224,6 +224,5 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
     public boolean validarTexto(String cadena) {
         return !(cadena == null && cadena.isEmpty() && cadena.length() == 0);
     }
-  
-}
 
+}
