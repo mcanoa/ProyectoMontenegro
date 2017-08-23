@@ -14,7 +14,6 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JTextFieldDateEditor;
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -53,7 +52,6 @@ public class VentanaGenerarInforme extends javax.swing.JFrame {
      */
     public VentanaGenerarInforme() {
         initComponents();
-        this.getContentPane().setBackground(Color.white);
         editarDate1();;
         editarDate2();
     }
@@ -162,18 +160,19 @@ public class VentanaGenerarInforme extends javax.swing.JFrame {
  Document documento = new Document();
     private void jButtonGenerarInformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarInformActionPerformed
         // TODO add your handling code here:
+        
+        
         institutoMontenegro i = new institutoMontenegro();
-
         Date fechaInicial = formatFecha(jDateChooser1.getDate());
         Date fechaFinal = formatFecha(jDateChooser2.getDate());
         if (validarfechas(fechaInicial, fechaFinal)) {
             cn = dataConnection.conexion();
             try {
-                pst = cn.prepareStatement(
-                        "select est.documento,est.nombres,est.apellidos,est.tipoPoblacion, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE fechaIngreso between ? AND ? GROUP BY est.documento;");
-                pst.setDate(1, (java.sql.Date) fechaInicial);
-                pst.setDate(2, (java.sql.Date) fechaFinal);
-                result = pst.executeQuery();
+//                pst = cn.prepareStatement(
+//                        "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"6%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+//                pst.setDate(1, (java.sql.Date) fechaInicial);
+//                pst.setDate(2, (java.sql.Date) fechaFinal);
+//                result = pst.executeQuery();
                 Paragraph saltoLinea = new Paragraph();
                 Paragraph instituto = new Paragraph();
                 instituto.add("Institución Educativa Instituto Montenegro \n");
@@ -195,81 +194,104 @@ public class VentanaGenerarInforme extends javax.swing.JFrame {
                 String ruta = "";
                 chooser.setDialogTitle("Guardar Informe");
 //                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                chooser.setAcceptAllFileFilterUsed(false);
-                int opcion = chooser.showSaveDialog(null);
-                if (opcion == JFileChooser.APPROVE_OPTION) {
-                    ruta = chooser.getSelectedFile().getAbsolutePath();
-                    PdfWriter.getInstance(documento, new FileOutputStream(ruta + ".pdf"));
-                    documento.open();
-                    documento.add(fecha);
-                    documento.add(new Paragraph(instituto));
-                    documento.add(new Paragraph(Nit));
-                    saltoLinea.add("\n\n");
-                    documento.add(new Paragraph(PAE));
-
-                    documento.add(saltoLinea);
-                    documento.add(new Paragraph("Informe Asistencias \n"));
-                    documento.add(saltoLinea);
-                    documento.add(i.imagenPdf());
-                    // Anchos de las columnas
-                    float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
-                    PdfPTable tabla = new PdfPTable(anchosFilas);
-                    String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "tipo Poblacion", "Asistencias"};
-                    // Porcentaje que ocupa a lo ancho de la pagina del PDF
-                    tabla.setWidthPercentage(100);
-                    // Alineacion horizontal centrada
-                    tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    // agregar celda que ocupa las 4 columnas de los rotulos
-                    PdfPCell cell = new PdfPCell(new Paragraph("Asistencias PAE"));
-                    cell.setColspan(5);
-                    // Centrar contenido de celda
-                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    // Color de fondo de la celda
-                    cell.setBackgroundColor(azulClaro);
-                    tabla.addCell(cell);
-
-                    for (String rotulosColumna : rotulosColumnas) {
-                        cell = new PdfPCell(new Paragraph(rotulosColumna));
-                        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                        cell.setBackgroundColor(grisClaro);
-                        tabla.addCell(cell);
-                    }
-                    documento.add(i.imagenPdf());
-                    while (result.next()) {
-
-                        cell = new PdfPCell(new Paragraph(result.getString("documento")));
-                        tabla.addCell(cell);
-                        cell = new PdfPCell(new Paragraph(result.getString("nombres")));
-                        tabla.addCell(cell);
-                        cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
-                        tabla.addCell(cell);
-                        cell = new PdfPCell(new Paragraph(result.getString("tipoPoblacion")));
-                        tabla.addCell(cell);
-                        cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
-                        tabla.addCell(cell);
-
-                    }
-                    documento.add(tabla);
-                    documento.add(saltoLinea);
-                    documento.add(saltoLinea);
-                    generarInformeOcasionales(fechaInicial, fechaFinal);
-                    documento.add(saltoLinea);
-                    documento.add(saltoLinea);
-                    documento.add(saltoLinea);
-                    firma.add(" ___________________________________________\n");
-                    firma.setAlignment(Element.ALIGN_CENTER);
-                    documento.add(firma);
-                    firma2.add(" Rector: Jose Uriel Gonzalez Ramirez\n");
-                    firma2.setAlignment(Element.ALIGN_CENTER);
-                    documento.add(firma2);
-                    documento.close();
-                    JOptionPane.showMessageDialog(null, "Informe Generado");
-
-                    cn.close();
-                } else if (opcion == JFileChooser.CANCEL_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Informe no generado");
-                }
+chooser.setAcceptAllFileFilterUsed(false);
+int opcion = chooser.showSaveDialog(null);
+if (opcion == JFileChooser.APPROVE_OPTION) {
+    ruta = chooser.getSelectedFile().getAbsolutePath();
+    PdfWriter.getInstance(documento, new FileOutputStream(ruta + ".pdf"));
+    documento.open();
+    documento.add(fecha);
+    documento.add(new Paragraph(instituto));
+    documento.add(new Paragraph(Nit));
+    saltoLinea.add("\n\n");
+    documento.add(new Paragraph(PAE));
+    
+    documento.add(saltoLinea);
+    documento.add(new Paragraph("Informe Asistencias \n"));
+    documento.add(saltoLinea);
+    documento.add(i.imagenPdf());
+    generarTabla1();
+    documento.add(saltoLinea);
+    generarTabla2();
+    documento.add(saltoLinea);
+    generarTabla3();
+    documento.add(saltoLinea);
+    generarTabla4();
+    documento.add(saltoLinea);
+    generarTabla5();
+    documento.add(saltoLinea);
+    generarTabla6();
+    documento.add(saltoLinea);
+    generarTabla7();
+    documento.add(saltoLinea);
+    generarTabla8();
+    documento.add(saltoLinea);
+    generarTabla9();
+    documento.add(saltoLinea);
+    generarTabla10();
+    documento.add(saltoLinea);
+    generarTabla11();
+    documento.add(saltoLinea);
+    documento.add(saltoLinea);
+//    // Anchos de las columnas
+//    float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+//    PdfPTable tabla = new PdfPTable(anchosFilas);
+//    String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+//    // Porcentaje que ocupa a lo ancho de la pagina del PDF
+//    tabla.setWidthPercentage(100);
+//    // Alineacion horizontal centrada
+//    tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+//    // agregar celda que ocupa las 4 columnas de los rotulos
+//    PdfPCell cell = new PdfPCell(new Paragraph("Asistencias PAE"));
+//    cell.setColspan(5);
+//    // Centrar contenido de celda
+//    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//    // Color de fondo de la celda
+//    cell.setBackgroundColor(azulClaro);
+//    tabla.addCell(cell);
+//    
+//    for (String rotulosColumna : rotulosColumnas) {
+//        cell = new PdfPCell(new Paragraph(rotulosColumna));
+//        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//        cell.setBackgroundColor(grisClaro);
+//        tabla.addCell(cell);
+//    }
+//    documento.add(i.imagenPdf());
+//    while (result.next()) {
+//        
+//        cell = new PdfPCell(new Paragraph(result.getString("documento")));
+//        tabla.addCell(cell);
+//        cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+//        tabla.addCell(cell);
+//        cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+//        tabla.addCell(cell);
+//        cell = new PdfPCell(new Paragraph(result.getString("grado")));
+//        tabla.addCell(cell);
+//        cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+//        tabla.addCell(cell);
+//        
+//    }
+//    documento.add(tabla);
+//    documento.add(saltoLinea);
+//    documento.add(saltoLinea);
+    generarInformeOcasionales(fechaInicial, fechaFinal);
+    documento.add(saltoLinea);
+    documento.add(saltoLinea);
+    documento.add(saltoLinea);
+    firma.add(" ___________________________________________\n");
+    firma.setAlignment(Element.ALIGN_CENTER);
+    documento.add(firma);
+    firma2.add(" Rector: Jose Uriel Gonzalez Ramirez\n");
+    firma2.setAlignment(Element.ALIGN_CENTER);
+    documento.add(firma2);
+    documento.close();
+    JOptionPane.showMessageDialog(null, "Informe Generado");
+    
+    cn.close();
+} else if (opcion == JFileChooser.CANCEL_OPTION) {
+    JOptionPane.showMessageDialog(null, "Informe no generado");
+}
 
             } catch (SQLException | FileNotFoundException | DocumentException e1) {
                 // TODO Auto-generated catch block
@@ -433,7 +455,10 @@ public class VentanaGenerarInforme extends javax.swing.JFrame {
             instituto1.add("Asistencias Estudiantes Ocasionales \n");
             instituto1.setAlignment(Element.ALIGN_CENTER);
             saltoLinea.add("\n\n");
-
+            
+            
+                    
+            
             documento.add(instituto1);
             documento.add(saltoLinea);
             documento.add(new Paragraph("Estudiantes beneficiarios del programa de manera ocasional"));
@@ -484,5 +509,745 @@ public class VentanaGenerarInforme extends javax.swing.JFrame {
         }
 
     }
+    
+    public void generarTabla6() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
 
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"6%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 6");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 6"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 6 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void generarTabla1() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"1%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 1°");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 1"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 1 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla2() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"2%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 2");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 2°"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 2° PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla3() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"3%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 3°");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 3°"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 3 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla4() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"4%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 4");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 4"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 4 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void generarTabla5() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"5%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 5");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 5"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 5 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void generarTabla7() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"7%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 7°");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 7°"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 7 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla8() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"8%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 8°");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 8°"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 8 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla9() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"9%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 9°");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 9°"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 9 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla10() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"10%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 10");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 10"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 10 PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void generarTabla11() throws DocumentException {
+        Date fechaInicial = formatFecha(jDateChooser1.getDate());
+        Date fechaFinal = formatFecha(jDateChooser2.getDate());
+        try {
+            cn = dataConnection.conexion();
+
+            pst = cn.prepareStatement(
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"11%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+            pst.setDate(1, (java.sql.Date) fechaInicial);
+            pst.setDate(2, (java.sql.Date) fechaFinal);
+            result = pst.executeQuery();
+
+            Paragraph saltoLinea = new Paragraph();
+            Paragraph instituto1 = new Paragraph();
+            instituto1.add("Asistencias Estudiantes grado 11°");
+            instituto1.setAlignment(Element.ALIGN_CENTER);
+            saltoLinea.add("\n\n");
+
+            documento.add(instituto1);
+            documento.add(saltoLinea);
+            documento.add(new Paragraph("Estudiantes beneficiarios grado 11°"));
+            documento.add(saltoLinea);
+
+            // Anchos de las columnas
+            float anchosFilas[] = {2f, 2f, 2f, 2f, 2f};
+            PdfPTable tabla = new PdfPTable(anchosFilas);
+            String rotulosColumnas[] = {"Documento", "Nombres", "Apellidos", "Grado", "Asistencias"};
+            // Porcentaje que ocupa a lo ancho de la pagina del PDF
+            tabla.setWidthPercentage(100);
+            // Alineacion horizontal centrada
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // agregar celda que ocupa las 4 columnas de los rotulos
+            PdfPCell cell = new PdfPCell(new Paragraph("Asistencias Grado 11° PAE"));
+            cell.setColspan(5);
+            // Centrar contenido de celda
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            // Color de fondo de la celda
+            cell.setBackgroundColor(azulClaro);
+            tabla.addCell(cell);
+
+            for (String rotulosColumna : rotulosColumnas) {
+                cell = new PdfPCell(new Paragraph(rotulosColumna));
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBackgroundColor(grisClaro);
+                tabla.addCell(cell);
+            }
+
+            while (result.next()) {
+
+                cell = new PdfPCell(new Paragraph(result.getString("documento")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("nombres")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("apellidos")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("grado")));
+                tabla.addCell(cell);
+                cell = new PdfPCell(new Paragraph(result.getString("asistencias_Semanales")));
+                tabla.addCell(cell);
+
+            }
+            documento.add(tabla);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaGenerarInforme.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
