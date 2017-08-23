@@ -63,6 +63,8 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.white);
         jButtonAñadirHuella.setEnabled(false);
+        jTextFieldBuscarNombre.setVisible(true);
+        jTextFieldBuscarEstudianteDoc.setVisible(false);
     }
 
     /**
@@ -77,8 +79,11 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldBuscarEstudiante = new javax.swing.JTextField();
+        jTextFieldBuscarEstudianteDoc = new javax.swing.JTextField();
         jButtonBuscarEstudiante = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBoxBuscarPor = new javax.swing.JComboBox<>();
+        jTextFieldBuscarNombre = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -122,14 +127,17 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar Estudiante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Documento C.C/T.I:");
+        jLabel1.setText("Buscar Estudiante:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 30));
 
-        jTextFieldBuscarEstudiante.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextFieldBuscarEstudianteDoc.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextFieldBuscarEstudianteKeyTyped(evt);
+                jTextFieldBuscarEstudianteDocKeyTyped(evt);
             }
         });
+        jPanel1.add(jTextFieldBuscarEstudianteDoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 244, 26));
 
         jButtonBuscarEstudiante.setText("Buscar");
         jButtonBuscarEstudiante.addActionListener(new java.awt.event.ActionListener() {
@@ -137,32 +145,19 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 jButtonBuscarEstudianteActionPerformed(evt);
             }
         });
+        jPanel1.add(jButtonBuscarEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 30, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonBuscarEstudiante)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonBuscarEstudiante)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel11.setText("Buscar Estudiante Por:");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
+
+        jComboBoxBuscarPor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
+        jComboBoxBuscarPor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxBuscarPorActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jComboBoxBuscarPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 180, -1));
+        jPanel1.add(jTextFieldBuscarNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 30, 240, -1));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del Estudiante", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
@@ -334,19 +329,16 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(213, 213, 213)
-                        .addComponent(jLabel10)))
+                        .addComponent(jLabel10))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -355,12 +347,12 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         pack();
@@ -393,13 +385,16 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
 
-        // TODO add your handling code here:
-        if (jTextFieldBuscarEstudiante.getText().length() <= 11) {
+        if (jTextFieldBuscarEstudianteDoc.getText().length() < 11) {
             try {
-                // TODO add your handling code here:
-                int documento = Integer.parseInt(jTextFieldBuscarEstudiante.getText());
+                
+                int documento = Integer.parseInt(jTextFieldBuscarEstudianteDoc.getText());
                 cn = dataConnection.conexion();
                 pst = cn.prepareStatement(
                         "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
@@ -420,8 +415,6 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                     jTextFieldApellido.setEditable(true);
                     jTextFieldGrado.setEditable(true);
                     jButtonAñadirHuella.setEnabled(true);
-//                jComboBoxTipoPoblacion.setSelectedIndex();
-//                jComboBoxMetodologia.setText();
 
                 } else {
                     JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -431,7 +424,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Codigo con mas de 11 digitos, ingrese de nuevo");
-            jTextFieldBuscarEstudiante.setText("");
+            jTextFieldBuscarEstudianteDoc.setText("");
         }
     }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
 
@@ -473,11 +466,11 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formKeyTyped
 
-    private void jTextFieldBuscarEstudianteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteKeyTyped
+    private void jTextFieldBuscarEstudianteDocKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteDocKeyTyped
         // TODO add your handling code here:
         noTeclearLetras(evt);
         noteclearCaracteres(evt);
-    }//GEN-LAST:event_jTextFieldBuscarEstudianteKeyTyped
+    }//GEN-LAST:event_jTextFieldBuscarEstudianteDocKeyTyped
 
     private void jTextFieldDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDocumentoKeyTyped
         // TODO add your handling code here:
@@ -501,6 +494,23 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_jTextFieldGradoKeyTyped
+
+    private void jComboBoxBuscarPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxBuscarPorActionPerformed
+        if(jComboBoxBuscarPor.getSelectedItem().equals("Nombre")){
+            System.out.println("Nombre");
+            jTextFieldBuscarNombre.setVisible(true);
+            jTextFieldBuscarEstudianteDoc.setVisible(false);
+            jTextFieldBuscarEstudianteDoc.setText("");
+            jTextFieldBuscarNombre.setText("");
+        }
+        else if(jComboBoxBuscarPor.getSelectedItem().equals("Documento")){
+            System.out.println("Documento");
+            jTextFieldBuscarEstudianteDoc.setVisible(true);
+            jTextFieldBuscarNombre.setVisible(false);
+            jTextFieldBuscarEstudianteDoc.setText("");
+            jTextFieldBuscarNombre.setText("");
+        }
+    }//GEN-LAST:event_jComboBoxBuscarPorActionPerformed
 
     @Override
     public Image getIconImage() {
@@ -811,11 +821,13 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAñadirHuella;
     private javax.swing.JButton jButtonBuscarEstudiante;
     private javax.swing.JButton jButtonGuardar;
+    private javax.swing.JComboBox<String> jComboBoxBuscarPor;
     private javax.swing.JComboBox jComboBoxMetodologia;
     private javax.swing.JComboBox jComboBoxSexo;
     private javax.swing.JComboBox jComboBoxTipoPoblacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -830,7 +842,8 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelContenedorHuella;
     private javax.swing.JPanel jPanelHuella;
     private javax.swing.JTextField jTextFieldApellido;
-    private javax.swing.JTextField jTextFieldBuscarEstudiante;
+    private javax.swing.JTextField jTextFieldBuscarEstudianteDoc;
+    private javax.swing.JTextField jTextFieldBuscarNombre;
     private javax.swing.JTextField jTextFieldDocumento;
     private javax.swing.JTextField jTextFieldGrado;
     private javax.swing.JTextField jTextFieldNombres;

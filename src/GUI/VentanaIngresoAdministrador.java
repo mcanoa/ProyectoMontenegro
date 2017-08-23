@@ -8,6 +8,8 @@ package GUI;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +32,7 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
      */
     public VentanaIngresoAdministrador() {
         initComponents();
+
         this.getContentPane().setBackground(Color.white);
     }
 
@@ -71,6 +74,12 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
 
         jTextFieldNickname.setEditable(false);
         jTextFieldNickname.setText("administrador");
+
+        jPasswordAdministrador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordAdministradorKeyPressed(evt);
+            }
+        });
 
         jButtonIniciarSesion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonIniciarSesion.setText("Iniciar Sesión");
@@ -146,42 +155,53 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         String nickname = jTextFieldNickname.getText();
-        char[] arrayC = jPasswordAdministrador.getPassword();
-        String password = new String(arrayC);
-        cn = dataConnection.conexion();
-        try {
-            pst = cn.prepareStatement("select * from administrador where nickname=? and password=?");
-            pst.setString(1, nickname);
-            pst.setString(2, password);
-            rst = pst.executeQuery();
-            
-            if (rst.next()) {
-                JOptionPane.showMessageDialog(null, "Bienvenido "+ rst.getString("nombres"));
-                VentanaAdministrador p = new VentanaAdministrador();
-                p.setVisible(true);
-                this.dispose();
-            } else {
-                  JOptionPane.showMessageDialog(null, "Contraseña erronea");
-                  jPasswordAdministrador.setText("");
-            }
-        } catch (SQLException e1) {
 
-            e1.printStackTrace();
+        char[] arrayC = jPasswordAdministrador.getPassword();
+        if (arrayC.length == 0) {
+            System.out.println("No ingreso el password");
+        } else {
+            String password = new String(arrayC);
+            cn = dataConnection.conexion();
+            try {
+                pst = cn.prepareStatement("select * from administrador where nickname=? and password=?");
+                pst.setString(1, nickname);
+                pst.setString(2, password);
+                rst = pst.executeQuery();
+
+                if (rst.next()) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido " + rst.getString("nombres"));
+                    VentanaAdministrador p = new VentanaAdministrador();
+                    p.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Contraseña erronea");
+                    jPasswordAdministrador.setText("");
+                }
+            } catch (SQLException e1) {
+
+                e1.printStackTrace();
+            }
         }
     }//GEN-LAST:event_jButtonIniciarSesionActionPerformed
 
     private void jButtonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasActionPerformed
         // TODO add your handling code here:
-        VentanaPrincipal ventana= new VentanaPrincipal();
+        VentanaPrincipal ventana = new VentanaPrincipal();
         ventana.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonAtrasActionPerformed
 
-     @Override
+    private void jPasswordAdministradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordAdministradorKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            jButtonIniciarSesionActionPerformed(null);
+        }
+    }//GEN-LAST:event_jPasswordAdministradorKeyPressed
+
+    @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ClassLoader.getSystemResource("imagenes/Escudo.png"));
-
 
         return retValue;
     }
@@ -195,4 +215,15 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
     private javax.swing.JPasswordField jPasswordAdministrador;
     private javax.swing.JTextField jTextFieldNickname;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     *
+     * @param cadena
+     * @return
+     */
+    public boolean validarTexto(String cadena) {
+        return !(cadena == null && cadena.isEmpty() && cadena.length() == 0);
+    }
+  
 }
+

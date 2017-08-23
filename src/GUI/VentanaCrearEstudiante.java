@@ -394,34 +394,31 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jTextFieldGrado.setEditable(true);
         jTextFieldNombres.setEditable(true);
         
-//			Iniciar();
-//			start();
 
     }//GEN-LAST:event_jButtonGuardarHuellaActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
         VentanaAdministrador.cambiarestado(true);
     }//GEN-LAST:event_formWindowClosed
 
     private void jTextFieldDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDocumentoKeyTyped
-        // TODO add your handling code here:
         noteclearCaracteres(evt);
         noTeclearLetras(evt);
     }//GEN-LAST:event_jTextFieldDocumentoKeyTyped
 
     private void jTextFieldNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombresKeyTyped
-        // TODO add your handling code here:
         noTeclearNumeros(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldNombresKeyTyped
 
     private void jTextFieldApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldApellidosKeyTyped
-        // TODO add your handling code here:
         noTeclearNumeros(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldApellidosKeyTyped
 
+    /**
+     * 
+     */
     public void limpiar() {
         jTextFieldDocumento.setText("");
         jTextFieldNombres.setText("");
@@ -432,12 +429,19 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jComboBoxMetodologia.setSelectedItem(0);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Date fechaIncio() {
         String date1 = "1999-05-24";
         Date fecha = java.sql.Date.valueOf(date1);
         return fecha;
     }
 
+    /**
+     * 
+     */
     public void setCampos() {
         jTextFieldApellidos.setEditable(false);
         jTextFieldNombres.setEditable(false);
@@ -465,6 +469,11 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
 
     /**
      * Metodo que permite validar que los campos esten llenos
+     * @param documento
+     * @param nombre
+     * @param apellidos
+     * @param grado
+     * @return 
      */
     public boolean validarCamposObligatorios(JTextField documento, JTextField nombre, JTextField apellidos,
             JTextField grado) {
@@ -494,6 +503,11 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         return resultado;
     }
 
+    /**
+     * 
+     * @param sexo
+     * @return 
+     */
     public String sexoF(String sexo) {
         if ("FEMENINO".equals(sexo)) {
             return "F";
@@ -502,6 +516,10 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().

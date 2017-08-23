@@ -28,13 +28,14 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     Connection cn;
     ResultSet res;
 
-    
     /**
      * Creates new form BuscarEstudiante
      */
     public VentanaBuscarEstudiante() {
         initComponents();
         this.getContentPane().setBackground(Color.white);
+        jTextFieldNombreBuscar.setVisible(true);
+        jTextFieldDocumentoABuscar.setVisible(false);
     }
 
     /**
@@ -50,7 +51,9 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jLabelDocumentoBuscar = new javax.swing.JLabel();
         jTextFieldDocumentoABuscar = new javax.swing.JTextField();
         jButtonBuscarEstudiante = new javax.swing.JButton();
-        jComboBoxTipoBusqueda = new javax.swing.JComboBox<String>();
+        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
+        jTextFieldNombreBuscar = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
         jPanelDatosEstudiante = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -84,9 +87,11 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
 
         jPanelBuscarEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelBuscarEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Buscar Estudiante", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanelBuscarEstudiante.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabelDocumentoBuscar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabelDocumentoBuscar.setText("Documento Del Estudiante:");
+        jLabelDocumentoBuscar.setText("Buscar Estudiante:");
+        jPanelBuscarEstudiante.add(jLabelDocumentoBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
 
         jTextFieldDocumentoABuscar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextFieldDocumentoABuscar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -94,6 +99,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 jTextFieldDocumentoABuscarKeyTyped(evt);
             }
         });
+        jPanelBuscarEstudiante.add(jTextFieldDocumentoABuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 490, 30));
 
         jButtonBuscarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonBuscarEstudiante.setText("Buscar Estudiante");
@@ -102,38 +108,26 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 jButtonBuscarEstudianteActionPerformed(evt);
             }
         });
+        jPanelBuscarEstudiante.add(jButtonBuscarEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, -1, -1));
 
         jComboBoxTipoBusqueda.setBackground(new java.awt.Color(240, 240, 240));
-        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoBusquedaActionPerformed(evt);
+            }
+        });
+        jPanelBuscarEstudiante.add(jComboBoxTipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, 114, -1));
 
-        javax.swing.GroupLayout jPanelBuscarEstudianteLayout = new javax.swing.GroupLayout(jPanelBuscarEstudiante);
-        jPanelBuscarEstudiante.setLayout(jPanelBuscarEstudianteLayout);
-        jPanelBuscarEstudianteLayout.setHorizontalGroup(
-            jPanelBuscarEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBuscarEstudianteLayout.createSequentialGroup()
-                .addGroup(jPanelBuscarEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelBuscarEstudianteLayout.createSequentialGroup()
-                        .addComponent(jLabelDocumentoBuscar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldDocumentoABuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBoxTipoBusqueda, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBuscarEstudianteLayout.createSequentialGroup()
-                        .addGap(0, 425, Short.MAX_VALUE)
-                        .addComponent(jButtonBuscarEstudiante)))
-                .addContainerGap())
-        );
-        jPanelBuscarEstudianteLayout.setVerticalGroup(
-            jPanelBuscarEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBuscarEstudianteLayout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
-                .addGroup(jPanelBuscarEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelDocumentoBuscar)
-                    .addComponent(jTextFieldDocumentoABuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonBuscarEstudiante))
-        );
+        jTextFieldNombreBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldNombreBuscarKeyTyped(evt);
+            }
+        });
+        jPanelBuscarEstudiante.add(jTextFieldNombreBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 490, -1));
+
+        jLabel9.setText("Buscar Estudiante Por:");
+        jPanelBuscarEstudiante.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 66, -1, 20));
 
         jPanelDatosEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDatosEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Estudiante"));
@@ -298,16 +292,16 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(207, 207, 207)
+                        .addComponent(jLabel8))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanelDatosEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanelHuellaEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(207, 207, 207)
-                        .addComponent(jLabel8)))
+                                .addComponent(jPanelHuellaEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -315,8 +309,8 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelDatosEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -329,84 +323,109 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
-        
-        String docu=jTextFieldDocumentoABuscar.getText();
-        
-        String tipoBusqueda=(String) jComboBoxTipoBusqueda.getSelectedItem();
-         switch(tipoBusqueda){
-             case "Documento":
-                 break;
-             case "Nombre":
-                 break;
-         }
-        if(tipoBusqueda.equals("Documento")){
+
+        String docu = jTextFieldDocumentoABuscar.getText();
+        String nombreBuscar = jTextFieldNombreBuscar.getText();
+
+        String tipoBusqueda = (String) jComboBoxTipoBusqueda.getSelectedItem();
+
+        if (tipoBusqueda.equals("Documento")) {
             try {
-                // TODO add your handling code here:
-                if(docu.length()<11){
-                int documento = Integer.parseInt(jTextFieldDocumentoABuscar.getText());
-                cn = dataConnection.conexion();
-                pst = cn.prepareStatement(
-                        "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
-                pst.setInt(1, documento);
-                res = pst.executeQuery();
 
-                if (res.next()) {
+                if (docu.length() < 11) {
+                    int documento = Integer.parseInt(jTextFieldDocumentoABuscar.getText());
+                    cn = dataConnection.conexion();
+                    pst = cn.prepareStatement(
+                            "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
+                    pst.setInt(1, documento);
+                    res = pst.executeQuery();
 
-                    jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
-                    jTextFieldNombres.setText(res.getString("nombres"));
-                    jTextFieldApellidos.setText(res.getString("apellidos"));
-                    jTextFieldGrado.setText(res.getString("grado"));
-                    jTextFieldSexo.setText(res.getString("sexo"));
-                    jTextFieldTipoPoblacion.setText(res.getString("tipoPoblacion"));
-                    jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
+                    if (res.next()) {
 
-                    limpiar();
+                        jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
+                        jTextFieldNombres.setText(res.getString("nombres"));
+                        jTextFieldApellidos.setText(res.getString("apellidos"));
+                        jTextFieldGrado.setText(res.getString("grado"));
+                        jTextFieldSexo.setText(res.getString("sexo"));
+                        jTextFieldTipoPoblacion.setText(res.getString("tipoPoblacion"));
+                        jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
+
+                        limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-                }else{
                     jTextFieldDocumentoABuscar.setText("");
                     JOptionPane.showMessageDialog(null, "Documento invalido");
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else if(tipoBusqueda.equals("Nombre")){
+        } else if (tipoBusqueda.equals("Nombre")) {
+
             //separar la cadena en nombres y apellidos
-            String[] partes=docu.split(" ");
-            String apellidos= partes[partes.length-2]+" "+partes[partes.length-1];
-            
+            String[] partes = nombreBuscar.split(" ");
+            String apellidos = partes[partes.length - 2] + " " + partes[partes.length - 1];
+
             String nombres = "";
-            for(int i=0;i<partes.length-2;i++){
-                nombres=nombres+partes[i]+" ";
+            for (int i = 0; i < partes.length - 2; i++) {
+                nombres = nombres + partes[i] + " ";
             }
-            
+
             try {
                 buscarNombre(nombres, apellidos);
             } catch (Exception ex) {
                 Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if(tipoBusqueda.equals("DOCUMENTOINVALIDO")){
+        } else if (tipoBusqueda.equals("DOCUMENTOINVALIDO")) {
             jTextFieldDocumentoABuscar.setText("");
             JOptionPane.showMessageDialog(null, "Documento mayor a 11 digitos, ingrese de nuevo el numero");
         }
-        
+
     }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
+
         VentanaAdministrador.cambiarestado(true);
     }//GEN-LAST:event_formWindowClosed
 
     private void jTextFieldDocumentoABuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDocumentoABuscarKeyTyped
-        // TODO add your handling code here:
-       // noTeclearLetras(evt);
+
+        noTeclearLetras(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldDocumentoABuscarKeyTyped
 
+    private void jComboBoxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoBusquedaActionPerformed
+        // TODO add your handling code here:
+        if (jComboBoxTipoBusqueda.getSelectedItem().equals("Nombre")) {
+            System.out.println("Nombre");
+            jTextFieldNombreBuscar.setVisible(true);
+            jTextFieldDocumentoABuscar.setVisible(false);
+            limpiar();
+        } else if (jComboBoxTipoBusqueda.getSelectedItem().equals("Documento")) {
+            System.out.println("Documento");
+            jTextFieldDocumentoABuscar.setVisible(true);
+            jTextFieldNombreBuscar.setVisible(false);
+            limpiar();
+        }
+    }//GEN-LAST:event_jComboBoxTipoBusquedaActionPerformed
+
+    /**
+     *
+     * @param evt
+     */
+    private void jTextFieldNombreBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombreBuscarKeyTyped
+        // TODO add your handling code here:
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldNombreBuscarKeyTyped
+
+    /**
+     *
+     */
     public void limpiar() {
         jTextFieldDocumentoABuscar.setText("");
+        jTextFieldNombreBuscar.setText("");
     }
 
     @Override
@@ -427,6 +446,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabelDocumentoBuscar;
     private javax.swing.JLabel jLabelImagenHuella;
     private javax.swing.JPanel jPanelBuscarEstudiante;
@@ -438,6 +458,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldDocumentoABuscar;
     private javax.swing.JTextField jTextFieldGrado;
     private javax.swing.JTextField jTextFieldMetodologia;
+    private javax.swing.JTextField jTextFieldNombreBuscar;
     private javax.swing.JTextField jTextFieldNombres;
     private javax.swing.JTextField jTextFieldSexo;
     private javax.swing.JTextField jTextFieldTipoPoblacion;
@@ -467,7 +488,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         }
     }
 
-    /** 
+    /**
      * Metodo para cuando se dijite un numero en un campo de letras
      *
      * @param evt
@@ -481,37 +502,36 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
 
     /**
      * Metodo que permite buscar un estudiante por el nombres y apellidos
+     *
      * @param nombre, nombre del estudiante.
      * @param apellidos, apellidos del estudiante.
      * @throws java.lang.Exception
      */
-    public void buscarNombre(String nombre, String apellidos) throws Exception{
-        
-        
-        if(nombre!=null && apellidos != null){
+    public void buscarNombre(String nombre, String apellidos) throws Exception {
+
+        if (nombre != null && apellidos != null) {
             cn = dataConnection.conexion();
-                pst = cn.prepareStatement(
-                        "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE nombres=? && apellidos=?");
-                pst.setString(1, nombre);
-                pst.setString(2, apellidos);
-                res = pst.executeQuery();
-                if (res.next()) {
+            pst = cn.prepareStatement(
+                    "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE nombres=? && apellidos=?");
+            pst.setString(1, nombre);
+            pst.setString(2, apellidos);
+            res = pst.executeQuery();
+            if (res.next()) {
 
-                    jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
-                    jTextFieldNombres.setText(res.getString("nombres"));
-                    jTextFieldApellidos.setText(res.getString("apellidos"));
-                    jTextFieldGrado.setText(res.getString("grado"));
-                    jTextFieldSexo.setText(res.getString("sexo"));
-                    jTextFieldTipoPoblacion.setText(res.getString("tipoPoblacion"));
-                    jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
+                jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
+                jTextFieldNombres.setText(res.getString("nombres"));
+                jTextFieldApellidos.setText(res.getString("apellidos"));
+                jTextFieldGrado.setText(res.getString("grado"));
+                jTextFieldSexo.setText(res.getString("sexo"));
+                jTextFieldTipoPoblacion.setText(res.getString("tipoPoblacion"));
+                jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
 
-                    limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
 
         }
     }
-    
-   
+
 }
