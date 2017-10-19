@@ -323,8 +323,8 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
                     if (nombres.length() != 0 && apellidos.length() != 0 && documento != 0 && grado.length() != 0) {
                         cn = dataConnection.conexion();
                         try {
-                            pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,"
-                                    + "grado,sexo,tipoPoblacion,modeloPedagogico) values (?,?,?,?,?,?,?)");
+                            pst = cn.prepareStatement("insert into estudiante (documento,grupo,grado,apellidos,nombres,"
+                                    + "zonaAlumno,nombreGrupo,jornada) values (?,?,?,?,?,?,?,?)");
 
                             pst.setInt(1, documento);
                             pst.setString(2, nombres);
