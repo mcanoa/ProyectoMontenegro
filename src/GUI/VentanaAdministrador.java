@@ -319,7 +319,9 @@ public class VentanaAdministrador extends javax.swing.JFrame {
                     celdaDato.add(celdaTemporal);
                 }
 
-            } catch (IOException | InvalidFormatException e) {
+            } catch (IOException e) {
+            } catch (InvalidFormatException ex) {
+                Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
             }
             
            
