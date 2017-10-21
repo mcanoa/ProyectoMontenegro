@@ -8,7 +8,29 @@ package GUI;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import logica.dataConnection;
+import logica.institutoMontenegro;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
  *
@@ -16,10 +38,15 @@ import javax.swing.JOptionPane;
  */
 public class VentanaAdministrador extends javax.swing.JFrame {
 
+     PreparedStatement pst;
+    Connection cn;
+    ResultSet result;
+     institutoMontenegro instituto = new institutoMontenegro();
     /**
      * Creates new form VentanaAdministrador
      */
     public VentanaAdministrador() {
+        cn = dataConnection.conexion();
         initComponents();
         this.getContentPane().setBackground(Color.white);
         VentanaAdministrador.cambiarestado(true);
@@ -47,6 +74,8 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JToolBar.Separator();
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
+        jButton2 = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
         jButtonSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -135,6 +164,18 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         });
         jToolBarOpcionsAdmin.add(jButton1);
         jToolBarOpcionsAdmin.add(jSeparator1);
+
+        jButton2.setText("Cargar Archivo");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jToolBarOpcionsAdmin.add(jButton2);
+        jToolBarOpcionsAdmin.add(jSeparator7);
 
         jButtonSalir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonSalir.setText("Salir");
@@ -247,6 +288,55 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
+    /**
+     * Metodo que sirve para cargar los estudiantes desde un archivo en excel
+     * @param evt 
+     */
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {                                         
+            File archivo = new File("D:\\Documentos\\NetBeansProjects\\Leer_Probar_Excel\\gracie.xlsx");
+            Workbook wb;
+            List celdaDato = new ArrayList();
+            
+            try {
+                
+                FileInputStream fileInputStream = new FileInputStream(archivo);
+                wb = WorkbookFactory.create(fileInputStream);
+                Sheet hoja = wb.getSheetAt(0);
+                
+                Iterator filaIterator = hoja.rowIterator();
+                
+                while (filaIterator.hasNext()) {
+                    
+                    Row fila = (Row) filaIterator.next();
+                    Iterator columnaIterador = fila.cellIterator();
+                    List celdaTemporal = new ArrayList();
+                    
+                    while (columnaIterador.hasNext()) {
+                        Cell celda = (Cell) columnaIterador.next();
+                        celdaTemporal.add(celda);
+                    }
+                    celdaDato.add(celdaTemporal);
+                }
+
+            } catch (IOException | InvalidFormatException e) {
+            }
+            
+           
+            obtener(celdaDato);
+            
+            System.out.println("ya");
+            
+            
+        } catch (SQLException ex) {
+             Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
@@ -261,6 +351,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
     static boolean v = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonBuscarEstudiante;
     private javax.swing.JButton jButtonCrearEstudiante;
     private javax.swing.JButton jButtonEliminarEstudiante;
@@ -273,6 +364,136 @@ public class VentanaAdministrador extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JToolBar.Separator jSeparator5;
     private javax.swing.JToolBar.Separator jSeparator6;
+    private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
+
+ public void obtener(List listaDatosXCelda) throws SQLException {
+        List numeros = null ;
+        int contador=0;
+        int contadorNegativo=0;
+        for (int i = 1; i < listaDatosXCelda.size(); i++) {
+            String cadena = new String();
+            numeros = new ArrayList();
+            List listaTemporalCeldas = (List) listaDatosXCelda.get(i);
+            for (int j = 17; j < listaTemporalCeldas.size(); j++) {
+                Cell celda = (Cell) listaTemporalCeldas.get(j);
+                
+                switch (celda.getCellType()) {
+                    case Cell.CELL_TYPE_NUMERIC:
+                        int valor = (int) Math.round(celda.getNumericCellValue());
+                        
+                        numeros.add(valor);
+                        break;
+                    case Cell.CELL_TYPE_STRING:
+                        String valorString = celda.toString();
+                        if (j == listaTemporalCeldas.size() - 1) {
+                            cadena += valorString;
+//                    insert += "'"+celda.toString() + "'";
+                        } else {
+//                 insert += "'"+celda.toString() + "',";
+                            cadena += valorString + ",";
+                        }
+                        break;
+                }
+
+                
+
+//                System.out.println(valorString + " ");
+//                System.out.println(valorString + " ");
+            }
+//            insert += ")";
+//            System.out.println(insert);
+            int grupo = 0,documento = 0,nombreGrupo = 0;
+            
+            for (int a = 0; a < numeros.size(); a++) {
+                if(a==0){
+                    grupo= (int) numeros.get(a);
+                }
+                if(a==1){
+                    documento= (int) numeros.get(a);
+                }
+                if(a==2){
+                    nombreGrupo= (int) numeros.get(a);
+                }
+            }
+            
+            String[] partes = cadena.split(",");
+            
+
+            String grado = partes[0];
+            String apellidos = partes[1];
+            String nombres = partes[2];
+            String zonaAlumno = partes[3];
+            String jornada = partes[4];
+
+            System.out.println(cadena);
+            System.out.println(grupo+"");
+            System.out.println(documento+"");
+            System.out.println(nombreGrupo+"");
+            
+            if(!validarDoc(documento)){
+            pst = cn.prepareStatement("insert into estudiante (grupo,grado,documento,apellidos,nombres,zonaAlumno,nombreGrupo,jornada) values(?,?,?,?,?,?,?,?)");
+            pst.setInt(1, grupo);
+            pst.setString(2, grado);
+            pst.setInt(3, documento);
+            pst.setString(4, apellidos);
+            pst.setString(5, nombres);
+            pst.setString(6, zonaAlumno);
+            pst.setInt(7, nombreGrupo);
+            pst.setString(8, jornada);
+            
+            int res = pst.executeUpdate();
+            if (res > 0) {
+                Date fecha = fechaIncio();
+                try {
+
+                    instituto.insertarRegistro(documento, fecha, fecha);
+                } catch (ParseException e1) {
+
+                    e1.printStackTrace();
+                }
+                contador++;
+//                System.out.println("poblado exitoso");
+            }} else {
+                contadorNegativo++;
+//                System.out.println("poblado Fallido");
+            }
+            
+//            System.out.println(cadena);
+//            System.out.println();
+        }
+        JOptionPane.showMessageDialog(null,"Se han registrado"+" "+contador+" estudiantes");
+        JOptionPane.showMessageDialog(null,"No se pudieron registrar"+" "+contadorNegativo+" estudiantes");
+    }
+ 
+   public boolean validarDoc(int documento) {
+        try {
+            
+            pst = cn.prepareStatement("select documento from estudiante");
+            result = pst.executeQuery();
+            while (result.next()) {
+                int a = result.getInt("documento");
+                if (a == documento) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
+   
+     /**
+     * 
+     * @return 
+     */
+    public Date fechaIncio() {
+        String date1 = "1999-05-24";
+        Date fecha = java.sql.Date.valueOf(date1);
+        return fecha;
+    }
 }

@@ -415,7 +415,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                     int documento = Integer.parseInt(jTextFieldBuscarEstudianteDoc.getText());
                     cn = dataConnection.conexion();
                     pst = cn.prepareStatement(
-                            "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
+                            "select documento,nombres,apellidos,grado from estudiante WHERE documento=?");
                     pst.setInt(1, documento);
                     result = pst.executeQuery();
 
@@ -424,10 +424,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                         jTextFieldNombres.setText(result.getString("nombres"));
                         jTextFieldApellido.setText(result.getString("apellidos"));
                         jTextFieldGrado.setText(result.getString("grado"));
-                        String sexo = result.getString("sexo");
-                        String tipoPoblacion = result.getString("tipoPoblacion");
-                        String metodologia = result.getString("modeloPedagogico");
-                        jComboBoxSexo.setSelectedIndex(sexo(sexo));
+                        
                         jTextFieldDocumento.setEditable(true);
                         jTextFieldNombres.setEditable(true);
                         jTextFieldApellido.setEditable(true);
@@ -476,7 +473,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             boolean temp = buscarHuella(Integer.parseInt(jTextFieldDocumento.getText()));
             //2.si no tienen una huella se procede a tomar la huella y se guarda
             if (!temp) {
-                start();
+               start();
                 Iniciar();
                 JOptionPane.showMessageDialog(null, "Por favor, colocar el dedo indice 4 veces\n en el lector de huellas");
 
@@ -981,7 +978,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         if (nombre != null && apellidos != null) {
             cn = dataConnection.conexion();
             pst = cn.prepareStatement(
-                    "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE nombres=? && apellidos=?");
+                    "select documento,nombres,apellidos,grado from estudiante WHERE nombres=? && apellidos=?");
             pst.setString(1, nombre);
             pst.setString(2, apellidos);
             ResultSet res = pst.executeQuery();
@@ -991,9 +988,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 jTextFieldNombres.setText(res.getString("nombres"));
                 jTextFieldApellido.setText(res.getString("apellidos"));
                 jTextFieldGrado.setText(res.getString("grado"));
-                jComboBoxSexo.setSelectedItem(sexo(res.getString("sexo")));
-                jComboBoxTipoPoblacion.setSelectedItem(res.getString("tipoPoblacion"));
-                jComboBoxMetodologia.setSelectedItem(res.getString("modeloPedagogico"));
+               
 
                 limpiar();
             } else {

@@ -518,7 +518,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grado like(\"6%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"6%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
