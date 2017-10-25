@@ -23,13 +23,11 @@ import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -51,11 +49,8 @@ import logica.institutoMontenegro;
  */
 public class VentanaCrearEstudiante extends javax.swing.JFrame {
 
-    institutoMontenegro instituto = new institutoMontenegro();
+    institutoMontenegro instituto;
 
-    private final String[] genero = {"FEMENINO", "MASCULINO"};
-    private final String[] metodologias = {"TRADICIONAL", "FLEXIBLE"};
-    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION","INDIGENA","VEREDA","AFRO COLOMBIANO", "OTRA", "N/A"};
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
@@ -66,6 +61,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
      * Creates new form VentanaCrearEstudiante
      */
     public VentanaCrearEstudiante() {
+        instituto= new institutoMontenegro();
         initComponents();
        this.getContentPane().setBackground(Color.white);
     }
@@ -303,11 +299,17 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para crear un estudiante en el sistema y agregarlo a la base de datos
+     * @param evt 
+     */
     private void jButtonCrearEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearEstudianteActionPerformed
-        // TODO add your handling code here:
-        int eleccion = JOptionPane.showConfirmDialog(null, "Seguro desea guardar el estudiante", "CONFIRMAR", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        int eleccion = JOptionPane.showConfirmDialog(null, "Seguro desea guardar el estudiante", "CONFIRMAR", 
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (eleccion == JOptionPane.YES_OPTION) {
+            
             String nombres = jTextFieldNombres.getText();
             String apellidos = jTextFieldApellidos.getText();
             String doc = jTextFieldDocumento.getText();

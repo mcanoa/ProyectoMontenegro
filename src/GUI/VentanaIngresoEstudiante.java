@@ -27,7 +27,6 @@ import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -50,7 +49,7 @@ import logica.institutoMontenegro;
 public class VentanaIngresoEstudiante extends javax.swing.JFrame {
  //para poder hacer el ingreso
     private int doc;
-    private institutoMontenegro instituto = new institutoMontenegro();
+    private final institutoMontenegro instituto = new institutoMontenegro();
 
     Connection cn;
     PreparedStatement pst;

@@ -293,8 +293,12 @@ public class VentanaAdministrador extends javax.swing.JFrame {
      * @param evt 
      */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {                                         
+        try {     
+            
+            
             File archivo = new File("D:\\Documentos\\NetBeansProjects\\Leer_Probar_Excel\\gracie.xlsx");
+            
+            
             Workbook wb;
             List celdaDato = new ArrayList();
             
