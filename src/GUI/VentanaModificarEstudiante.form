@@ -202,29 +202,26 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jButtonGuardar" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jComboBoxTipoPoblacion" pref="249" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jComboBoxZonaAlumno" pref="250" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jTextFieldDocumento" max="32767" attributes="0"/>
                                   <Component id="jTextFieldNombres" max="32767" attributes="0"/>
                                   <Component id="jTextFieldApellido" max="32767" attributes="0"/>
-                                  <Component id="jTextFieldGrado" max="32767" attributes="0"/>
-                                  <Component id="jComboBoxSexo" max="32767" attributes="0"/>
-                                  <Component id="jComboBoxMetodologia" pref="250" max="32767" attributes="0"/>
+                                  <Component id="jComboBoxGrupo" max="32767" attributes="0"/>
+                                  <Component id="jComboBoxJornada" pref="250" max="32767" attributes="0"/>
+                                  <Component id="jComboBoxGrado" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -254,22 +251,22 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextFieldGrado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxGrado" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBoxSexo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBoxMetodologia" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxJornada" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBoxTipoPoblacion" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxZonaAlumno" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -304,17 +301,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Sexo:"/>
+            <Property name="text" type="java.lang.String" value="Grupo:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Metodolog&#xed;a:"/>
+            <Property name="text" type="java.lang.String" value="Jornada:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tipo de Poblaci&#xf3;n:"/>
+            <Property name="text" type="java.lang.String" value="Zona Alumno:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldDocumento">
@@ -341,25 +338,20 @@
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldApellidoKeyTyped"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextFieldGrado">
-          <Properties>
-            <Property name="editable" type="boolean" value="false"/>
-          </Properties>
-          <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldGradoKeyTyped"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBoxSexo">
+        <Component class="javax.swing.JComboBox" name="jComboBoxGrupo">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxGrupoActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(genero)"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBoxMetodologia">
+        <Component class="javax.swing.JComboBox" name="jComboBoxJornada">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
@@ -369,7 +361,7 @@
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(metodologias)"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBoxTipoPoblacion">
+        <Component class="javax.swing.JComboBox" name="jComboBoxZonaAlumno">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
@@ -393,6 +385,16 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonA&#xf1;adirHuellaActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="jComboBoxGrado">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxGradoActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -446,11 +448,6 @@
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabelImagenHuella">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f0" green="f0" red="f0" type="rgb"/>
-                </Property>
-              </Properties>
             </Component>
           </SubComponents>
         </Container>

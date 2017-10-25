@@ -90,15 +90,15 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jTextFieldDocumento = new javax.swing.JTextField();
         jTextFieldNombres = new javax.swing.JTextField();
         jTextFieldApellidos = new javax.swing.JTextField();
-        jTextFieldGrado = new javax.swing.JTextField();
-        jComboBoxMetodologia = new javax.swing.JComboBox<>(metodologias);
-        jComboBoxTipoPoblacion = new javax.swing.JComboBox<>(tipoPoblacion);
-        jComboBoxSexo = new javax.swing.JComboBox<>(genero);
+        jComboBoxJornada = new javax.swing.JComboBox<>(metodologias);
+        jComboBoxZonaAlumno = new javax.swing.JComboBox<>(tipoPoblacion);
+        jComboBoxGrupo = new javax.swing.JComboBox<>(genero);
         jButtonCrearEstudiante = new javax.swing.JButton();
         jPanelHuella = new javax.swing.JPanel();
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
         jButtonGuardarHuella = new javax.swing.JButton();
+        jComboBoxGrado = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Crear Estudiante");
@@ -124,13 +124,13 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jLabelGrado.setText("Grado:");
 
         jLabelSexo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabelSexo.setText("Sexo:");
+        jLabelSexo.setText("Grupo:");
 
         jLabelMetodologia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabelMetodologia.setText("Metodología:");
+        jLabelMetodologia.setText("Jornada:");
 
         jLabelTipoPoblacion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabelTipoPoblacion.setText("Tipo de Población:");
+        jLabelTipoPoblacion.setText("Zona Alumno:");
 
         jLabelTitulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelTitulo.setText("Crear Estudiante");
@@ -156,11 +156,9 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldGrado.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jComboBoxJornada.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        jComboBoxMetodologia.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        jComboBoxTipoPoblacion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jComboBoxZonaAlumno.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jButtonCrearEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonCrearEstudiante.setText("Guardar Estudiante");
@@ -172,8 +170,6 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
 
         jPanelHuella.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuella.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Huella Dactilar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-
-        jLabelImagenHuella.setBackground(new java.awt.Color(240, 240, 240));
 
         javax.swing.GroupLayout jPanelContenedorHuellaLayout = new javax.swing.GroupLayout(jPanelContenedorHuella);
         jPanelContenedorHuella.setLayout(jPanelContenedorHuellaLayout);
@@ -216,6 +212,12 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxGrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxGradoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -239,13 +241,13 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
                             .addComponent(jTextFieldDocumento)
                             .addComponent(jTextFieldNombres)
                             .addComponent(jTextFieldApellidos)
-                            .addComponent(jTextFieldGrado)
-                            .addComponent(jComboBoxMetodologia, 0, 197, Short.MAX_VALUE)
-                            .addComponent(jComboBoxTipoPoblacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBoxSexo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxJornada, 0, 197, Short.MAX_VALUE)
+                            .addComponent(jComboBoxZonaAlumno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxGrupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(19, 19, 19)
-                                .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxGrado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(63, 63, 63)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,19 +279,19 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelGrado)
-                            .addComponent(jTextFieldGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelSexo)
-                            .addComponent(jComboBoxSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelMetodologia)
-                            .addComponent(jComboBoxMetodologia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxJornada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelTipoPoblacion)
-                            .addComponent(jComboBoxTipoPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jComboBoxZonaAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCrearEstudiante)
@@ -309,10 +311,11 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
             String nombres = jTextFieldNombres.getText();
             String apellidos = jTextFieldApellidos.getText();
             String doc = jTextFieldDocumento.getText();
-            String grado = jTextFieldGrado.getText();
-            String sexo = sexoF((String) jComboBoxSexo.getSelectedItem());
-            String tipoPoblacionEstudiante = (String) jComboBoxTipoPoblacion.getSelectedItem();
-            String metodologia = (String) jComboBoxMetodologia.getSelectedItem();
+            String grado = (String) jComboBoxGrado.getSelectedItem();
+           /*Cambiar metodo sexo a grupo y la seleccion de sexto a once*/
+            String grupo = sexoF((String) jComboBoxGrupo.getSelectedItem());
+            String tipoPoblacionEstudiante = (String) jComboBoxZonaAlumno.getSelectedItem();
+            String metodologia = (String) jComboBoxJornada.getSelectedItem();
 
             int documento;
             if (validarDocumento(doc) && validarNombreCompleto(apellidos)) {
@@ -330,7 +333,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
                             pst.setString(2, nombres);
                             pst.setString(3, apellidos);
                             pst.setString(4, grado);
-                            pst.setString(5, sexo);
+                            pst.setString(5, grupo);
                             pst.setString(6, tipoPoblacionEstudiante);
                             pst.setString(7, metodologia);
 
@@ -391,7 +394,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         stop();
         jTextFieldApellidos.setEditable(true);
         jTextFieldDocumento.setEditable(true);
-        jTextFieldGrado.setEditable(true);
+        jComboBoxGrado.setEditable(true);
         jTextFieldNombres.setEditable(true);
         
 
@@ -416,6 +419,10 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldApellidosKeyTyped
 
+    private void jComboBoxGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxGradoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxGradoActionPerformed
+
     /**
      * 
      */
@@ -423,10 +430,10 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jTextFieldDocumento.setText("");
         jTextFieldNombres.setText("");
         jTextFieldApellidos.setText("");
-        jTextFieldGrado.setText("");
-        jComboBoxSexo.setSelectedIndex(0);
-        jComboBoxTipoPoblacion.setSelectedItem(0);
-        jComboBoxMetodologia.setSelectedItem(0);
+        jComboBoxGrado.setSelectedItem("");
+        jComboBoxGrupo.setSelectedIndex(0);
+        jComboBoxZonaAlumno.setSelectedItem(0);
+        jComboBoxJornada.setSelectedItem(0);
     }
 
     /**
@@ -446,10 +453,10 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
         jTextFieldApellidos.setEditable(false);
         jTextFieldNombres.setEditable(false);
         jTextFieldDocumento.setEditable(false);
-        jTextFieldGrado.setEditable(false);
-        jComboBoxMetodologia.setEditable(false);
-        jComboBoxSexo.setEditable(false);
-        jComboBoxTipoPoblacion.setEditable(false);
+        jComboBoxGrado.setEditable(false);
+        jComboBoxJornada.setEditable(false);
+        jComboBoxGrupo.setEditable(false);
+        jComboBoxZonaAlumno.setEditable(false);
     }
 
     /**
@@ -504,7 +511,7 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     * Borrar
      * @param sexo
      * @return 
      */
@@ -766,9 +773,10 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCrearEstudiante;
     private javax.swing.JButton jButtonGuardarHuella;
-    private javax.swing.JComboBox<String> jComboBoxMetodologia;
-    private javax.swing.JComboBox<String> jComboBoxSexo;
-    private javax.swing.JComboBox<String> jComboBoxTipoPoblacion;
+    private javax.swing.JComboBox jComboBoxGrado;
+    private javax.swing.JComboBox<String> jComboBoxGrupo;
+    private javax.swing.JComboBox<String> jComboBoxJornada;
+    private javax.swing.JComboBox<String> jComboBoxZonaAlumno;
     private javax.swing.JLabel jLabelApellidos;
     private javax.swing.JLabel jLabelDocumento;
     private javax.swing.JLabel jLabelGrado;
@@ -782,7 +790,6 @@ public class VentanaCrearEstudiante extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelHuella;
     private javax.swing.JTextField jTextFieldApellidos;
     private javax.swing.JTextField jTextFieldDocumento;
-    private javax.swing.JTextField jTextFieldGrado;
     private javax.swing.JTextField jTextFieldNombres;
     // End of variables declaration//GEN-END:variables
  public void noteclearCaracteres(KeyEvent evt) {

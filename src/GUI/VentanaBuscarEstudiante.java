@@ -51,7 +51,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jLabelDocumentoBuscar = new javax.swing.JLabel();
         jTextFieldDocumentoABuscar = new javax.swing.JTextField();
         jButtonBuscarEstudiante = new javax.swing.JButton();
-        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
+        jComboBoxTipoBusqueda = new javax.swing.JComboBox<String>();
         jTextFieldNombreBuscar = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jPanelDatosEstudiante = new javax.swing.JPanel();
@@ -65,10 +65,10 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jTextFieldNombres = new javax.swing.JTextField();
         jTextFieldApellidos = new javax.swing.JTextField();
         jTextFieldGrado = new javax.swing.JTextField();
-        jTextFieldSexo = new javax.swing.JTextField();
+        jTextFieldGrupo = new javax.swing.JTextField();
         jTextFieldDocumento = new javax.swing.JTextField();
-        jTextFieldTipoPoblacion = new javax.swing.JTextField();
-        jTextFieldMetodologia = new javax.swing.JTextField();
+        jTextFieldZonaAlumno = new javax.swing.JTextField();
+        jTextFieldJornada = new javax.swing.JTextField();
         jPanelHuellaEstudiante = new javax.swing.JPanel();
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
@@ -91,7 +91,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
 
         jLabelDocumentoBuscar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabelDocumentoBuscar.setText("Buscar Estudiante:");
-        jPanelBuscarEstudiante.add(jLabelDocumentoBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, -1));
+        jPanelBuscarEstudiante.add(jLabelDocumentoBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         jTextFieldDocumentoABuscar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextFieldDocumentoABuscar.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -99,7 +99,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 jTextFieldDocumentoABuscarKeyTyped(evt);
             }
         });
-        jPanelBuscarEstudiante.add(jTextFieldDocumentoABuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 490, 30));
+        jPanelBuscarEstudiante.add(jTextFieldDocumentoABuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 490, 30));
 
         jButtonBuscarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonBuscarEstudiante.setText("Buscar Estudiante");
@@ -108,26 +108,26 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 jButtonBuscarEstudianteActionPerformed(evt);
             }
         });
-        jPanelBuscarEstudiante.add(jButtonBuscarEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, -1, -1));
+        jPanelBuscarEstudiante.add(jButtonBuscarEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, -1, -1));
 
         jComboBoxTipoBusqueda.setBackground(new java.awt.Color(240, 240, 240));
-        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Documento" }));
         jComboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxTipoBusquedaActionPerformed(evt);
             }
         });
-        jPanelBuscarEstudiante.add(jComboBoxTipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, 114, -1));
+        jPanelBuscarEstudiante.add(jComboBoxTipoBusqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 130, 20));
 
         jTextFieldNombreBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextFieldNombreBuscarKeyTyped(evt);
             }
         });
-        jPanelBuscarEstudiante.add(jTextFieldNombreBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 490, 30));
+        jPanelBuscarEstudiante.add(jTextFieldNombreBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 490, 30));
 
-        jLabel9.setText("Buscar Estudiante Por:");
-        jPanelBuscarEstudiante.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 66, -1, 20));
+        jLabel9.setText("Buscar Por:");
+        jPanelBuscarEstudiante.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 60, 20));
 
         jPanelDatosEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDatosEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Estudiante"));
@@ -145,13 +145,13 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jLabel4.setText("Grado:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel5.setText("Sexo:");
+        jLabel5.setText("Grupo:");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel6.setText("Tipo Población:");
+        jLabel6.setText("Zona Alumno:");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel7.setText("Metodología:");
+        jLabel7.setText("Jornada:");
 
         jTextFieldNombres.setEditable(false);
         jTextFieldNombres.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -168,19 +168,29 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jTextFieldGrado.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldGrado.setDoubleBuffered(true);
 
-        jTextFieldSexo.setEditable(false);
-        jTextFieldSexo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextFieldSexo.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        jTextFieldSexo.setDoubleBuffered(true);
+        jTextFieldGrupo.setEditable(false);
+        jTextFieldGrupo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextFieldGrupo.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        jTextFieldGrupo.setDoubleBuffered(true);
 
         jTextFieldDocumento.setEditable(false);
         jTextFieldDocumento.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextFieldDocumento.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldDocumento.setDoubleBuffered(true);
 
-        jTextFieldTipoPoblacion.setEditable(false);
+        jTextFieldZonaAlumno.setEditable(false);
+        jTextFieldZonaAlumno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldZonaAlumnoActionPerformed(evt);
+            }
+        });
 
-        jTextFieldMetodologia.setEditable(false);
+        jTextFieldJornada.setEditable(false);
+        jTextFieldJornada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldJornadaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelDatosEstudianteLayout = new javax.swing.GroupLayout(jPanelDatosEstudiante);
         jPanelDatosEstudiante.setLayout(jPanelDatosEstudianteLayout);
@@ -196,8 +206,8 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(5, 5, 5)
                         .addGroup(jPanelDatosEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldTipoPoblacion, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
-                            .addComponent(jTextFieldMetodologia)))
+                            .addComponent(jTextFieldZonaAlumno, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                            .addComponent(jTextFieldJornada)))
                     .addGroup(jPanelDatosEstudianteLayout.createSequentialGroup()
                         .addGroup(jPanelDatosEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -210,7 +220,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                             .addComponent(jTextFieldDocumento)
                             .addComponent(jTextFieldApellidos)
                             .addComponent(jTextFieldGrado)
-                            .addComponent(jTextFieldSexo)
+                            .addComponent(jTextFieldGrupo)
                             .addComponent(jTextFieldNombres, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
@@ -235,15 +245,15 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDatosEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextFieldSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelDatosEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextFieldTipoPoblacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldZonaAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelDatosEstudianteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextFieldMetodologia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldJornada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29))
         );
 
@@ -309,8 +319,8 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelDatosEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -346,9 +356,9 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                         jTextFieldNombres.setText(res.getString("nombres"));
                         jTextFieldApellidos.setText(res.getString("apellidos"));
                         jTextFieldGrado.setText(res.getString("grado"));
-                        jTextFieldSexo.setText(res.getString("sexo"));
-                        jTextFieldTipoPoblacion.setText(res.getString("tipoPoblacion"));
-                        jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
+                        jTextFieldGrupo.setText(res.getString("sexo"));
+                        jTextFieldZonaAlumno.setText(res.getString("tipoPoblacion"));
+                        jTextFieldJornada.setText(res.getString("modeloPedagogico"));
 
                         limpiar();
                     } else {
@@ -425,6 +435,14 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldNombreBuscarKeyTyped
 
+    private void jTextFieldZonaAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldZonaAlumnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldZonaAlumnoActionPerformed
+
+    private void jTextFieldJornadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldJornadaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldJornadaActionPerformed
+
     /**
      *
      */
@@ -462,11 +480,11 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldDocumento;
     private javax.swing.JTextField jTextFieldDocumentoABuscar;
     private javax.swing.JTextField jTextFieldGrado;
-    private javax.swing.JTextField jTextFieldMetodologia;
+    private javax.swing.JTextField jTextFieldGrupo;
+    private javax.swing.JTextField jTextFieldJornada;
     private javax.swing.JTextField jTextFieldNombreBuscar;
     private javax.swing.JTextField jTextFieldNombres;
-    private javax.swing.JTextField jTextFieldSexo;
-    private javax.swing.JTextField jTextFieldTipoPoblacion;
+    private javax.swing.JTextField jTextFieldZonaAlumno;
     // End of variables declaration//GEN-END:variables
 
     public void noteclearCaracteres(KeyEvent evt) {
@@ -527,9 +545,9 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 jTextFieldNombres.setText(res.getString("nombres"));
                 jTextFieldApellidos.setText(res.getString("apellidos"));
                 jTextFieldGrado.setText(res.getString("grado"));
-                jTextFieldSexo.setText(res.getString("sexo"));
-                jTextFieldTipoPoblacion.setText(res.getString("tipoPoblacion"));
-                jTextFieldMetodologia.setText(res.getString("modeloPedagogico"));
+                jTextFieldGrupo.setText(res.getString("sexo"));
+                jTextFieldZonaAlumno.setText(res.getString("tipoPoblacion"));
+                jTextFieldJornada.setText(res.getString("modeloPedagogico"));
 
                 limpiar();
             } else {
