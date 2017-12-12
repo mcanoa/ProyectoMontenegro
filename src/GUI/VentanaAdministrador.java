@@ -42,6 +42,9 @@ public class VentanaAdministrador extends javax.swing.JFrame {
     Connection cn;
     ResultSet result;
      institutoMontenegro instituto = new institutoMontenegro();
+     
+     public static VentanaAdministrador ventana;
+     
     /**
      * Creates new form VentanaAdministrador
      */
@@ -52,6 +55,14 @@ public class VentanaAdministrador extends javax.swing.JFrame {
         VentanaAdministrador.cambiarestado(true);
     }
 
+    
+    public static VentanaAdministrador getInstanceSingleton(){
+        if(ventana==null){
+            ventana=new VentanaAdministrador();
+        }
+        return ventana;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

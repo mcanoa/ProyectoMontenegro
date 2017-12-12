@@ -47,9 +47,9 @@ import logica.dataConnection;
  */
 public class VentanaModificarEstudiante extends javax.swing.JFrame {
 
-    private final String[] genero = {"FEMENINO", "MASCULINO"};
-    private final String[] metodologias = {"TRADICIONAL", "FLEXIBLE"};
-    private final String[] tipoPoblacion = {"SISBEN", "DESPLAZADOS", "FAMILIAS EN ACCION", "INDIGENA", "VEREDA", "AFRO COLOMBIANO", "OTRA", "N/A"};
+    private final String[] grado = {"SEXTO", "SEPTIMO","OCTAVO","NOVENO","DECIMO","ONCE"};
+    private final String[] jornada = {"UNICA"};
+    private final String[] zonaAlumno = {"URBANA","RURAL"};
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
@@ -82,7 +82,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jButtonBuscarEstudiante = new javax.swing.JButton();
         jTextFieldBuscarEstudianteDoc = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jComboBoxTipoBusqueda = new javax.swing.JComboBox<String>();
+        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
         jTextFieldBuscarNombre = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -95,12 +95,12 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jTextFieldDocumento = new javax.swing.JTextField();
         jTextFieldNombres = new javax.swing.JTextField();
         jTextFieldApellido = new javax.swing.JTextField();
-        jComboBoxGrupo = new javax.swing.JComboBox(genero);
-        jComboBoxJornada = new javax.swing.JComboBox(metodologias);
-        jComboBoxZonaAlumno = new javax.swing.JComboBox(tipoPoblacion);
+        jComboBoxJornada = new javax.swing.JComboBox(jornada);
+        jComboBoxZonaAlumno = new javax.swing.JComboBox(zonaAlumno);
         jButtonGuardar = new javax.swing.JButton();
         jButtonAñadirHuella = new javax.swing.JButton();
-        jComboBoxGrado = new javax.swing.JComboBox();
+        jComboBoxGrado = new javax.swing.JComboBox(grado );
+        jTextFieldGrupo = new javax.swing.JTextField();
         jPanelHuella = new javax.swing.JPanel();
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
@@ -153,7 +153,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         jLabel11.setText("Buscar Estudiante Por:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 180, 30));
 
-        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
         jComboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxTipoBusquedaActionPerformed(evt);
@@ -209,12 +209,6 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             }
         });
 
-        jComboBoxGrupo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxGrupoActionPerformed(evt);
-            }
-        });
-
         jButtonGuardar.setText("Guardar Estudiante");
         jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,13 +252,12 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jComboBoxZonaAlumno, 0, 250, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextFieldDocumento)
-                                .addComponent(jTextFieldNombres)
-                                .addComponent(jTextFieldApellido)
-                                .addComponent(jComboBoxGrupo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBoxJornada, 0, 250, Short.MAX_VALUE)
-                                .addComponent(jComboBoxGrado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addComponent(jTextFieldDocumento)
+                            .addComponent(jTextFieldNombres)
+                            .addComponent(jTextFieldApellido)
+                            .addComponent(jComboBoxJornada, 0, 250, Short.MAX_VALUE)
+                            .addComponent(jComboBoxGrado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldGrupo))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -289,7 +282,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBoxGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -378,13 +371,15 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
         try {
 
             pst = cn.prepareStatement(
-                    "update estudiante set nombres=?,apellidos=?,grado=?,tipoPoblacion=?,modeloPedagogico=? where documento=?");
-            pst.setString(1, jTextFieldNombres.getText());
-            pst.setString(2, jTextFieldApellido.getText());
-            pst.setString(3, (String) jComboBoxGrado.getSelectedItem());
-            pst.setString(4, (String) jComboBoxZonaAlumno.getSelectedItem());
-            pst.setString(5, (String) jComboBoxJornada.getSelectedItem());
-            pst.setInt(6, Integer.parseInt(jTextFieldDocumento.getText()));
+                    "update estudiante set grupo=?,grado=?,apellidos=?,nombres=?,zonaAlumno=?, nombreGrupo=?,jornada=? where documento=?");
+            pst.setString(1, jTextFieldGrupo.getText());
+            pst.setString(2, (String) jComboBoxGrado.getSelectedItem());
+            pst.setString(3, jTextFieldApellido.getText());
+            pst.setString(4, jTextFieldNombres.getText());
+            pst.setString(5, (String)jComboBoxZonaAlumno.getSelectedItem());
+            pst.setString(6, jTextFieldGrupo.getText());
+            pst.setString(7, (String)jComboBoxJornada.getSelectedItem());
+            pst.setInt(8, Integer.parseInt(jTextFieldDocumento.getText()));
             int res = pst.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "El estudiante se ha modificado");
@@ -474,14 +469,18 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
             boolean temp = buscarHuella(Integer.parseInt(jTextFieldDocumento.getText()));
             //2.si no tienen una huella se procede a tomar la huella y se guarda
             if (!temp) {
-               start();
+                
+                start();
                 Iniciar();
+                               
                 JOptionPane.showMessageDialog(null, "Por favor, colocar el dedo indice 4 veces\n en el lector de huellas");
 
                 guardarHuella(jTextFieldDocumento.getText());
                 Reclutador.clear();
-                jLabelImagenHuella.setIcon(null);
+                setTemplate(null);
                 stop();
+                jLabelImagenHuella.setIcon(null);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "El estudiante ya tiene una huella registrada");
             }
@@ -563,10 +562,6 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
              jButtonBuscarEstudianteActionPerformed(null);
         }
     }//GEN-LAST:event_jTextFieldBuscarNombreKeyPressed
-
-    private void jComboBoxGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxGrupoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxGrupoActionPerformed
 
     private void jComboBoxGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxGradoActionPerformed
         // TODO add your handling code here:
@@ -709,22 +704,17 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                 Image image = CrearImagenHuella(sample);
                 DibujarHuella(image);
 
-                // btnVerificar.setEnabled(true);
-                // btnIdentificar.setEnabled(true);
             } catch (DPFPImageQualityException ex) {
                 System.err.println("Error: " + ex.getMessage());
             } finally {
-                // EstadoHuellas();
+              
                 // Comprueba si la plantilla se ha creado.
                 switch (Reclutador.getTemplateStatus()) {
                     case TEMPLATE_STATUS_READY: // informe de exito y detiene la
                         // captura de huellas
                         stop();
                         setTemplate(Reclutador.getTemplate());
-                        // EnviarTexto("La Plantilla de la Huella ha Sido Creada, ya
-                        // puede Verificarla o Identificarla");
-                        // btnIdentificar.setEnabled(false);
-                        // btnVerificar.setEnabled(false);
+                       
                         JOptionPane.showMessageDialog(null, "Ya puede guardar el estudiante");
                         jButtonGuardar.setEnabled(true);
                         jButtonGuardar.grabFocus();
@@ -734,7 +724,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
                         // captura de huellas
                         Reclutador.clear();
                         stop();
-                        // EstadoHuellas();
+                        
                         setTemplate(null);
                         JOptionPane.showMessageDialog(VentanaModificarEstudiante.this,
                                 "La Plantilla de la Huella no pudo ser creada, Repita el Proceso",
@@ -882,7 +872,6 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JButton jButtonBuscarEstudiante;
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JComboBox jComboBoxGrado;
-    private javax.swing.JComboBox jComboBoxGrupo;
     private javax.swing.JComboBox jComboBoxJornada;
     private javax.swing.JComboBox<String> jComboBoxTipoBusqueda;
     private javax.swing.JComboBox jComboBoxZonaAlumno;
@@ -906,6 +895,7 @@ public class VentanaModificarEstudiante extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldBuscarEstudianteDoc;
     private javax.swing.JTextField jTextFieldBuscarNombre;
     private javax.swing.JTextField jTextFieldDocumento;
+    private javax.swing.JTextField jTextFieldGrupo;
     private javax.swing.JTextField jTextFieldNombres;
     // End of variables declaration//GEN-END:variables
 

@@ -37,8 +37,10 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import logica.GestionHuella;
 import logica.dataConnection;
 import logica.institutoMontenegro;
 
@@ -46,22 +48,36 @@ import logica.institutoMontenegro;
  *
  * @author user
  */
-public class VentanaIngresoEstudiante extends javax.swing.JFrame {
+public class VentanaIngresoEstudiante extends JFrame {
  //para poder hacer el ingreso
     private int doc;
     private final institutoMontenegro instituto = new institutoMontenegro();
 
+    public static VentanaIngresoEstudiante ventana;
     Connection cn;
     PreparedStatement pst;
     ResultSet rst;
+    GestionHuella gestion;
+    
     /**
      * Creates new form LogInEstudiante
      */
     public VentanaIngresoEstudiante() {
-        Iniciar();
-        start();
+        gestion= new GestionHuella();
+        gestion.start();
+        gestion.iniciar(jLabelImagenHuella);
+        
+        //start();
+        //Iniciar();
         initComponents();
         this.getContentPane().setBackground(Color.white);
+    }
+    
+    public static VentanaIngresoEstudiante getInstaceSingleton(){
+        if(ventana==null){
+            ventana= new VentanaIngresoEstudiante();
+        }
+        return ventana;
     }
 
     /**
@@ -194,10 +210,12 @@ public class VentanaIngresoEstudiante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonInicioSesionDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInicioSesionDocActionPerformed
-        // TODO add your handling code here:
-        stop();
-        VentanaInciarSesionDocumento ventana= new VentanaInciarSesionDocumento();
-        ventana.setVisible(true);
+        gestion.stop();
+        
+        //stop();
+        VentanaInciarSesionDocumento.getInstaceSingleton().setVisible(true);
+        //VentanaInciarSesionDocumento ventana= new VentanaInciarSesionDocumento();
+        //ventana.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonInicioSesionDocActionPerformed
 
@@ -349,6 +367,7 @@ public class VentanaIngresoEstudiante extends javax.swing.JFrame {
                 }
                 //limpia el reclutador de las huellas
                 Reclutador.clear();
+                setTemplate(null);
                 //se para de utilizar el lector
                 stop();
                 //vuelve y se inicia para la proxima huella
@@ -422,6 +441,8 @@ public class VentanaIngresoEstudiante extends javax.swing.JFrame {
 
     /**
      * Identifica a una persona registrada por medio de su huella digital
+     * @return 
+     * @throws java.io.IOException
      */
     public boolean identificarHuella() throws IOException {
         try {

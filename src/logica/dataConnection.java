@@ -8,25 +8,30 @@ import java.sql.Statement;
 
 
 
-
+/**
+ * Clase que permite realizar la conexión a la Base de Datos
+ * @author Mateo
+ */
 public class dataConnection {
 
-	/**
-	 * metodo que
-	 * 
-	 * @param args
-	 */
-	private static String user = "root";
-	private static String password = "123456";
-	private static String dataBase = "instituto_montenegro";
-	static String url = "jdbc:mysql://localhost/" + dataBase;
+	
+	private static final String user = "root";
+	private static final String password = "123456";
+	private static final String dataBase = "instituto_montenegro";
+	private static final String url = "jdbc:mysql://localhost/" + dataBase;
 	private static Connection connection = null;
 
+        /**
+         * Constructor vacio de la clase dataConnection
+         */
 	public dataConnection() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
+        /**
+         * Método que realiza la conexión a la base de datos
+         * @return La conexión a la base de datos
+         */
 	public static Connection conexion() {
 
 		try {
@@ -40,6 +45,11 @@ public class dataConnection {
 		return connection;
 	}
 
+        /**
+         * 
+         * @param query
+         * @return 
+         */
 	public ResultSet getQuery(String query) {
 		Statement state = null;
 		ResultSet result = null;
@@ -53,6 +63,10 @@ public class dataConnection {
 		return result;
 	}
 
+        /**
+         * 
+         * @param query 
+         */
 	public void setQuery(String query) {
 		Statement state = null;
 		try {

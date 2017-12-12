@@ -6,7 +6,6 @@
 package GUI;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -27,6 +26,8 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
     PreparedStatement pst;
     ResultSet rst;
 
+    public static VentanaIngresoAdministrador ventana;
+    
     /**
      * Creates new form LogInAdministrador
      */
@@ -36,6 +37,13 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.white);
     }
 
+    public static VentanaIngresoAdministrador getInstanceSingleton(){
+        if(ventana==null){
+            ventana=new VentanaIngresoAdministrador();
+        }
+        return ventana;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -169,10 +177,9 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
                 rst = pst.executeQuery();
 
                 if (rst.next()) {
-                    JOptionPane.showMessageDialog(null, "Bienvenido " + rst.getString("nombres"));
-                    VentanaAdministrador p = new VentanaAdministrador();
-                    p.setVisible(true);
-                    this.dispose();
+                   JOptionPane.showMessageDialog(null, "Bienvenido " + rst.getString("nombres"));
+                   VentanaAdministrador.getInstanceSingleton().setVisible(true);
+                   this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Contraseña erronea");
                     jPasswordAdministrador.setText("");
@@ -185,9 +192,8 @@ public class VentanaIngresoAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonIniciarSesionActionPerformed
 
     private void jButtonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasActionPerformed
-        // TODO add your handling code here:
-        VentanaPrincipal ventana = new VentanaPrincipal();
-        ventana.setVisible(true);
+        
+        VentanaPrincipal.getInstaceSingleton().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonAtrasActionPerformed
 

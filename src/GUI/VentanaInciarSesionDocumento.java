@@ -27,19 +27,31 @@ import logica.institutoMontenegro;
 public class VentanaInciarSesionDocumento extends javax.swing.JFrame {
 
     int doc;
-    institutoMontenegro instituto = new institutoMontenegro();
+    institutoMontenegro instituto;
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
     Connection cn;
     ResultSet result;
+    public static VentanaInciarSesionDocumento ventana;
 
     /**
      * Creates new form InciarSesionDocumenot
      */
     public VentanaInciarSesionDocumento() {
         initComponents();
+        instituto=new institutoMontenegro();
     }
 
+    /**
+     * 
+     * @return 
+     */
+      public static VentanaInciarSesionDocumento getInstaceSingleton(){
+        if(ventana==null){
+            ventana= new VentanaInciarSesionDocumento();
+        }
+        return ventana;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

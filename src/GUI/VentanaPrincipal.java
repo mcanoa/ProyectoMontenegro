@@ -16,6 +16,8 @@ import java.awt.event.KeyEvent;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    
+    public static VentanaPrincipal ventana;
     /**
      * Creates new form Principal
      */
@@ -24,6 +26,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
          this.getContentPane().setBackground(Color.white);
     }
 
+    public static VentanaPrincipal getInstaceSingleton(){
+        if(ventana==null){
+            ventana= new VentanaPrincipal(); 
+        }
+        return ventana;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -136,16 +145,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdministradorActionPerformed
-        // TODO add your handling code here:
-        VentanaIngresoAdministrador ventanaAdmin= new VentanaIngresoAdministrador();
-        ventanaAdmin.setVisible(true);
+        VentanaIngresoAdministrador.getInstanceSingleton().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonAdministradorActionPerformed
 
     private void jButtonEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEstudianteActionPerformed
-        // TODO add your handling code here:
-        VentanaIngresoEstudiante ventanaLogInEstudiante= new VentanaIngresoEstudiante();
-        ventanaLogInEstudiante.setVisible(true);
+        VentanaIngresoEstudiante.getInstaceSingleton().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonEstudianteActionPerformed
 
@@ -207,7 +212,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VentanaPrincipal().setVisible(true);
+                VentanaPrincipal.getInstaceSingleton().setVisible(true);
+                
             }
         });
     }

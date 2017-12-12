@@ -16,7 +16,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * 
+ * @author Mateo
+ */
 public class institutoMontenegro {
 
 	private List<Estudiante> estudiantes;
@@ -28,6 +31,13 @@ public class institutoMontenegro {
 	PreparedStatement pst;
 	ResultSet rst;
 
+        /**
+         * 
+         * @param estudiantes
+         * @param administrador
+         * @param dataconnection
+         * @param fecha 
+         */
 	public institutoMontenegro(List<Estudiante> estudiantes, Administrador administrador, dataConnection dataconnection,
 			Date fecha) {
 		super();
@@ -37,34 +47,67 @@ public class institutoMontenegro {
 		this.fecha = fecha;
 	}
 
+        /**
+         * 
+         */
 	public institutoMontenegro() {
 		super();
 	}
 
+        /**
+         * 
+         * @return 
+         */
 	public List<Estudiante> getEstudiantes() {
 		return estudiantes;
 	}
 
+        /**
+         * 
+         * @param estudiantes 
+         */
 	public void setEstudiantes(List<Estudiante> estudiantes) {
 		this.estudiantes = estudiantes;
 	}
 
+        /**
+         * 
+         * @return 
+         */
 	public Administrador getAdministrador() {
 		return administrador;
 	}
 
+        /**
+         * 
+         * @param administrador 
+         */
 	public void setAdministrador(Administrador administrador) {
 		this.administrador = administrador;
 	}
 
+        
+        /**
+         * 
+         * @return 
+         */
 	public dataConnection getDataconnection() {
 		return dataconnection;
 	}
 
+        /**
+         * 
+         * @param dataconnection 
+         */
 	public void setDataconnection(dataConnection dataconnection) {
 		this.dataconnection = dataconnection;
 	}
 
+        /**
+         * 
+         * @return
+         * @throws ParseException 
+         */
 	public java.sql.Date fechaHoy() throws ParseException {
 
 		Calendar cal = Calendar.getInstance();
@@ -79,6 +122,14 @@ public class institutoMontenegro {
 
 	}
 
+        /**
+         * 
+         * @param documento
+         * @param fecha
+         * @param ultimoIngreso
+         * @throws SQLException
+         * @throws ParseException 
+         */
 	public void insertarRegistro(int documento, Date fecha, Date ultimoIngreso) throws SQLException, ParseException {
 
 		cn = dataConnection.conexion();
@@ -100,6 +151,14 @@ public class institutoMontenegro {
 		cn.close();
 
 	}
+        
+        /**
+         * 
+         * @param documento
+         * @param fecha
+         * @throws SQLException
+         * @throws ParseException 
+         */
         public void insertarRegistro2(int documento, Date fecha) throws SQLException, ParseException {
 
 		cn = dataConnection.conexion();
@@ -122,6 +181,12 @@ public class institutoMontenegro {
 
 	}
 
+        /**
+         * 
+         * @param fechaHoy
+         * @param ultimoIngresoFecha
+         * @return 
+         */
 	public boolean validarFechas(java.sql.Date fechaHoy, java.sql.Date ultimoIngresoFecha) {
 
 		if (ultimoIngresoFecha.compareTo(fechaHoy) == 0) {
@@ -131,6 +196,11 @@ public class institutoMontenegro {
 			return false;
 	}
 
+        /**
+         * 
+         * @param documento
+         * @return 
+         */
 	public Date ultimaFechaIngreso(int documento) {
 		Date ultimoIngreso = null;
 		cn = dataConnection.conexion();
@@ -151,6 +221,11 @@ public class institutoMontenegro {
 		return ultimoIngreso;
 	}
 
+        /**
+         * 
+         * @param fechaHoy
+         * @param documento 
+         */
 	public void actualizarUltimoIngreso(Date fechaHoy, int documento) {
 
 		cn = dataconnection.conexion();
@@ -169,6 +244,10 @@ public class institutoMontenegro {
 		}
 	}
         
+        /**
+         * 
+         * @return 
+         */
         public Image imagenPdf(){
 
             try {
