@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import logica.dataConnection;
@@ -45,7 +46,7 @@ import logica.dataConnection;
  *
  * @author Aleja
  */
-public class VentanaModificarEstudiante extends javax.swing.JFrame {
+public class VentanaModificarEstudiante extends JFrame {
 
     private final String[] grado = {"SEXTO", "SEPTIMO","OCTAVO","NOVENO","DECIMO","ONCE"};
     private final String[] jornada = {"UNICA"};

@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import logica.dataConnection;
 
@@ -22,7 +23,7 @@ import logica.dataConnection;
  *
  * @author user
  */
-public class VentanaBuscarEstudiante extends javax.swing.JFrame {
+public class VentanaBuscarEstudiante extends JFrame {
 
     PreparedStatement pst;
     Connection cn;
@@ -51,9 +52,9 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jLabelDocumentoBuscar = new javax.swing.JLabel();
         jTextFieldDocumentoABuscar = new javax.swing.JTextField();
         jButtonBuscarEstudiante = new javax.swing.JButton();
-        jComboBoxTipoBusqueda = new javax.swing.JComboBox<String>();
+        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
         jTextFieldNombreBuscar = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
+        jLabelBuscarPor = new javax.swing.JLabel();
         jPanelDatosEstudiante = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -72,7 +73,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jPanelHuellaEstudiante = new javax.swing.JPanel();
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabelTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar Estudiante");
@@ -111,7 +112,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         jPanelBuscarEstudiante.add(jButtonBuscarEstudiante, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, -1, -1));
 
         jComboBoxTipoBusqueda.setBackground(new java.awt.Color(240, 240, 240));
-        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nombre", "Documento" }));
+        jComboBoxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Documento" }));
         jComboBoxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxTipoBusquedaActionPerformed(evt);
@@ -126,8 +127,8 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
         });
         jPanelBuscarEstudiante.add(jTextFieldNombreBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 490, 30));
 
-        jLabel9.setText("Buscar Por:");
-        jPanelBuscarEstudiante.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 60, 20));
+        jLabelBuscarPor.setText("Buscar Por:");
+        jPanelBuscarEstudiante.add(jLabelBuscarPor, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 90, 20));
 
         jPanelDatosEstudiante.setBackground(new java.awt.Color(255, 255, 255));
         jPanelDatosEstudiante.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Estudiante"));
@@ -292,8 +293,8 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             .addComponent(jPanelContenedorHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel8.setText("Buscar un estudiante");
+        jLabelTitulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelTitulo.setText("Buscar un estudiante");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -303,7 +304,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(207, 207, 207)
-                        .addComponent(jLabel8))
+                        .addComponent(jLabelTitulo))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,7 +319,7 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel8)
+                .addComponent(jLabelTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jPanelBuscarEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -468,10 +469,10 @@ public class VentanaBuscarEstudiante extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelBuscarPor;
     private javax.swing.JLabel jLabelDocumentoBuscar;
     private javax.swing.JLabel jLabelImagenHuella;
+    private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JPanel jPanelBuscarEstudiante;
     private javax.swing.JPanel jPanelContenedorHuella;
     private javax.swing.JPanel jPanelDatosEstudiante;

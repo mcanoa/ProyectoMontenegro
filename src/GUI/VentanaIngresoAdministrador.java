@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import logica.dataConnection;
 
@@ -20,7 +21,7 @@ import logica.dataConnection;
  *
  * @author user
  */
-public class VentanaIngresoAdministrador extends javax.swing.JFrame {
+public class VentanaIngresoAdministrador extends JFrame {
 
     Connection cn;
     PreparedStatement pst;

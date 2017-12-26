@@ -40,7 +40,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import logica.GestionHuella;
 import logica.dataConnection;
 import logica.institutoMontenegro;
 
@@ -49,33 +48,36 @@ import logica.institutoMontenegro;
  * @author user
  */
 public class VentanaIngresoEstudiante extends JFrame {
- //para poder hacer el ingreso
+    //para poder hacer el ingreso
+
     private int doc;
-    private final institutoMontenegro instituto = new institutoMontenegro();
+    private final institutoMontenegro instituto;
 
     public static VentanaIngresoEstudiante ventana;
     Connection cn;
     PreparedStatement pst;
     ResultSet rst;
-    GestionHuella gestion;
-    
+
     /**
      * Creates new form LogInEstudiante
      */
     public VentanaIngresoEstudiante() {
-        gestion= new GestionHuella();
-        gestion.start();
-        gestion.iniciar(jLabelImagenHuella);
-        
-        //start();
-        //Iniciar();
+        instituto = new institutoMontenegro();
+        start();
+        Iniciar();
         initComponents();
         this.getContentPane().setBackground(Color.white);
+
     }
-    
-    public static VentanaIngresoEstudiante getInstaceSingleton(){
-        if(ventana==null){
-            ventana= new VentanaIngresoEstudiante();
+
+    /**
+     * Patron Singleton
+     *
+     * @return
+     */
+    public static VentanaIngresoEstudiante getInstaceSingleton() {
+        if (ventana == null) {
+            ventana = new VentanaIngresoEstudiante();
         }
         return ventana;
     }
@@ -89,9 +91,9 @@ public class VentanaIngresoEstudiante extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelTitulo = new javax.swing.JLabel();
+        jLabelContenido = new javax.swing.JLabel();
+        jLabelContenido2 = new javax.swing.JLabel();
         jPanelHuella = new javax.swing.JPanel();
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
@@ -104,16 +106,16 @@ public class VentanaIngresoEstudiante extends JFrame {
         setName("VentanaInicioSesionEstudiante"); // NOI18N
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Registrar Ingreso del Estudiante");
+        jLabelTitulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelTitulo.setText("Registrar Ingreso del Estudiante");
 
-        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setText("<html>Si desea registrar el ingreso con la huella dactilar, favor colocar <br> el dedo índice en el lector de huellas.</html>");
+        jLabelContenido.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelContenido.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelContenido.setText("<html>Si desea registrar el ingreso con la huella dactilar, favor colocar <br> el dedo índice en el lector de huellas.</html>");
 
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("<html>Si desea registrar el ingreso con el documento de identidad del estudiante hacer clic en el botón Registrar Ingreso por Documento.</html>");
+        jLabelContenido2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelContenido2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelContenido2.setText("<html>Si desea registrar el ingreso con el documento de identidad del estudiante hacer clic en el botón Registrar Ingreso por Documento.</html>");
 
         jPanelHuella.setBackground(new java.awt.Color(255, 255, 255));
         jPanelHuella.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Huella Dactilar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
@@ -181,21 +183,22 @@ public class VentanaIngresoEstudiante extends JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel1)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jLabelContenido2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(jLabelTitulo)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabel1)
+                .addComponent(jLabelTitulo)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelContenido2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -209,34 +212,39 @@ public class VentanaIngresoEstudiante extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *
+     * @param evt
+     */
     private void jButtonInicioSesionDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInicioSesionDocActionPerformed
-        gestion.stop();
-        
-        //stop();
+        stop();
         VentanaInciarSesionDocumento.getInstaceSingleton().setVisible(true);
-        //VentanaInciarSesionDocumento ventana= new VentanaInciarSesionDocumento();
-        //ventana.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonInicioSesionDocActionPerformed
 
+    /**
+     *
+     * @param evt
+     */
     private void jButtonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasActionPerformed
-        // TODO add your handling code here:
         stop();
-        VentanaPrincipal ventana= new VentanaPrincipal();
-        ventana.setVisible(true);
+        VentanaPrincipal.getInstaceSingleton().setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_jButtonAtrasActionPerformed
 
-     @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ClassLoader.getSystemResource("imagenes/Escudo.png"));
 
-
         return retValue;
     }
-     // Varible que permite iniciar el dispositivo de lector de huella conectado
+    // Varible que permite iniciar el dispositivo de lector de huella conectado
     // con sus distintos metodos.
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
 
@@ -336,6 +344,7 @@ public class VentanaIngresoEstudiante extends JFrame {
     public DPFPFeatureSet featuresverificacion;
 
     public void ProcesarCaptura(DPFPSample sample) throws IOException, ParseException {
+        
         // Procesar la muestra de la huella y crear un conjunto de
         // caracter�sticas con el proposito de inscripcion.
         featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
@@ -359,11 +368,11 @@ public class VentanaIngresoEstudiante extends JFrame {
                 DibujarHuella(image);
 
                 //identifica despues de capturar la huella
-                boolean respuesta=identificarHuella();
-                if(respuesta){
+                boolean respuesta = identificarHuella();
+                if (respuesta) {
                     registrarIngreso();
-                }else{
-                    JOptionPane.showMessageDialog(null, "No se puede registrar el ingreso del estudiante");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se puede registrar el ingreso del estudiante", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
                 //limpia el reclutador de las huellas
                 Reclutador.clear();
@@ -441,12 +450,13 @@ public class VentanaIngresoEstudiante extends JFrame {
 
     /**
      * Identifica a una persona registrada por medio de su huella digital
-     * @return 
+     *
+     * @return
      * @throws java.io.IOException
      */
     public boolean identificarHuella() throws IOException {
         try {
-            //Establece los valores para la sentencia SQL
+
             cn = dataConnection.conexion();
 
             //Obtiene todas las huellas de la bd
@@ -458,8 +468,8 @@ public class VentanaIngresoEstudiante extends JFrame {
                 //Lee la plantilla de la base de datos
                 byte templateBuffer[] = rs.getBytes("huella");
                 String nombre = rs.getString("nombres");
-                int documento= rs.getInt("documento");
-                
+                int documento = rs.getInt("documento");
+
                 doc = documento;
                 //Crea una nueva plantilla a partir de la guardada en la base de datos
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
@@ -484,7 +494,8 @@ public class VentanaIngresoEstudiante extends JFrame {
             setTemplate(null);
         } catch (SQLException e) {
             //Si ocurre un error lo indica en la consola
-            System.err.println("Error al identificar huella dactilar." + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al identificar huella dactilar.\n"
+                    + "intente de Nuevo", "ERROR", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 cn.close();
@@ -497,7 +508,8 @@ public class VentanaIngresoEstudiante extends JFrame {
     }
 
     /**
-     * Metodo que permite registrar el ingreso de los estudiantes que poseen una huella
+     * Metodo que permite registrar el ingreso de los estudiantes que poseen una
+     * huella
      */
     public void registrarIngreso() throws ParseException {
         Date fecha; // TODO Auto-generated catch block
@@ -509,23 +521,21 @@ public class VentanaIngresoEstudiante extends JFrame {
         try {
             pst = cn.prepareStatement("select * from estudiante where documento=?");
             pst.setInt(1, doc);
-            
+
             rst = pst.executeQuery();
             if (rst.next()) {
                 if (instituto.validarFechas(fecha, ultimoIngresoFecha) == false) {
                     instituto.insertarRegistro(doc, fecha, ultimoIngresoFecha);
                     JOptionPane.showMessageDialog(null, "Bienvenido estudiante");
                 } else {
-       
-               JOptionPane.showMessageDialog(null, "EL ESTUDIANTE YA INGRESO");
-   
+
+                    JOptionPane.showMessageDialog(null, "EL ESTUDIANTE YA INGRESO");
+
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "El estudiante no se encuentra en la base de datos");
             }
         } catch (SQLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
         } catch (ParseException ex) {
             Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -533,10 +543,10 @@ public class VentanaIngresoEstudiante extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAtras;
     private javax.swing.JButton jButtonInicioSesionDoc;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelContenido;
+    private javax.swing.JLabel jLabelContenido2;
     private javax.swing.JLabel jLabelImagenHuella;
+    private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JPanel jPanelContenedorHuella;
     private javax.swing.JPanel jPanelHuella;
     // End of variables declaration//GEN-END:variables

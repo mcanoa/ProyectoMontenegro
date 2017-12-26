@@ -31,14 +31,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JFrame;
 import logica.dataConnection;
 import logica.institutoMontenegro;
+
 
 /**
  *
  * @author user
  */
-public class VentanaGenerarInforme extends javax.swing.JFrame {
+public class VentanaGenerarInforme extends JFrame {
 
     BaseColor grisClaro = new BaseColor(230, 230, 230);
     BaseColor azulClaro = new BaseColor(124, 195, 255);

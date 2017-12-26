@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import logica.dataConnection;
 
@@ -22,7 +23,7 @@ import logica.dataConnection;
  *
  * @author user
  */
-public class VentanaModificarDatosAdmin extends javax.swing.JFrame {
+public class VentanaModificarDatosAdmin extends JFrame {
 
     /**
      * Creates new form VentanaModificarDatosAdmin

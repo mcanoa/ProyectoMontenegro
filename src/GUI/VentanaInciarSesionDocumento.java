@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import logica.dataConnection;
 import logica.institutoMontenegro;
@@ -24,7 +25,7 @@ import logica.institutoMontenegro;
  *
  * @author user
  */
-public class VentanaInciarSesionDocumento extends javax.swing.JFrame {
+public class VentanaInciarSesionDocumento extends JFrame {
 
     int doc;
     institutoMontenegro instituto;

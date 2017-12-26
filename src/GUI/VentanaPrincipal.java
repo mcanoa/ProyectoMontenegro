@@ -9,12 +9,13 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
 
 /**
  *
  * @author user
  */
-public class VentanaPrincipal extends javax.swing.JFrame {
+public class VentanaPrincipal extends JFrame {
 
     
     public static VentanaPrincipal ventana;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import java.awt.Color;
@@ -22,7 +17,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JToolBar;
+import javax.swing.JToolBar.Separator;
 import logica.dataConnection;
 import logica.institutoMontenegro;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -36,7 +35,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  *
  * @author user
  */
-public class VentanaAdministrador extends javax.swing.JFrame {
+public class VentanaAdministrador extends JFrame {
 
      PreparedStatement pst;
     Connection cn;
@@ -72,22 +71,22 @@ public class VentanaAdministrador extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBarOpcionsAdmin = new javax.swing.JToolBar();
-        jButtonCrearEstudiante = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
+        jToolBarOpcionsAdmin = new JToolBar();
+        jButtonCrearEstudiante = new JButton();
+        jSeparador1 = new Separator();
         jButtonBuscarEstudiante = new javax.swing.JButton();
-        jSeparator3 = new javax.swing.JToolBar.Separator();
-        jButtonModificarEstudiante = new javax.swing.JButton();
-        jSeparator4 = new javax.swing.JToolBar.Separator();
-        jButtonEliminarEstudiante = new javax.swing.JButton();
-        jSeparator5 = new javax.swing.JToolBar.Separator();
-        jButtonModificarDatos = new javax.swing.JButton();
-        jSeparator6 = new javax.swing.JToolBar.Separator();
+        jSeparador2 = new Separator();
+        jButtonModificarEstudiante = new JButton();
+        jSeparador3 = new Separator();
+        jButtonEliminarEstudiante = new JButton();
+        jSeparador4 = new Separator();
+        jButtonModificarDatos = new JButton();
+        jSeparador5 = new Separator();
         jButton1 = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
+        jSeparador6 = new Separator();
         jButton2 = new javax.swing.JButton();
-        jSeparator7 = new javax.swing.JToolBar.Separator();
-        jButtonSalir = new javax.swing.JButton();
+        jSeparador7 = new Separator();
+        jButtonSalir = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrador");
@@ -109,7 +108,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButtonCrearEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparator2);
+        jToolBarOpcionsAdmin.add(jSeparador1);
 
         jButtonBuscarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonBuscarEstudiante.setText("Buscar Estudiante");
@@ -122,7 +121,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButtonBuscarEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparator3);
+        jToolBarOpcionsAdmin.add(jSeparador2);
 
         jButtonModificarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonModificarEstudiante.setText("Modificar Estudiante");
@@ -135,7 +134,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButtonModificarEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparator4);
+        jToolBarOpcionsAdmin.add(jSeparador3);
 
         jButtonEliminarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonEliminarEstudiante.setText("Eliminar Estudiante");
@@ -148,7 +147,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButtonEliminarEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparator5);
+        jToolBarOpcionsAdmin.add(jSeparador4);
 
         jButtonModificarDatos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonModificarDatos.setText("Modificar Datos");
@@ -161,7 +160,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButtonModificarDatos);
-        jToolBarOpcionsAdmin.add(jSeparator6);
+        jToolBarOpcionsAdmin.add(jSeparador5);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton1.setText("Generar Informe");
@@ -174,7 +173,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButton1);
-        jToolBarOpcionsAdmin.add(jSeparator1);
+        jToolBarOpcionsAdmin.add(jSeparador6);
 
         jButton2.setText("Cargar Archivo");
         jButton2.setFocusable(false);
@@ -186,7 +185,7 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             }
         });
         jToolBarOpcionsAdmin.add(jButton2);
-        jToolBarOpcionsAdmin.add(jSeparator7);
+        jToolBarOpcionsAdmin.add(jSeparador7);
 
         jButtonSalir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonSalir.setText("Salir");
@@ -215,8 +214,8 @@ public class VentanaAdministrador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
-        // TODO add your handling code here:
 
+        
         if (v == true) {
             VentanaBuscarEstudiante ventana = new VentanaBuscarEstudiante();
             ventana.setVisible(true);
@@ -375,13 +374,13 @@ public class VentanaAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton jButtonModificarDatos;
     private javax.swing.JButton jButtonModificarEstudiante;
     private javax.swing.JButton jButtonSalir;
-    private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JToolBar.Separator jSeparator3;
-    private javax.swing.JToolBar.Separator jSeparator4;
-    private javax.swing.JToolBar.Separator jSeparator5;
-    private javax.swing.JToolBar.Separator jSeparator6;
-    private javax.swing.JToolBar.Separator jSeparator7;
+    private javax.swing.JToolBar.Separator jSeparador1;
+    private javax.swing.JToolBar.Separator jSeparador2;
+    private javax.swing.JToolBar.Separator jSeparador3;
+    private javax.swing.JToolBar.Separator jSeparador4;
+    private javax.swing.JToolBar.Separator jSeparador5;
+    private javax.swing.JToolBar.Separator jSeparador6;
+    private javax.swing.JToolBar.Separator jSeparador7;
     private javax.swing.JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
 

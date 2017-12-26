@@ -37,6 +37,7 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -47,7 +48,7 @@ import logica.institutoMontenegro;
  *
  * @author user
  */
-public class VentanaCrearEstudiante extends javax.swing.JFrame {
+public class VentanaCrearEstudiante extends JFrame {
 
     institutoMontenegro instituto;
     String[] grado = {"SEXTO","SEPTIMO","OCTAVO","NOVENO","DECIMO","ONCE"};

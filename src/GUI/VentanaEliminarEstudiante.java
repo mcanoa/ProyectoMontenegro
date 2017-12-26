@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import logica.dataConnection;
 
@@ -20,7 +21,7 @@ import logica.dataConnection;
  *
  * @author user
  */
-public class VentanaEliminarEstudiante extends javax.swing.JFrame {
+public class VentanaEliminarEstudiante extends JFrame {
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
