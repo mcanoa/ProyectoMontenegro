@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import com.digitalpersona.onetouch.DPFPDataPurpose;
@@ -37,7 +32,10 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import logica.dataConnection;
@@ -45,7 +43,7 @@ import logica.institutoMontenegro;
 
 /**
  *
- * @author user
+ * @author Mateo Cano Alfonso
  */
 public class VentanaIngresoEstudiante extends JFrame {
     //para poder hacer el ingreso
@@ -91,14 +89,15 @@ public class VentanaIngresoEstudiante extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabelTitulo = new javax.swing.JLabel();
-        jLabelContenido = new javax.swing.JLabel();
-        jLabelContenido2 = new javax.swing.JLabel();
-        jPanelHuella = new javax.swing.JPanel();
-        jPanelContenedorHuella = new javax.swing.JPanel();
-        jLabelImagenHuella = new javax.swing.JLabel();
-        jButtonInicioSesionDoc = new javax.swing.JButton();
-        jButtonAtras = new javax.swing.JButton();
+        jLabelTitulo = new JLabel();
+        jLabelContenido = new JLabel();
+        jLabelContenido2 = new JLabel();
+        jPanelHuella = new JPanel();
+        jPanelContenedorHuella = new JPanel();
+        jLabelImagenHuella = new JLabel();
+        jButtonInicioSesionDoc = new JButton();
+        jButtonAtras = new JButton();
+        jLabelConexionHuellero = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrar Ingreso del Estudiante");
@@ -166,6 +165,8 @@ public class VentanaIngresoEstudiante extends JFrame {
             }
         });
 
+        jLabelConexionHuellero.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,7 +188,8 @@ public class VentanaIngresoEstudiante extends JFrame {
                             .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(58, 58, 58)
-                                .addComponent(jLabelTitulo)))))
+                                .addComponent(jLabelTitulo))
+                            .addComponent(jLabelConexionHuellero, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -199,6 +201,8 @@ public class VentanaIngresoEstudiante extends JFrame {
                 .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelContenido2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabelConexionHuellero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -269,41 +273,44 @@ public class VentanaIngresoEstudiante extends JFrame {
      * Metodo que sirve para iniciar el lector de huellas
      */
     protected void Iniciar() {
+        DPFPDataAdapter h= new DPFPDataAdapter();
+        
         Lector.addDataListener(new DPFPDataAdapter() {
             @Override
             public void dataAcquired(final DPFPDataEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        try {
-                            // EnviarTexto("La Huella Digital ha sido Capturada");
-                            ProcesarCaptura(e.getSample());
-                        } catch (IOException ex) {
-                            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (ParseException ex) {
-                            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                });
+                try {
+                    ProcesarCaptura(e.getSample());
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    public void run() {
+//                        try {
+//                            // EnviarTexto("La Huella Digital ha sido Capturada");
+//                            ProcesarCaptura(e.getSample());
+//                        } catch (IOException ex) {
+//                            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+//                        } catch (ParseException ex) {
+//                            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                    }
+//                });
+                } catch (IOException ex) {
+                    Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
         Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
             @Override
             public void readerConnected(final DPFPReaderStatusEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        JOptionPane.showMessageDialog(null, "El Sensor de Huella Digital esta Activado o Conectado");
-                    }
-                });
+                jLabelConexionHuellero.setForeground(Color.GREEN);
+                jLabelConexionHuellero.setText("El Sensor de Huella Digital esta Conectado");
             }
 
             @Override
             public void readerDisconnected(final DPFPReaderStatusEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        JOptionPane.showMessageDialog(null, "El Sensor de Huella Digital esta Desactivado o no Conectado");
-                    }
-                });
+                jLabelConexionHuellero.setForeground(Color.RED);
+                jLabelConexionHuellero.setText("El Sensor de Huella Digital No esta Conectado");
             }
         });
 
@@ -344,7 +351,7 @@ public class VentanaIngresoEstudiante extends JFrame {
     public DPFPFeatureSet featuresverificacion;
 
     public void ProcesarCaptura(DPFPSample sample) throws IOException, ParseException {
-        
+
         // Procesar la muestra de la huella y crear un conjunto de
         // caracter�sticas con el proposito de inscripcion.
         featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
@@ -400,8 +407,8 @@ public class VentanaIngresoEstudiante extends JFrame {
                         stop();
                         setTemplate(null);
                         JOptionPane.showMessageDialog(VentanaIngresoEstudiante.this,
-                                "La Plantilla de la Huella no pudo ser creada, Repita el Proceso",
-                                "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+                                "La Huella no pudo ser leida, Repita el Proceso",
+                                "Lectura de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
                         start();
                         break;
                 }
@@ -486,11 +493,11 @@ public class VentanaIngresoEstudiante extends JFrame {
                 if (result.isVerified()) {
                     //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
                     JOptionPane.showMessageDialog(null, "Las huella capturada es de " + nombre, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                    setTemplate(null);
                     return true;
                 }
             }
-            //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
-            JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);
+           
             setTemplate(null);
         } catch (SQLException e) {
             //Si ocurre un error lo indica en la consola
@@ -543,6 +550,7 @@ public class VentanaIngresoEstudiante extends JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAtras;
     private javax.swing.JButton jButtonInicioSesionDoc;
+    private javax.swing.JLabel jLabelConexionHuellero;
     private javax.swing.JLabel jLabelContenido;
     private javax.swing.JLabel jLabelContenido2;
     private javax.swing.JLabel jLabelImagenHuella;

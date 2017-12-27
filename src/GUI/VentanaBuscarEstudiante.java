@@ -15,8 +15,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import logica.dataConnection;
 
 /**
@@ -48,32 +53,32 @@ public class VentanaBuscarEstudiante extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelBuscarEstudiante = new javax.swing.JPanel();
-        jLabelDocumentoBuscar = new javax.swing.JLabel();
-        jTextFieldDocumentoABuscar = new javax.swing.JTextField();
-        jButtonBuscarEstudiante = new javax.swing.JButton();
-        jComboBoxTipoBusqueda = new javax.swing.JComboBox<>();
-        jTextFieldNombreBuscar = new javax.swing.JTextField();
-        jLabelBuscarPor = new javax.swing.JLabel();
-        jPanelDatosEstudiante = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextFieldNombres = new javax.swing.JTextField();
-        jTextFieldApellidos = new javax.swing.JTextField();
-        jTextFieldGrado = new javax.swing.JTextField();
-        jTextFieldGrupo = new javax.swing.JTextField();
-        jTextFieldDocumento = new javax.swing.JTextField();
-        jTextFieldZonaAlumno = new javax.swing.JTextField();
-        jTextFieldJornada = new javax.swing.JTextField();
-        jPanelHuellaEstudiante = new javax.swing.JPanel();
-        jPanelContenedorHuella = new javax.swing.JPanel();
-        jLabelImagenHuella = new javax.swing.JLabel();
-        jLabelTitulo = new javax.swing.JLabel();
+        jPanelBuscarEstudiante = new JPanel();
+        jLabelDocumentoBuscar = new JLabel();
+        jTextFieldDocumentoABuscar = new JTextField();
+        jButtonBuscarEstudiante = new JButton();
+        jComboBoxTipoBusqueda = new JComboBox<>();
+        jTextFieldNombreBuscar = new JTextField();
+        jLabelBuscarPor = new JLabel();
+        jPanelDatosEstudiante = new JPanel();
+        jLabel1 = new JLabel();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
+        jLabel4 = new JLabel();
+        jLabel5 = new JLabel();
+        jLabel6 = new JLabel();
+        jLabel7 = new JLabel();
+        jTextFieldNombres = new JTextField();
+        jTextFieldApellidos = new JTextField();
+        jTextFieldGrado = new JTextField();
+        jTextFieldGrupo = new JTextField();
+        jTextFieldDocumento = new JTextField();
+        jTextFieldZonaAlumno = new JTextField();
+        jTextFieldJornada = new JTextField();
+        jPanelHuellaEstudiante = new JPanel();
+        jPanelContenedorHuella = new JPanel();
+        jLabelImagenHuella = new JLabel();
+        jLabelTitulo = new JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Buscar Estudiante");
@@ -340,62 +345,64 @@ public class VentanaBuscarEstudiante extends JFrame {
 
         String tipoBusqueda = (String) jComboBoxTipoBusqueda.getSelectedItem();
 
-        if (tipoBusqueda.equals("Documento")) {
-            try {
-
-                if (docu.length() < 11) {
-                    int documento = Integer.parseInt(jTextFieldDocumentoABuscar.getText());
-                    cn = dataConnection.conexion();
-                    pst = cn.prepareStatement(
-                            "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
-                    pst.setInt(1, documento);
-                    res = pst.executeQuery();
-
-                    if (res.next()) {
-
-                        jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
-                        jTextFieldNombres.setText(res.getString("nombres"));
-                        jTextFieldApellidos.setText(res.getString("apellidos"));
-                        jTextFieldGrado.setText(res.getString("grado"));
-                        jTextFieldGrupo.setText(res.getString("sexo"));
-                        jTextFieldZonaAlumno.setText(res.getString("tipoPoblacion"));
-                        jTextFieldJornada.setText(res.getString("modeloPedagogico"));
-
-                        limpiar();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    jTextFieldDocumentoABuscar.setText("");
-                    JOptionPane.showMessageDialog(null, "Documento invalido");
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else if (tipoBusqueda.equals("Nombre")) {
-
-            //separar la cadena en nombres y apellidos
-            String[] partes = nombreBuscar.split(" ");
-
-            if (partes.length <= 2) {
-                JOptionPane.showMessageDialog(null, "Por favor ingrear el nombre completo","ERROR",JOptionPane.ERROR_MESSAGE);
-            } else {
-                String apellidos = partes[partes.length - 2] + " " + partes[partes.length - 1];
-
-                String nombres = "";
-                for (int i = 0; i < partes.length - 2; i++) {
-                    nombres = nombres + partes[i] + " ";
-                }
-
+        switch (tipoBusqueda) {
+            case "Documento":
                 try {
-                    buscarNombre(nombres, apellidos);
-                } catch (Exception ex) {
+                    
+                    if (docu.length() < 11) {
+                        int documento = Integer.parseInt(jTextFieldDocumentoABuscar.getText());
+                        cn = dataConnection.conexion();
+                        pst = cn.prepareStatement(
+                                "select documento,nombres,apellidos,grado,sexo,tipoPoblacion,modeloPedagogico from estudiante WHERE documento=?");
+                        pst.setInt(1, documento);
+                        res = pst.executeQuery();
+                        
+                        if (res.next()) {
+                            
+                            jTextFieldDocumento.setText(String.valueOf(res.getInt("documento")));
+                            jTextFieldNombres.setText(res.getString("nombres"));
+                            jTextFieldApellidos.setText(res.getString("apellidos"));
+                            jTextFieldGrado.setText(res.getString("grado"));
+                            jTextFieldGrupo.setText(res.getString("sexo"));
+                            jTextFieldZonaAlumno.setText(res.getString("tipoPoblacion"));
+                            jTextFieldJornada.setText(res.getString("modeloPedagogico"));
+                            
+                            limpiar();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "El estudiante no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        jTextFieldDocumentoABuscar.setText("");
+                        JOptionPane.showMessageDialog(null, "Documento invalido");
+                    }
+                } catch (SQLException ex) {
                     Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        } else if (tipoBusqueda.equals("DOCUMENTOINVALIDO")) {
-            jTextFieldDocumentoABuscar.setText("");
-            JOptionPane.showMessageDialog(null, "Documento mayor a 11 digitos, ingrese de nuevo el numero");
+                }   break;
+            case "Nombre":
+                //separar la cadena en nombres y apellidos
+                String[] partes = nombreBuscar.split(" ");
+                if (partes.length <= 2) {
+                    JOptionPane.showMessageDialog(null, "Por favor ingrear el nombre completo","ERROR",JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String apellidos = partes[partes.length - 2] + " " + partes[partes.length - 1];
+                    
+                    String nombres = "";
+                    for (int i = 0; i < partes.length - 2; i++) {
+                        nombres = nombres + partes[i] + " ";
+                    }
+                    
+                    try {
+                        buscarNombre(nombres, apellidos);
+                    } catch (Exception ex) {
+                        Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }   break;
+            case "DOCUMENTOINVALIDO":
+                jTextFieldDocumentoABuscar.setText("");
+                JOptionPane.showMessageDialog(null, "Documento mayor a 11 digitos, ingrese de nuevo el numero");
+                break;
+            default:
+                break;
         }
 
     }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
@@ -459,35 +466,7 @@ public class VentanaBuscarEstudiante extends JFrame {
 
         return retValue;
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonBuscarEstudiante;
-    private javax.swing.JComboBox<String> jComboBoxTipoBusqueda;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabelBuscarPor;
-    private javax.swing.JLabel jLabelDocumentoBuscar;
-    private javax.swing.JLabel jLabelImagenHuella;
-    private javax.swing.JLabel jLabelTitulo;
-    private javax.swing.JPanel jPanelBuscarEstudiante;
-    private javax.swing.JPanel jPanelContenedorHuella;
-    private javax.swing.JPanel jPanelDatosEstudiante;
-    private javax.swing.JPanel jPanelHuellaEstudiante;
-    private javax.swing.JTextField jTextFieldApellidos;
-    private javax.swing.JTextField jTextFieldDocumento;
-    private javax.swing.JTextField jTextFieldDocumentoABuscar;
-    private javax.swing.JTextField jTextFieldGrado;
-    private javax.swing.JTextField jTextFieldGrupo;
-    private javax.swing.JTextField jTextFieldJornada;
-    private javax.swing.JTextField jTextFieldNombreBuscar;
-    private javax.swing.JTextField jTextFieldNombres;
-    private javax.swing.JTextField jTextFieldZonaAlumno;
-    // End of variables declaration//GEN-END:variables
-
+    
     public void noteclearCaracteres(KeyEvent evt) {
         int cadena = (int) evt.getKeyChar();
         if (cadena >= 33 && cadena <= 47
@@ -558,4 +537,34 @@ public class VentanaBuscarEstudiante extends JFrame {
         }
     }
 
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonBuscarEstudiante;
+    private javax.swing.JComboBox<String> jComboBoxTipoBusqueda;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelBuscarPor;
+    private javax.swing.JLabel jLabelDocumentoBuscar;
+    private javax.swing.JLabel jLabelImagenHuella;
+    private javax.swing.JLabel jLabelTitulo;
+    private javax.swing.JPanel jPanelBuscarEstudiante;
+    private javax.swing.JPanel jPanelContenedorHuella;
+    private javax.swing.JPanel jPanelDatosEstudiante;
+    private javax.swing.JPanel jPanelHuellaEstudiante;
+    private javax.swing.JTextField jTextFieldApellidos;
+    private javax.swing.JTextField jTextFieldDocumento;
+    private javax.swing.JTextField jTextFieldDocumentoABuscar;
+    private javax.swing.JTextField jTextFieldGrado;
+    private javax.swing.JTextField jTextFieldGrupo;
+    private javax.swing.JTextField jTextFieldJornada;
+    private javax.swing.JTextField jTextFieldNombreBuscar;
+    private javax.swing.JTextField jTextFieldNombres;
+    private javax.swing.JTextField jTextFieldZonaAlumno;
+    // End of variables declaration//GEN-END:variables
+
+    
 }

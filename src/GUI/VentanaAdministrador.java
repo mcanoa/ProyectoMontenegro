@@ -366,22 +366,22 @@ public class VentanaAdministrador extends JFrame {
     }
     static boolean v = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButtonBuscarEstudiante;
-    private javax.swing.JButton jButtonCrearEstudiante;
-    private javax.swing.JButton jButtonEliminarEstudiante;
-    private javax.swing.JButton jButtonModificarDatos;
-    private javax.swing.JButton jButtonModificarEstudiante;
-    private javax.swing.JButton jButtonSalir;
-    private javax.swing.JToolBar.Separator jSeparador1;
-    private javax.swing.JToolBar.Separator jSeparador2;
-    private javax.swing.JToolBar.Separator jSeparador3;
-    private javax.swing.JToolBar.Separator jSeparador4;
-    private javax.swing.JToolBar.Separator jSeparador5;
-    private javax.swing.JToolBar.Separator jSeparador6;
-    private javax.swing.JToolBar.Separator jSeparador7;
-    private javax.swing.JToolBar jToolBarOpcionsAdmin;
+    private JButton jButton1;
+    private JButton jButton2;
+    private JButton jButtonBuscarEstudiante;
+    private JButton jButtonCrearEstudiante;
+    private JButton jButtonEliminarEstudiante;
+    private JButton jButtonModificarDatos;
+    private JButton jButtonModificarEstudiante;
+    private JButton jButtonSalir;
+    private JToolBar.Separator jSeparador1;
+    private JToolBar.Separator jSeparador2;
+    private JToolBar.Separator jSeparador3;
+    private JToolBar.Separator jSeparador4;
+    private JToolBar.Separator jSeparador5;
+    private JToolBar.Separator jSeparador6;
+    private JToolBar.Separator jSeparador7;
+    private JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
 
  public void obtener(List listaDatosXCelda) throws SQLException {

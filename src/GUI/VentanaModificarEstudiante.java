@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import com.digitalpersona.onetouch.DPFPDataPurpose;
@@ -27,7 +22,9 @@ import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -37,8 +34,13 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import logica.dataConnection;
 
@@ -366,7 +368,7 @@ public class VentanaModificarEstudiante extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
+    private void jButtonGuardarActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         // TODO add your handling code here:
         cn = dataConnection.conexion();
         try {
@@ -398,7 +400,7 @@ public class VentanaModificarEstudiante extends JFrame {
      *
      * @param evt
      */
-    private void jButtonBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
+    private void jButtonBuscarEstudianteActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
 
         String buscarNombre = jTextFieldBuscarNombre.getText();
         String buscarDocumento = jTextFieldBuscarEstudianteDoc.getText();
@@ -463,7 +465,7 @@ public class VentanaModificarEstudiante extends JFrame {
         }
     }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
 
-    private void jButtonAñadirHuellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAñadirHuellaActionPerformed
+    private void jButtonAñadirHuellaActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonAñadirHuellaActionPerformed
 
         try {
             //1. buscar si el estudiante ya tiene una huella
@@ -473,9 +475,9 @@ public class VentanaModificarEstudiante extends JFrame {
                 
                 start();
                 Iniciar();
-                               
+                
                 JOptionPane.showMessageDialog(null, "Por favor, colocar el dedo indice 4 veces\n en el lector de huellas");
-
+                
                 guardarHuella(jTextFieldDocumento.getText());
                 Reclutador.clear();
                 setTemplate(null);
@@ -487,48 +489,47 @@ public class VentanaModificarEstudiante extends JFrame {
             }
             //3. si ya tiene una huella se le informa al usuario y que el tome la decision
             //de actualizar la huella o dejar la que esta en ese momento
-
         } catch (SQLException ex) {
             Logger.getLogger(VentanaModificarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_jButtonAñadirHuellaActionPerformed
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+    private void formWindowClosed(WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         VentanaAdministrador.cambiarestado(true);
     }//GEN-LAST:event_formWindowClosed
 
-    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+    private void formKeyTyped(KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formKeyTyped
 
-    private void jTextFieldBuscarEstudianteDocKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteDocKeyTyped
+    private void jTextFieldBuscarEstudianteDocKeyTyped(KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteDocKeyTyped
         // TODO add your handling code here:
         noTeclearLetras(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldBuscarEstudianteDocKeyTyped
 
-    private void jTextFieldDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDocumentoKeyTyped
+    private void jTextFieldDocumentoKeyTyped(KeyEvent evt) {//GEN-FIRST:event_jTextFieldDocumentoKeyTyped
         // TODO add your handling code here:
         noTeclearLetras(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldDocumentoKeyTyped
 
-    private void jTextFieldNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombresKeyTyped
+    private void jTextFieldNombresKeyTyped(KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombresKeyTyped
         // TODO add your handling code here:
         noTeclearNumeros(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldNombresKeyTyped
 
-    private void jTextFieldApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldApellidoKeyTyped
+    private void jTextFieldApellidoKeyTyped(KeyEvent evt) {//GEN-FIRST:event_jTextFieldApellidoKeyTyped
         // TODO add your handling code here:
         noTeclearNumeros(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldApellidoKeyTyped
 
-    private void jComboBoxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoBusquedaActionPerformed
+    private void jComboBoxTipoBusquedaActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoBusquedaActionPerformed
         if (jComboBoxTipoBusqueda.getSelectedItem().equals("Nombre")) {
 
             jTextFieldBuscarNombre.setVisible(true);
@@ -544,27 +545,27 @@ public class VentanaModificarEstudiante extends JFrame {
         }
     }//GEN-LAST:event_jComboBoxTipoBusquedaActionPerformed
 
-    private void jTextFieldBuscarNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarNombreKeyTyped
+    private void jTextFieldBuscarNombreKeyTyped(KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarNombreKeyTyped
         // TODO add your handling code here:
         noTeclearNumeros(evt);
         noteclearCaracteres(evt);
     }//GEN-LAST:event_jTextFieldBuscarNombreKeyTyped
 
-    private void jTextFieldBuscarEstudianteDocKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteDocKeyPressed
+    private void jTextFieldBuscarEstudianteDocKeyPressed(KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarEstudianteDocKeyPressed
         // TODO add your handling code here:
          if(evt.getKeyCode() == KeyEvent.VK_ENTER){
              jButtonBuscarEstudianteActionPerformed(null);
         }
     }//GEN-LAST:event_jTextFieldBuscarEstudianteDocKeyPressed
 
-    private void jTextFieldBuscarNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarNombreKeyPressed
+    private void jTextFieldBuscarNombreKeyPressed(KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarNombreKeyPressed
         // TODO add your handling code here:
           if(evt.getKeyCode() == KeyEvent.VK_ENTER){
              jButtonBuscarEstudianteActionPerformed(null);
         }
     }//GEN-LAST:event_jTextFieldBuscarNombreKeyPressed
 
-    private void jComboBoxGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxGradoActionPerformed
+    private void jComboBoxGradoActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jComboBoxGradoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxGradoActionPerformed
 
@@ -869,35 +870,35 @@ public class VentanaModificarEstudiante extends JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAñadirHuella;
-    private javax.swing.JButton jButtonBuscarEstudiante;
-    private javax.swing.JButton jButtonGuardar;
-    private javax.swing.JComboBox jComboBoxGrado;
-    private javax.swing.JComboBox jComboBoxJornada;
-    private javax.swing.JComboBox<String> jComboBoxTipoBusqueda;
-    private javax.swing.JComboBox jComboBoxZonaAlumno;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JLabel jLabelImagenHuella;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanelContenedorHuella;
-    private javax.swing.JPanel jPanelHuella;
-    private javax.swing.JTextField jTextFieldApellido;
-    private javax.swing.JTextField jTextFieldBuscarEstudianteDoc;
-    private javax.swing.JTextField jTextFieldBuscarNombre;
-    private javax.swing.JTextField jTextFieldDocumento;
-    private javax.swing.JTextField jTextFieldGrupo;
-    private javax.swing.JTextField jTextFieldNombres;
+    private JButton jButtonAñadirHuella;
+    private JButton jButtonBuscarEstudiante;
+    private JButton jButtonGuardar;
+    private JComboBox jComboBoxGrado;
+    private JComboBox jComboBoxJornada;
+    private JComboBox<String> jComboBoxTipoBusqueda;
+    private JComboBox jComboBoxZonaAlumno;
+    private JLabel jLabel1;
+    private JLabel jLabel10;
+    private JLabel jLabel11;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
+    private JLabel jLabel4;
+    private JLabel jLabel5;
+    private JLabel jLabel6;
+    private JLabel jLabel7;
+    private JLabel jLabel8;
+    private JLabel jLabel9;
+    private JLabel jLabelImagenHuella;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JPanel jPanelContenedorHuella;
+    private JPanel jPanelHuella;
+    private JTextField jTextFieldApellido;
+    private JTextField jTextFieldBuscarEstudianteDoc;
+    private JTextField jTextFieldBuscarNombre;
+    private JTextField jTextFieldDocumento;
+    private JTextField jTextFieldGrupo;
+    private JTextField jTextFieldNombres;
     // End of variables declaration//GEN-END:variables
 
     public void noteclearCaracteres(KeyEvent evt) {
