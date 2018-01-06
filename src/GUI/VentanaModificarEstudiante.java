@@ -588,7 +588,7 @@ public class VentanaModificarEstudiante extends JFrame {
         }
         return -1;
     }
-// Varible que permite iniciar el dispositivo de lector de huella conectado
+    // Varible que permite iniciar el dispositivo de lector de huella conectado
     // con sus distintos metodos.
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
 

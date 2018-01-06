@@ -74,12 +74,6 @@ public class VentanaAdministrador extends JFrame {
         jToolBarOpcionsAdmin = new JToolBar();
         jButtonCrearEstudiante = new JButton();
         jSeparador1 = new Separator();
-        jButtonBuscarEstudiante = new javax.swing.JButton();
-        jSeparador2 = new Separator();
-        jButtonModificarEstudiante = new JButton();
-        jSeparador3 = new Separator();
-        jButtonEliminarEstudiante = new JButton();
-        jSeparador4 = new Separator();
         jButtonModificarDatos = new JButton();
         jSeparador5 = new Separator();
         jButton1 = new javax.swing.JButton();
@@ -98,7 +92,7 @@ public class VentanaAdministrador extends JFrame {
         jToolBarOpcionsAdmin.setRollover(true);
 
         jButtonCrearEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButtonCrearEstudiante.setText("Crear Estudiante");
+        jButtonCrearEstudiante.setText("Gestionar Estudiantes");
         jButtonCrearEstudiante.setFocusable(false);
         jButtonCrearEstudiante.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonCrearEstudiante.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -109,45 +103,6 @@ public class VentanaAdministrador extends JFrame {
         });
         jToolBarOpcionsAdmin.add(jButtonCrearEstudiante);
         jToolBarOpcionsAdmin.add(jSeparador1);
-
-        jButtonBuscarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButtonBuscarEstudiante.setText("Buscar Estudiante");
-        jButtonBuscarEstudiante.setFocusable(false);
-        jButtonBuscarEstudiante.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonBuscarEstudiante.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonBuscarEstudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBuscarEstudianteActionPerformed(evt);
-            }
-        });
-        jToolBarOpcionsAdmin.add(jButtonBuscarEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparador2);
-
-        jButtonModificarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButtonModificarEstudiante.setText("Modificar Estudiante");
-        jButtonModificarEstudiante.setFocusable(false);
-        jButtonModificarEstudiante.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonModificarEstudiante.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonModificarEstudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonModificarEstudianteActionPerformed(evt);
-            }
-        });
-        jToolBarOpcionsAdmin.add(jButtonModificarEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparador3);
-
-        jButtonEliminarEstudiante.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButtonEliminarEstudiante.setText("Eliminar Estudiante");
-        jButtonEliminarEstudiante.setFocusable(false);
-        jButtonEliminarEstudiante.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButtonEliminarEstudiante.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButtonEliminarEstudiante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEliminarEstudianteActionPerformed(evt);
-            }
-        });
-        jToolBarOpcionsAdmin.add(jButtonEliminarEstudiante);
-        jToolBarOpcionsAdmin.add(jSeparador4);
 
         jButtonModificarDatos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButtonModificarDatos.setText("Modificar Datos");
@@ -203,38 +158,21 @@ public class VentanaAdministrador extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBarOpcionsAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jToolBarOpcionsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBarOpcionsAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+            .addComponent(jToolBarOpcionsAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonBuscarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEstudianteActionPerformed
-
-        
-        if (v == true) {
-            VentanaBuscarEstudiante ventana = new VentanaBuscarEstudiante();
-            ventana.setVisible(true);
-            v = false;
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
-        }
-    }//GEN-LAST:event_jButtonBuscarEstudianteActionPerformed
-
     private void jButtonCrearEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearEstudianteActionPerformed
-        // TODO add your handling code here:
-        if (v == true) {
-            VentanaCrearEstudiante ventana = new VentanaCrearEstudiante();
-            ventana.setVisible(true);
-            v = false;
-        } else {
-            JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
-        }
+       VentanaGestionEstudiante.getInstanceSingleton().setVisible(true);
+       
     }//GEN-LAST:event_jButtonCrearEstudianteActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -260,32 +198,6 @@ public class VentanaAdministrador extends JFrame {
         }
 
     }//GEN-LAST:event_jButtonModificarDatosActionPerformed
-
-    private void jButtonEliminarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarEstudianteActionPerformed
-        // TODO add your handling code here:
-
-        if (v == true) {
-            VentanaEliminarEstudiante ventana = new VentanaEliminarEstudiante();
-            ventana.setVisible(true);
-            v = false;
-        } else {
-            JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
-        }
-
-
-    }//GEN-LAST:event_jButtonEliminarEstudianteActionPerformed
-
-    private void jButtonModificarEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarEstudianteActionPerformed
-        // TODO add your handling code here:
-        if (v == true) {
-            VentanaModificarEstudiante ventana = new VentanaModificarEstudiante();
-            ventana.setVisible(true);
-            v = false;
-        } else {
-            JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
-        }
-
-    }//GEN-LAST:event_jButtonModificarEstudianteActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         // TODO add your handling code here:
@@ -366,22 +278,16 @@ public class VentanaAdministrador extends JFrame {
     }
     static boolean v = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JButton jButton1;
-    private JButton jButton2;
-    private JButton jButtonBuscarEstudiante;
-    private JButton jButtonCrearEstudiante;
-    private JButton jButtonEliminarEstudiante;
-    private JButton jButtonModificarDatos;
-    private JButton jButtonModificarEstudiante;
-    private JButton jButtonSalir;
-    private JToolBar.Separator jSeparador1;
-    private JToolBar.Separator jSeparador2;
-    private JToolBar.Separator jSeparador3;
-    private JToolBar.Separator jSeparador4;
-    private JToolBar.Separator jSeparador5;
-    private JToolBar.Separator jSeparador6;
-    private JToolBar.Separator jSeparador7;
-    private JToolBar jToolBarOpcionsAdmin;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonCrearEstudiante;
+    private javax.swing.JButton jButtonModificarDatos;
+    private javax.swing.JButton jButtonSalir;
+    private javax.swing.JToolBar.Separator jSeparador1;
+    private javax.swing.JToolBar.Separator jSeparador5;
+    private javax.swing.JToolBar.Separator jSeparador6;
+    private javax.swing.JToolBar.Separator jSeparador7;
+    private javax.swing.JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
 
  public void obtener(List listaDatosXCelda) throws SQLException {
