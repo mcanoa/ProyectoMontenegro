@@ -55,6 +55,7 @@ public class VentanaGestionEstudiante extends JFrame {
 
     private static VentanaGestionEstudiante ventana;
     String[] busquedas = {"Documento de Identidad", "Apellidos"};
+    private int estadoGuardar;
 
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
@@ -73,6 +74,7 @@ public class VentanaGestionEstudiante extends JFrame {
      */
     public VentanaGestionEstudiante() {
 
+        estadoGuardar=0;//estado que indica que se va a guardar un estdiante nuevo
         modelo.addColumn("Documento");
         modelo.addColumn("Nombres");
         modelo.addColumn("Apellidos");
@@ -119,6 +121,7 @@ public class VentanaGestionEstudiante extends JFrame {
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
         jLabelHuella = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanelLista = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableResultado = new javax.swing.JTable();
@@ -192,7 +195,7 @@ public class VentanaGestionEstudiante extends JFrame {
         });
 
         jButtonGuardar.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jButtonGuardar.setText("Guardar Cambios");
+        jButtonGuardar.setText("Guardar ");
         jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGuardarActionPerformed(evt);
@@ -240,6 +243,13 @@ public class VentanaGestionEstudiante extends JFrame {
         jLabelHuella.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabelHuella.setText("Huella Dactilar:");
 
+        jButton1.setText("Limpiar Campos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelDatosLayout = new javax.swing.GroupLayout(jPanelDatos);
         jPanelDatos.setLayout(jPanelDatosLayout);
         jPanelDatosLayout.setHorizontalGroup(
@@ -278,7 +288,9 @@ public class VentanaGestionEstudiante extends JFrame {
                                         .addComponent(jButtonActualizaHuella))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDatosLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                        .addComponent(jButtonGuardar))))
+                                        .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                                            .addComponent(jButtonGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                             .addComponent(jTextFieldZonaAlumno)
                             .addComponent(jTextFieldJornada))))
                 .addGap(6, 6, 6))
@@ -322,7 +334,9 @@ public class VentanaGestionEstudiante extends JFrame {
                         .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonActualizaHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(46, 46, 46))
         );
@@ -380,7 +394,7 @@ public class VentanaGestionEstudiante extends JFrame {
             jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaLayout.createSequentialGroup()
                 .addGroup(jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
                     .addGroup(jPanelListaLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanelListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,12 +437,13 @@ public class VentanaGestionEstudiante extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(307, 307, 307)
-                        .addComponent(jLabelTitulo))
+                        .addComponent(jLabelTitulo)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanelDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                        .addComponent(jPanelLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanelLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -514,16 +529,33 @@ public class VentanaGestionEstudiante extends JFrame {
      */
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
 
-
-        String documento = jTextFieldDocumento.getText();
-        String nombres= jTextFieldNombres.getText();
-        String apellidos= jTextFieldApellidos.getText();
-        String grado= jTextFieldGrado.getText();
-        String grupo=jTextFieldGrupo.getText();
-        String zonaAlumno=jTextFieldZonaAlumno.getText();
-        String jornada=jTextFieldJornada.getText();
                
-        
+         cn = dataConnection.conexion();
+        try {
+
+            
+            pst = cn.prepareStatement(
+                    "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=? where documento=?");
+            
+            pst.setInt(1, Integer.parseInt(jTextFieldDocumento.getText()));
+            pst.setString(2, jTextFieldNombres.getText());
+            pst.setString(3, jTextFieldApellidos.getText());
+            pst.setString(4, jTextFieldGrado.getText());
+            pst.setString(5, jTextFieldGrupo.getText());
+            pst.setString(6, jTextFieldZonaAlumno.getText());
+            pst.setString(7, jTextFieldJornada.getText());
+            pst.setInt(8, Integer.parseInt(jTextFieldDocumento.getText()));
+            
+             int res = pst.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "El estudiante se ha modificado");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo modificar estudiante, ocurrió un error");
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
         
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
@@ -541,12 +573,14 @@ public class VentanaGestionEstudiante extends JFrame {
 
             if (filaseleccionada == -1) {
 
+                
                 JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila");
 
             } else {
 
-                //DefaultTableModel modelotabla = (DefaultTableModel) jTableResultado.getModel();
-
+                estadoGuardar=1;//indica que va a actualizar un estudiante
+                
+                
                 String documento = (String) modelo.getValueAt(filaseleccionada, 0);
                 String nombres = (String) modelo.getValueAt(filaseleccionada, 1);
                 String apellidos = (String) modelo.getValueAt(filaseleccionada, 2);
@@ -561,6 +595,7 @@ public class VentanaGestionEstudiante extends JFrame {
                 if (res.next()) {
 
                     jTextFieldDocumento.setText(documento);
+                    jTextFieldDocumento.setEnabled(false);
                     jTextFieldNombres.setText(nombres);
                     jTextFieldApellidos.setText(apellidos);
                     jTextFieldGrado.setText(res.getString("grado"));
@@ -622,6 +657,12 @@ public class VentanaGestionEstudiante extends JFrame {
         }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        estadoGuardar=0;//estudiante nuevo
+        limpiarFormulario();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      *
      * @param atributo
@@ -639,13 +680,13 @@ public class VentanaGestionEstudiante extends JFrame {
                 res = pst.executeQuery();
                 String[] datos = new String[3];
                 if (res.next()) {
-                    datos[0] = String.valueOf(res.getInt("documento"));
+                    datos[0] = res.getString("documento");
                     datos[1] = res.getString("nombres");
                     datos[2] = res.getString("apellidos");
                     modelo.addRow(datos);
 
                     while (res.next()) {
-                        datos[0] = String.valueOf(res.getInt("documento"));
+                        datos[0] = res.getString("documento");
                         datos[1] = res.getString("nombres");
                         datos[2] = res.getString("apellidos");
                         modelo.addRow(datos);
@@ -1036,6 +1077,7 @@ public class VentanaGestionEstudiante extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonActualizaHuella;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonEliminar;
@@ -1073,6 +1115,7 @@ public class VentanaGestionEstudiante extends JFrame {
      * Metodo para limpiar los campos de un formulario
      */
     private void limpiarFormulario() {
+        jTextFieldDocumento.setEnabled(true);
         jTextFieldDocumento.setText("");
         jTextFieldNombres.setText("");
         jTextFieldApellidos.setText("");

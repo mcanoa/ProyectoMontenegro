@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
@@ -18,18 +17,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.JToolBar.Separator;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import logica.dataConnection;
 import logica.institutoMontenegro;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -37,13 +39,13 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  */
 public class VentanaAdministrador extends JFrame {
 
-     PreparedStatement pst;
+    PreparedStatement pst;
     Connection cn;
     ResultSet result;
-     institutoMontenegro instituto = new institutoMontenegro();
-     
-     public static VentanaAdministrador ventana;
-     
+    institutoMontenegro instituto = new institutoMontenegro();
+
+    public static VentanaAdministrador ventana;
+
     /**
      * Creates new form VentanaAdministrador
      */
@@ -54,14 +56,13 @@ public class VentanaAdministrador extends JFrame {
         VentanaAdministrador.cambiarestado(true);
     }
 
-    
-    public static VentanaAdministrador getInstanceSingleton(){
-        if(ventana==null){
-            ventana=new VentanaAdministrador();
+    public static VentanaAdministrador getInstanceSingleton() {
+        if (ventana == null) {
+            ventana = new VentanaAdministrador();
         }
         return ventana;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,9 +77,9 @@ public class VentanaAdministrador extends JFrame {
         jSeparador1 = new Separator();
         jButtonModificarDatos = new JButton();
         jSeparador5 = new Separator();
-        jButton1 = new javax.swing.JButton();
+        GenerarInforme = new javax.swing.JButton();
         jSeparador6 = new Separator();
-        jButton2 = new javax.swing.JButton();
+        jButtonCargarListado = new javax.swing.JButton();
         jSeparador7 = new Separator();
         jButtonSalir = new JButton();
 
@@ -105,7 +106,7 @@ public class VentanaAdministrador extends JFrame {
         jToolBarOpcionsAdmin.add(jSeparador1);
 
         jButtonModificarDatos.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButtonModificarDatos.setText("Modificar Datos");
+        jButtonModificarDatos.setText("Modificar Datos Administrador");
         jButtonModificarDatos.setFocusable(false);
         jButtonModificarDatos.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonModificarDatos.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -117,29 +118,29 @@ public class VentanaAdministrador extends JFrame {
         jToolBarOpcionsAdmin.add(jButtonModificarDatos);
         jToolBarOpcionsAdmin.add(jSeparador5);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setText("Generar Informe");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        GenerarInforme.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        GenerarInforme.setText("Generar Informe");
+        GenerarInforme.setFocusable(false);
+        GenerarInforme.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        GenerarInforme.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        GenerarInforme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                GenerarInformeActionPerformed(evt);
             }
         });
-        jToolBarOpcionsAdmin.add(jButton1);
+        jToolBarOpcionsAdmin.add(GenerarInforme);
         jToolBarOpcionsAdmin.add(jSeparador6);
 
-        jButton2.setText("Cargar Archivo");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCargarListado.setText("Cargar Archivo");
+        jButtonCargarListado.setFocusable(false);
+        jButtonCargarListado.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonCargarListado.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButtonCargarListado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonCargarListadoActionPerformed(evt);
             }
         });
-        jToolBarOpcionsAdmin.add(jButton2);
+        jToolBarOpcionsAdmin.add(jButtonCargarListado);
         jToolBarOpcionsAdmin.add(jSeparador7);
 
         jButtonSalir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -159,7 +160,7 @@ public class VentanaAdministrador extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBarOpcionsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBarOpcionsAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -171,12 +172,14 @@ public class VentanaAdministrador extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCrearEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearEstudianteActionPerformed
-       VentanaGestionEstudiante.getInstanceSingleton().setVisible(true);
-       
+        VentanaGestionEstudiante.getInstanceSingleton().setVisible(true);
+
     }//GEN-LAST:event_jButtonCrearEstudianteActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void GenerarInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarInformeActionPerformed
         // TODO add your handling code here:
+        
+        
         if (v == true) {
             VentanaGenerarInforme ventana = new VentanaGenerarInforme();
             ventana.setVisible(true);
@@ -185,7 +188,7 @@ public class VentanaAdministrador extends JFrame {
             JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_GenerarInformeActionPerformed
 
     private void jButtonModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarDatosActionPerformed
         // TODO add your handling code here:
@@ -212,58 +215,73 @@ public class VentanaAdministrador extends JFrame {
 
     /**
      * Metodo que sirve para cargar los estudiantes desde un archivo en excel
-     * @param evt 
+     *
+     * @param evt
      */
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {     
-            
-            
-            File archivo = new File("D:\\Documentos\\NetBeansProjects\\Leer_Probar_Excel\\gracie.xlsx");
-            
-            
-            Workbook wb;
-            List celdaDato = new ArrayList();
-            
-            try {
-                
-                FileInputStream fileInputStream = new FileInputStream(archivo);
-                wb = WorkbookFactory.create(fileInputStream);
-                Sheet hoja = wb.getSheetAt(0);
-                
-                Iterator filaIterator = hoja.rowIterator();
-                
-                while (filaIterator.hasNext()) {
-                    
-                    Row fila = (Row) filaIterator.next();
-                    Iterator columnaIterador = fila.cellIterator();
-                    List celdaTemporal = new ArrayList();
-                    
-                    while (columnaIterador.hasNext()) {
-                        Cell celda = (Cell) columnaIterador.next();
-                        celdaTemporal.add(celda);
-                    }
-                    celdaDato.add(celdaTemporal);
+    private void jButtonCargarListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarListadoActionPerformed
+        try {
+
+            File archivo = null;
+            String documento;
+            String nombres;
+            String apellidos;
+            String grado;
+            String grupo;
+            String zonaAlumno;
+            String jornada;
+
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Microsoft Excel", "xlsx");
+            fileChooser.setFileFilter(filter);
+            int seleccion = fileChooser.showSaveDialog(jButtonCargarListado);
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                archivo = fileChooser.getSelectedFile();
+            }
+
+            if (archivo != null) {
+                // Crear el objeto que tendra el libro de Excel
+                XSSFWorkbook workbook = new XSSFWorkbook(archivo);
+
+                /*
+            * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
+            * Una vez obtenida la hoja excel con las filas que se quieren leer obtenemos el iterator
+            * que nos permite recorrer cada una de las filas que contiene.
+                 */
+                XSSFSheet sheet = workbook.getSheetAt(0);
+
+                String[] doc;
+                Iterator<Row> rowIterator = sheet.iterator();
+
+                Row row;
+                Cell celda;
+                // Recorremos todas las filas para mostrar el contenido de cada celda
+                while (rowIterator.hasNext()) {
+                    row = rowIterator.next();
+
+                    grupo = String.valueOf(row.getCell(0));
+                    grado = String.valueOf(row.getCell(1));
+                    documento = String.valueOf(row.getCell(2));
+                    apellidos = String.valueOf(row.getCell(3));
+                    nombres = String.valueOf(row.getCell(4));
+                    zonaAlumno = String.valueOf(row.getCell(5));
+                    jornada = String.valueOf(row.getCell(6));
+
+                    procesarFila(grupo, grado, documento, apellidos, nombres, zonaAlumno, jornada);
+
                 }
 
-            } catch (IOException e) {
-            } catch (InvalidFormatException ex) {
-                Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+                // cerramos el libro excel
+                workbook.close();
             }
-            
-           
-            obtener(celdaDato);
-            
-            System.out.println("ya");
-            
-            
-        } catch (SQLException ex) {
-             Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidFormatException ex) {
+            Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+
+
+    }//GEN-LAST:event_jButtonCargarListadoActionPerformed
 
     @Override
     public Image getIconImage() {
@@ -278,8 +296,8 @@ public class VentanaAdministrador extends JFrame {
     }
     static boolean v = true;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton GenerarInforme;
+    private javax.swing.JButton jButtonCargarListado;
     private javax.swing.JButton jButtonCrearEstudiante;
     private javax.swing.JButton jButtonModificarDatos;
     private javax.swing.JButton jButtonSalir;
@@ -290,21 +308,21 @@ public class VentanaAdministrador extends JFrame {
     private javax.swing.JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
 
- public void obtener(List listaDatosXCelda) throws SQLException {
-        List numeros = null ;
-        int contador=0;
-        int contadorNegativo=0;
+    public void obtener(List listaDatosXCelda) throws SQLException {
+        List numeros = null;
+        int contador = 0;
+        int contadorNegativo = 0;
         for (int i = 1; i < listaDatosXCelda.size(); i++) {
             String cadena = new String();
             numeros = new ArrayList();
             List listaTemporalCeldas = (List) listaDatosXCelda.get(i);
             for (int j = 17; j < listaTemporalCeldas.size(); j++) {
                 Cell celda = (Cell) listaTemporalCeldas.get(j);
-                
+
                 switch (celda.getCellType()) {
                     case Cell.CELL_TYPE_NUMERIC:
                         int valor = (int) Math.round(celda.getNumericCellValue());
-                        
+
                         numeros.add(valor);
                         break;
                     case Cell.CELL_TYPE_STRING:
@@ -319,29 +337,26 @@ public class VentanaAdministrador extends JFrame {
                         break;
                 }
 
-                
-
 //                System.out.println(valorString + " ");
 //                System.out.println(valorString + " ");
             }
 //            insert += ")";
 //            System.out.println(insert);
-            int grupo = 0,documento = 0,nombreGrupo = 0;
-            
+            int grupo = 0, documento = 0, nombreGrupo = 0;
+
             for (int a = 0; a < numeros.size(); a++) {
-                if(a==0){
-                    grupo= (int) numeros.get(a);
+                if (a == 0) {
+                    grupo = (int) numeros.get(a);
                 }
-                if(a==1){
-                    documento= (int) numeros.get(a);
+                if (a == 1) {
+                    documento = (int) numeros.get(a);
                 }
-                if(a==2){
-                    nombreGrupo= (int) numeros.get(a);
+                if (a == 2) {
+                    nombreGrupo = (int) numeros.get(a);
                 }
             }
-            
+
             String[] partes = cadena.split(",");
-            
 
             String grado = partes[0];
             String apellidos = partes[1];
@@ -350,48 +365,49 @@ public class VentanaAdministrador extends JFrame {
             String jornada = partes[4];
 
             System.out.println(cadena);
-            System.out.println(grupo+"");
-            System.out.println(documento+"");
-            System.out.println(nombreGrupo+"");
-            
-            if(!validarDoc(documento)){
-            pst = cn.prepareStatement("insert into estudiante (grupo,grado,documento,apellidos,nombres,zonaAlumno,nombreGrupo,jornada) values(?,?,?,?,?,?,?,?)");
-            pst.setInt(1, grupo);
-            pst.setString(2, grado);
-            pst.setInt(3, documento);
-            pst.setString(4, apellidos);
-            pst.setString(5, nombres);
-            pst.setString(6, zonaAlumno);
-            pst.setInt(7, nombreGrupo);
-            pst.setString(8, jornada);
-            
-            int res = pst.executeUpdate();
-            if (res > 0) {
-                Date fecha = fechaIncio();
-                try {
+            System.out.println(grupo + "");
+            System.out.println(documento + "");
+            System.out.println(nombreGrupo + "");
 
-                    instituto.insertarRegistro(documento, fecha, fecha);
-                } catch (ParseException e1) {
+            if (!validarDoc(documento)) {
+                pst = cn.prepareStatement("insert into estudiante (grupo,grado,documento,apellidos,nombres,zonaAlumno,nombreGrupo,jornada) values(?,?,?,?,?,?,?,?)");
+                pst.setInt(1, grupo);
+                pst.setString(2, grado);
+                pst.setInt(3, documento);
+                pst.setString(4, apellidos);
+                pst.setString(5, nombres);
+                pst.setString(6, zonaAlumno);
+                pst.setInt(7, nombreGrupo);
+                pst.setString(8, jornada);
 
-                    e1.printStackTrace();
-                }
-                contador++;
+                int res = pst.executeUpdate();
+                if (res > 0) {
+                    Date fecha = fechaIncio();
+                    try {
+
+                        instituto.insertarRegistro(documento, fecha, fecha);
+                    } catch (ParseException e1) {
+
+                        e1.printStackTrace();
+                    }
+                    contador++;
 //                System.out.println("poblado exitoso");
-            }} else {
+                }
+            } else {
                 contadorNegativo++;
 //                System.out.println("poblado Fallido");
             }
-            
+
 //            System.out.println(cadena);
 //            System.out.println();
         }
-        JOptionPane.showMessageDialog(null,"Se han registrado"+" "+contador+" estudiantes");
-        JOptionPane.showMessageDialog(null,"No se pudieron registrar"+" "+contadorNegativo+" estudiantes");
+        JOptionPane.showMessageDialog(null, "Se han registrado" + " " + contador + " estudiantes");
+        JOptionPane.showMessageDialog(null, "No se pudieron registrar" + " " + contadorNegativo + " estudiantes");
     }
- 
-   public boolean validarDoc(int documento) {
+
+    public boolean validarDoc(int documento) {
         try {
-            
+
             pst = cn.prepareStatement("select documento from estudiante");
             result = pst.executeQuery();
             while (result.next()) {
@@ -408,14 +424,27 @@ public class VentanaAdministrador extends JFrame {
         return false;
     }
 
-   
-     /**
-     * 
-     * @return 
+    /**
+     *
+     * @return
      */
     public Date fechaIncio() {
         String date1 = "1999-05-24";
         Date fecha = java.sql.Date.valueOf(date1);
         return fecha;
     }
+
+    String[] doc=new String[2];
+    String[] grup=new String[3];
+    private void procesarFila(String grupo, String grado, String documento, String apellidos, String nombres, String zonaAlumno, String jornada) {
+
+        documento= documento.replace(".", "");
+        doc = documento.split("E");
+        documento = doc[0];
+        
+                                
+        
+        System.out.println(grupo + " " + grado + " " + documento + " " + apellidos + " " + nombres + " " + zonaAlumno + " " + jornada);
+    }
+
 }
