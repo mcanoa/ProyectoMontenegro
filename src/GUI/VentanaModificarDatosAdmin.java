@@ -25,7 +25,10 @@ import logica.dataConnection;
  */
 public class VentanaModificarDatosAdmin extends JFrame {
 
+    
+    private static VentanaModificarDatosAdmin ventana;
     /**
+     * 
      * Creates new form VentanaModificarDatosAdmin
      */
     public VentanaModificarDatosAdmin() {
@@ -35,6 +38,13 @@ public class VentanaModificarDatosAdmin extends JFrame {
         
     }
 
+    public static VentanaModificarDatosAdmin getInstanceSingleton(){
+        if(ventana==null){
+            ventana=new VentanaModificarDatosAdmin();
+        }
+        return ventana;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

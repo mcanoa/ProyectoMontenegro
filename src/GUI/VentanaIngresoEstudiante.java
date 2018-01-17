@@ -1,55 +1,33 @@
 package GUI;
 
-import com.digitalpersona.onetouch.DPFPDataPurpose;
-import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
-import com.digitalpersona.onetouch.DPFPSample;
-import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.capture.DPFPCapture;
 import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
-import com.digitalpersona.onetouch.capture.event.DPFPErrorAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPErrorEvent;
 import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
-import com.digitalpersona.onetouch.capture.event.DPFPSensorAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
-import com.digitalpersona.onetouch.processing.DPFPEnrollment;
-import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
-import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
-import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import logica.dataConnection;
-import logica.institutoMontenegro;
+import logica.HiloVerificarHuella;
 
 /**
- *
+ *@author Maria Alejandra Martos Diaz
  * @author Mateo Cano Alfonso
+ * @author Juan Jefferson Alape
  */
 public class VentanaIngresoEstudiante extends JFrame {
     //para poder hacer el ingreso
 
-    private int doc;
-    private final institutoMontenegro instituto;
+    HiloVerificarHuella hiloVerificarHuella;
 
     public static VentanaIngresoEstudiante ventana;
     Connection cn;
@@ -60,11 +38,12 @@ public class VentanaIngresoEstudiante extends JFrame {
      * Creates new form LogInEstudiante
      */
     public VentanaIngresoEstudiante() {
-        instituto = new institutoMontenegro();
+
         start();
         Iniciar();
         initComponents();
         this.getContentPane().setBackground(Color.white);
+         hiloVerificarHuella= new HiloVerificarHuella(jLabelImagenHuella);
 
     }
 
@@ -250,55 +229,14 @@ public class VentanaIngresoEstudiante extends JFrame {
     }
     // Varible que permite iniciar el dispositivo de lector de huella conectado
     // con sus distintos metodos.
-    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
-
-    // Varible que permite establecer las capturas de la huellas, para determina
-    // sus caracteristicas
-    // y poder estimar la creacion de un template de la huella para luego poder
-    // guardarla
-    private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
-
-    // Esta variable tambien captura una huella del lector y crea sus
-    // caracteristcas para auntetificarla
-    // o verificarla con alguna guardada en la BD
-    private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
-
-    // Variable que para crear el template de la huella luego de que se hallan
-    // creado las caracteriticas
-    // necesarias de la huella si no ha ocurrido ningun problema
-    private DPFPTemplate template;
-    public static String TEMPLATE_PROPERTY = "template";
+    private final DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
 
     /**
      * Metodo que sirve para iniciar el lector de huellas
      */
-    protected void Iniciar() {
-        DPFPDataAdapter h= new DPFPDataAdapter();
-        
-        Lector.addDataListener(new DPFPDataAdapter() {
-            @Override
-            public void dataAcquired(final DPFPDataEvent e) {
-                try {
-                    ProcesarCaptura(e.getSample());
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    public void run() {
-//                        try {
-//                            // EnviarTexto("La Huella Digital ha sido Capturada");
-//                            ProcesarCaptura(e.getSample());
-//                        } catch (IOException ex) {
-//                            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-//                        } catch (ParseException ex) {
-//                            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//                });
-                } catch (IOException ex) {
-                    Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParseException ex) {
-                    Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+    protected final void Iniciar() {
+
+        Lector.addDataListener(dataAdapter);
 
         Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
             @Override
@@ -314,239 +252,33 @@ public class VentanaIngresoEstudiante extends JFrame {
             }
         });
 
-        Lector.addSensorListener(new DPFPSensorAdapter() {
-            @Override
-            public void fingerTouched(final DPFPSensorEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("El dedo ha sido colocado sobre el Lector
-                        // de Huella");
-                    }
-                });
-            }
-
-            @Override
-            public void fingerGone(final DPFPSensorEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("El dedo ha sido quitado del Lector de
-                        // Huella");
-                    }
-                });
-            }
-        });
-
-        Lector.addErrorListener(new DPFPErrorAdapter() {
-            public void errorReader(final DPFPErrorEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("Error: "+e.getError());
-                    }
-                });
-            }
-        });
     }
 
-    public DPFPFeatureSet featuresinscripcion;
-    public DPFPFeatureSet featuresverificacion;
-
-    public void ProcesarCaptura(DPFPSample sample) throws IOException, ParseException {
-
-        // Procesar la muestra de la huella y crear un conjunto de
-        // caracter�sticas con el proposito de inscripcion.
-        featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
-
-        // Procesar la muestra de la huella y crear un conjunto de
-        // características con el propósito de verificacion.
-        featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
-
-        // Comprobar la calidad de la muestra de la huella y lo agrega a su
-        // reclutador si es bueno
-        if (featuresinscripcion != null) {
-            try {
-                System.out.println("Las Caracteristicas de la Huella han sido creada");
-                Reclutador.addFeatures(featuresinscripcion);// Agregar las
-                // caracteristicas
-                // de la huella a la
-                // plantilla a crear
-
-                // Dibuja la huella dactilar capturada.
-                Image image = CrearImagenHuella(sample);
-                DibujarHuella(image);
-
-                //identifica despues de capturar la huella
-                boolean respuesta = identificarHuella();
-                if (respuesta) {
-                    registrarIngreso();
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se puede registrar el ingreso del estudiante", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-                //limpia el reclutador de las huellas
-                Reclutador.clear();
-                setTemplate(null);
-                //se para de utilizar el lector
-                stop();
-                //vuelve y se inicia para la proxima huella
-                start();
-            } catch (DPFPImageQualityException ex) {
-                System.err.println("Error: " + ex.getMessage());
-            } finally {
-                // Comprueba si la plantilla se ha creado.
-                switch (Reclutador.getTemplateStatus()) {
-                    case TEMPLATE_STATUS_READY: // informe de exito y detiene la
-                        // captura de huellas
-                        stop();
-                        JOptionPane.showMessageDialog(null, "Se esta identificando la huella");
-                        identificarHuella();
-                        setTemplate(Reclutador.getTemplate());
-                        break;
-
-                    case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la
-                        // captura de huellas
-                        Reclutador.clear();
-                        stop();
-                        setTemplate(null);
-                        JOptionPane.showMessageDialog(VentanaIngresoEstudiante.this,
-                                "La Huella no pudo ser leida, Repita el Proceso",
-                                "Lectura de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
-                        start();
-                        break;
-                }
-            }
-        }
-    }
-
-    public void start() {
+    /**
+    * Método que indica que el lector de huella se va a empezar a utilizar
+     */
+    public final void start() {
         Lector.startCapture();
-        // EnviarTexto("Utilizando el Lector de Huella Dactilar ");
     }
 
+    /**
+     * Metodo que indica que el lector de huella no esta en uso
+     */
     public void stop() {
         Lector.stopCapture();
-        // EnviarTexto("No se esta usando el Lector de Huella Dactilar ");
-    }
-
-    public Image CrearImagenHuella(DPFPSample sample) {
-        return DPFPGlobal.getSampleConversionFactory().createImage(sample);
-    }
-
-    public void DibujarHuella(Image image) {
-        jLabelImagenHuella.setIcon(new ImageIcon(
-                image.getScaledInstance(jLabelImagenHuella.getWidth(), jLabelImagenHuella.getHeight(), Image.SCALE_DEFAULT)));
-        repaint();
-    }
-
-    public DPFPTemplate getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(DPFPTemplate template) {
-        DPFPTemplate old = this.template;
-        this.template = template;
-        firePropertyChange(TEMPLATE_PROPERTY, old, template);
-    }
-
-    public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
-        DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
-        try {
-            return extractor.createFeatureSet(sample, purpose);
-        } catch (DPFPImageQualityException e) {
-            return null;
-        }
     }
 
     /**
-     * Identifica a una persona registrada por medio de su huella digital
-     *
-     * @return
-     * @throws java.io.IOException
+     * Variable que permite inicar el hilo para procesar las huellas
      */
-    public boolean identificarHuella() throws IOException {
-        try {
-
-            cn = dataConnection.conexion();
-
-            //Obtiene todas las huellas de la bd
-            PreparedStatement identificarStmt = cn.prepareStatement("SELECT nombres,documento,huella FROM huella");
-            ResultSet rs = identificarStmt.executeQuery();
-
-            //Si se encuentra el nombre en la base de datos
-            while (rs.next()) {
-                //Lee la plantilla de la base de datos
-                byte templateBuffer[] = rs.getBytes("huella");
-                String nombre = rs.getString("nombres");
-                int documento = rs.getInt("documento");
-
-                doc = documento;
-                //Crea una nueva plantilla a partir de la guardada en la base de datos
-                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
-                //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
-                setTemplate(referenceTemplate);
-
-                // Compara las caracteriticas de la huella recientemente capturda con la
-                // alguna plantilla guardada en la base de datos que coincide con ese tipo
-                DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
-
-                //compara las plantilas (actual vs bd)
-                //Si encuentra correspondencia dibuja el mapa
-                //e indica el nombre de la persona que coincidio.
-                if (result.isVerified()) {
-                    //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
-                    JOptionPane.showMessageDialog(null, "Las huella capturada es de " + nombre, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
-                    setTemplate(null);
-                    return true;
-                }
-            }
-           
-            setTemplate(null);
-        } catch (SQLException e) {
-            //Si ocurre un error lo indica en la consola
-            JOptionPane.showMessageDialog(null, "Error al identificar huella dactilar.\n"
-                    + "intente de Nuevo", "ERROR", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                cn.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+    DPFPDataAdapter dataAdapter = new DPFPDataAdapter() {
+        @Override
+        public void dataAcquired(final DPFPDataEvent e) {
+            hiloVerificarHuella.setSample(e.getSample());
+            SwingUtilities.invokeLater(hiloVerificarHuella);
         }
-        return false;
-    }
 
-    /**
-     * Metodo que permite registrar el ingreso de los estudiantes que poseen una
-     * huella
-     */
-    public void registrarIngreso() throws ParseException {
-        Date fecha; // TODO Auto-generated catch block
-        Date ultimoIngresoFecha;
-        fecha = (Date) instituto.fechaHoy();
-        ultimoIngresoFecha = (Date) instituto.ultimaFechaIngreso(doc);
-        instituto.actualizarUltimoIngreso(fecha, doc);
-        cn = dataConnection.conexion();
-        try {
-            pst = cn.prepareStatement("select * from estudiante where documento=?");
-            pst.setInt(1, doc);
-
-            rst = pst.executeQuery();
-            if (rst.next()) {
-                if (instituto.validarFechas(fecha, ultimoIngresoFecha) == false) {
-                    instituto.insertarRegistro(doc, fecha, ultimoIngresoFecha);
-                    JOptionPane.showMessageDialog(null, "Bienvenido estudiante");
-                } else {
-
-                    JOptionPane.showMessageDialog(null, "EL ESTUDIANTE YA INGRESO");
-
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "El estudiante no se encuentra en la base de datos");
-            }
-        } catch (SQLException e1) {
-        } catch (ParseException ex) {
-            Logger.getLogger(VentanaIngresoEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAtras;
     private javax.swing.JButton jButtonInicioSesionDoc;
@@ -558,4 +290,8 @@ public class VentanaIngresoEstudiante extends JFrame {
     private javax.swing.JPanel jPanelContenedorHuella;
     private javax.swing.JPanel jPanelHuella;
     // End of variables declaration//GEN-END:variables
+
+    
+  
+
 }

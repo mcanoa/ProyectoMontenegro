@@ -11,15 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.JToolBar.Separator;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,7 +25,6 @@ import logica.institutoMontenegro;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -177,40 +173,21 @@ public class VentanaAdministrador extends JFrame {
     }//GEN-LAST:event_jButtonCrearEstudianteActionPerformed
 
     private void GenerarInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerarInformeActionPerformed
-        // TODO add your handling code here:
-        
-        
-        if (v == true) {
-            VentanaGenerarInforme ventana = new VentanaGenerarInforme();
-            ventana.setVisible(true);
-            v = false;
-        } else {
-            JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
-        }
+
+        VentanaGenerarInforme.getInstanceSingleton().setVisible(true);
 
     }//GEN-LAST:event_GenerarInformeActionPerformed
 
     private void jButtonModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarDatosActionPerformed
-        // TODO add your handling code here:
-        if (v == true) {
-            VentanaModificarDatosAdmin ventana = new VentanaModificarDatosAdmin();
-            ventana.setVisible(true);
-            v = false;
-        } else {
-            JOptionPane.showMessageDialog(null, "No puedes abrir otra ventana");
-        }
+        
+        VentanaModificarDatosAdmin.getInstanceSingleton().setVisible(true);
 
     }//GEN-LAST:event_jButtonModificarDatosActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        // TODO add your handling code here:
-        if (v == false) {
-            JOptionPane.showMessageDialog(null, "Para salir, primero debes cerrar todas las ventanas");
-        } else {
-            VentanaPrincipal ventana = new VentanaPrincipal();
-            ventana.setVisible(true);
-            this.dispose();
-        }
+        
+        VentanaPrincipal.getInstaceSingleton().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     /**
@@ -240,43 +217,41 @@ public class VentanaAdministrador extends JFrame {
             }
 
             if (archivo != null) {
-                // Crear el objeto que tendra el libro de Excel
-                XSSFWorkbook workbook = new XSSFWorkbook(archivo);
-
                 /*
-            * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
-            * Una vez obtenida la hoja excel con las filas que se quieren leer obtenemos el iterator
-            * que nos permite recorrer cada una de las filas que contiene.
+                 * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
+                 * Una vez obtenida la hoja excel con las filas que se quieren leer obtenemos el iterator
+                 * que nos permite recorrer cada una de las filas que contiene.
                  */
-                XSSFSheet sheet = workbook.getSheetAt(0);
-
-                String[] doc;
-                Iterator<Row> rowIterator = sheet.iterator();
-
-                Row row;
-                Cell celda;
-                // Recorremos todas las filas para mostrar el contenido de cada celda
-                while (rowIterator.hasNext()) {
-                    row = rowIterator.next();
-
-                    grupo = String.valueOf(row.getCell(0));
-                    grado = String.valueOf(row.getCell(1));
-                    documento = String.valueOf(row.getCell(2));
-                    apellidos = String.valueOf(row.getCell(3));
-                    nombres = String.valueOf(row.getCell(4));
-                    zonaAlumno = String.valueOf(row.getCell(5));
-                    jornada = String.valueOf(row.getCell(6));
-
-                    procesarFila(grupo, grado, documento, apellidos, nombres, zonaAlumno, jornada);
-
+                try ( // Crear el objeto que tendra el libro de Excel
+                        XSSFWorkbook workbook = new XSSFWorkbook(archivo)) {
+                    /*
+                    * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
+                    * Una vez obtenida la hoja excel con las filas que se quieren leer obtenemos el iterator
+                    * que nos permite recorrer cada una de las filas que contiene.
+                    */
+                    XSSFSheet sheet = workbook.getSheetAt(0);
+                    String[] doc;
+                    Iterator<Row> rowIterator = sheet.iterator();
+                    Row row;
+                    Cell celda;
+                    // Recorremos todas las filas para mostrar el contenido de cada celda
+                    while (rowIterator.hasNext()) {
+                        row = rowIterator.next();
+                        
+                        grupo = String.valueOf(row.getCell(0));
+                        grado = String.valueOf(row.getCell(1));
+                        documento = String.valueOf(row.getCell(2));
+                        apellidos = String.valueOf(row.getCell(3));
+                        nombres = String.valueOf(row.getCell(4));
+                        zonaAlumno = String.valueOf(row.getCell(5));
+                        jornada = String.valueOf(row.getCell(6));
+                        
+                        procesarFila(grupo, grado, documento, apellidos, nombres, zonaAlumno, jornada);
+                    }
+                    // cerramos el libro excel
                 }
-
-                // cerramos el libro excel
-                workbook.close();
             }
-        } catch (IOException ex) {
-            Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvalidFormatException ex) {
+        } catch (IOException | InvalidFormatException ex) {
             Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -308,111 +283,15 @@ public class VentanaAdministrador extends JFrame {
     private javax.swing.JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
 
-    public void obtener(List listaDatosXCelda) throws SQLException {
-        List numeros = null;
-        int contador = 0;
-        int contadorNegativo = 0;
-        for (int i = 1; i < listaDatosXCelda.size(); i++) {
-            String cadena = new String();
-            numeros = new ArrayList();
-            List listaTemporalCeldas = (List) listaDatosXCelda.get(i);
-            for (int j = 17; j < listaTemporalCeldas.size(); j++) {
-                Cell celda = (Cell) listaTemporalCeldas.get(j);
-
-                switch (celda.getCellType()) {
-                    case Cell.CELL_TYPE_NUMERIC:
-                        int valor = (int) Math.round(celda.getNumericCellValue());
-
-                        numeros.add(valor);
-                        break;
-                    case Cell.CELL_TYPE_STRING:
-                        String valorString = celda.toString();
-                        if (j == listaTemporalCeldas.size() - 1) {
-                            cadena += valorString;
-//                    insert += "'"+celda.toString() + "'";
-                        } else {
-//                 insert += "'"+celda.toString() + "',";
-                            cadena += valorString + ",";
-                        }
-                        break;
-                }
-
-//                System.out.println(valorString + " ");
-//                System.out.println(valorString + " ");
-            }
-//            insert += ")";
-//            System.out.println(insert);
-            int grupo = 0, documento = 0, nombreGrupo = 0;
-
-            for (int a = 0; a < numeros.size(); a++) {
-                if (a == 0) {
-                    grupo = (int) numeros.get(a);
-                }
-                if (a == 1) {
-                    documento = (int) numeros.get(a);
-                }
-                if (a == 2) {
-                    nombreGrupo = (int) numeros.get(a);
-                }
-            }
-
-            String[] partes = cadena.split(",");
-
-            String grado = partes[0];
-            String apellidos = partes[1];
-            String nombres = partes[2];
-            String zonaAlumno = partes[3];
-            String jornada = partes[4];
-
-            System.out.println(cadena);
-            System.out.println(grupo + "");
-            System.out.println(documento + "");
-            System.out.println(nombreGrupo + "");
-
-            if (!validarDoc(documento)) {
-                pst = cn.prepareStatement("insert into estudiante (grupo,grado,documento,apellidos,nombres,zonaAlumno,nombreGrupo,jornada) values(?,?,?,?,?,?,?,?)");
-                pst.setInt(1, grupo);
-                pst.setString(2, grado);
-                pst.setInt(3, documento);
-                pst.setString(4, apellidos);
-                pst.setString(5, nombres);
-                pst.setString(6, zonaAlumno);
-                pst.setInt(7, nombreGrupo);
-                pst.setString(8, jornada);
-
-                int res = pst.executeUpdate();
-                if (res > 0) {
-                    Date fecha = fechaIncio();
-                    try {
-
-                        instituto.insertarRegistro(documento, fecha, fecha);
-                    } catch (ParseException e1) {
-
-                        e1.printStackTrace();
-                    }
-                    contador++;
-//                System.out.println("poblado exitoso");
-                }
-            } else {
-                contadorNegativo++;
-//                System.out.println("poblado Fallido");
-            }
-
-//            System.out.println(cadena);
-//            System.out.println();
-        }
-        JOptionPane.showMessageDialog(null, "Se han registrado" + " " + contador + " estudiantes");
-        JOptionPane.showMessageDialog(null, "No se pudieron registrar" + " " + contadorNegativo + " estudiantes");
-    }
-
-    public boolean validarDoc(int documento) {
+  
+    public boolean validarDoc(String documento) {
         try {
 
             pst = cn.prepareStatement("select documento from estudiante");
             result = pst.executeQuery();
             while (result.next()) {
-                int a = result.getInt("documento");
-                if (a == documento) {
+                String a = result.getString("documento");
+                if (a.equals(documento)) {
                     return true;
                 }
             }
@@ -434,17 +313,59 @@ public class VentanaAdministrador extends JFrame {
         return fecha;
     }
 
-    String[] doc=new String[2];
-    String[] grup=new String[3];
+    String[] doc = new String[2];
+    String[] grup = new String[3];
+
     private void procesarFila(String grupo, String grado, String documento, String apellidos, String nombres, String zonaAlumno, String jornada) {
 
-        documento= documento.replace(".", "");
+        
+        documento = documento.replace(".", "");
         doc = documento.split("E");
         documento = doc[0];
+
         
-                                
+
+           
+                try {
+                    cn = dataConnection.conexion();
+                    pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,grado,grupo,"
+                            + "zonaAlumno,jornada) values (?,?,?,?,?,?,?)");
+                    
+                    pst.setString(1, documento);
+                    pst.setString(2, nombres);
+                    pst.setString(3, apellidos);
+                    pst.setString(4, grado);
+                    pst.setString(5, grupo);
+                    pst.setString(6, zonaAlumno);
+                    pst.setString(7, jornada);
+                    
+                    int res = pst.executeUpdate();
+                    if (res > 0) {
+                        Date fecha = fechaIncio();
+                        
+                        instituto.insertarRegistro(documento, fecha, fecha);
+                        
+                    }
+                } catch (SQLException | ParseException ex) {
+                    Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+           
+
+            System.out.println(grupo + " " + grado + " " + documento + " " + apellidos + " " + nombres + " " + zonaAlumno + " " + jornada);
+
         
-        System.out.println(grupo + " " + grado + " " + documento + " " + apellidos + " " + nombres + " " + zonaAlumno + " " + jornada);
+    }
+
+    /**
+     * Metodo que permite verificar que el estudiante tenga los dos apellidos
+     *
+     * @param apell
+     * @return
+     */
+    public boolean validarNombreCompleto(String apell) {
+
+        String[] apellidos = apell.split(" ");
+        return apellidos.length == 2;
     }
 
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 import java.awt.Color;
@@ -13,7 +8,9 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author user
+ * @author Maria Alejandra Martos Diaz
+ * @author Mateo Cano Alfonso
+ * @author Juan Jefferson Alape
  */
 public class VentanaPrincipal extends JFrame {
 
@@ -27,6 +24,10 @@ public class VentanaPrincipal extends JFrame {
          this.getContentPane().setBackground(Color.white);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public static VentanaPrincipal getInstaceSingleton(){
         if(ventana==null){
             ventana= new VentanaPrincipal(); 
@@ -98,6 +99,11 @@ public class VentanaPrincipal extends JFrame {
                 jButtonSalirActionPerformed(evt);
             }
         });
+        jButtonSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButtonSalirKeyPressed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Instituto Montenegro");
@@ -145,34 +151,61 @@ public class VentanaPrincipal extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdministradorActionPerformed
         VentanaIngresoAdministrador.getInstanceSingleton().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonAdministradorActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEstudianteActionPerformed
         VentanaIngresoEstudiante.getInstaceSingleton().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonEstudianteActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonAdministradorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonAdministradorKeyPressed
-        // TODO add your handling code here:
          if(evt.getKeyCode() == KeyEvent.VK_ENTER){
              jButtonAdministradorActionPerformed(null);
         }
     }//GEN-LAST:event_jButtonAdministradorKeyPressed
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonEstudianteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonEstudianteKeyPressed
-        // TODO add your handling code here:
          if(evt.getKeyCode() == KeyEvent.VK_ENTER){
              jButtonEstudianteActionPerformed(null);
         }
     }//GEN-LAST:event_jButtonEstudianteKeyPressed
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void jButtonSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonSalirKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+             jButtonSalirActionPerformed(null);
+        }
+    }//GEN-LAST:event_jButtonSalirKeyPressed
 
     @Override
     public Image getIconImage() {
@@ -212,6 +245,7 @@ public class VentanaPrincipal extends JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 VentanaPrincipal.getInstaceSingleton().setVisible(true);
                 

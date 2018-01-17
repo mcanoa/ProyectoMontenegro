@@ -130,14 +130,14 @@ public class institutoMontenegro {
          * @throws SQLException
          * @throws ParseException 
          */
-	public void insertarRegistro(int documento, Date fecha, Date ultimoIngreso) throws SQLException, ParseException {
+	public void insertarRegistro(String documento, Date fecha, Date ultimoIngreso) throws SQLException, ParseException {
 
 		cn = dataConnection.conexion();
 
 		pst = cn.prepareStatement(
 				"insert into instituto_montenegro (documentoEstudiante,fechaIngreso,ultimoIngreso) values(?,?,?);");
 
-		pst.setInt(1, documento);
+		pst.setString(1, documento);
 		pst.setDate(2, (java.sql.Date) fecha);
 		pst.setDate(3, (java.sql.Date) ultimoIngreso);
 
@@ -201,12 +201,12 @@ public class institutoMontenegro {
          * @param documento
          * @return 
          */
-	public Date ultimaFechaIngreso(int documento) {
+	public Date ultimaFechaIngreso(String documento) {
 		Date ultimoIngreso = null;
 		cn = dataConnection.conexion();
 		try {
 			pst = cn.prepareStatement("select ultimoIngreso from instituto_montenegro WHERE documentoEstudiante=?;");
-			pst.setInt(1, documento);
+			pst.setString(1, documento);
 			rst = pst.executeQuery();
 			if (rst.next()) {
 				ultimoIngreso = rst.getDate(1);
@@ -226,13 +226,13 @@ public class institutoMontenegro {
          * @param fechaHoy
          * @param documento 
          */
-	public void actualizarUltimoIngreso(Date fechaHoy, int documento) {
+	public void actualizarUltimoIngreso(Date fechaHoy, String documento) {
 
 		cn = dataconnection.conexion();
 		try {
 			pst = cn.prepareStatement("update instituto_montenegro set ultimoIngreso=? WHERE documentoEstudiante=?");
 			pst.setDate(1, (java.sql.Date) fechaHoy);
-			pst.setInt(2, documento);
+			pst.setString(2, documento);
 			int rst = pst.executeUpdate();
 			if (rst > 0) {
 				System.out.println("correcto");

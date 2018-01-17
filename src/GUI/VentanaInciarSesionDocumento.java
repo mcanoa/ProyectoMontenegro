@@ -27,7 +27,7 @@ import logica.institutoMontenegro;
  */
 public class VentanaInciarSesionDocumento extends JFrame {
 
-    int doc;
+    String doc;
     institutoMontenegro instituto;
     // atributos para el manejo de la base de datos
     PreparedStatement pst;
@@ -260,14 +260,14 @@ public class VentanaInciarSesionDocumento extends JFrame {
             String apellidos = jTextFieldApellidosRegistrarEstudiante.getText();
             String doc = jTextFieldDocumentoRegistrarEstudiante.getText();
            
-            int documento;
+            
 
             if (validarDocumento(doc)) {
-                documento = Integer.parseInt(doc);
-                this.doc = documento;
+                
+                this.doc = doc;
                 //validar que ingrese los campos obligatorios para registrar en
                 //la base de datos
-                if (nombres.length() != 0 && apellidos.length() != 0 && documento != 0) {
+                if (nombres.length() != 0 && apellidos.length() != 0 && doc.length()!=0) {
                     Date fecha; // TODO Auto-generated catch block
                     fecha = (Date) instituto.fechaHoy();
 
@@ -276,7 +276,7 @@ public class VentanaInciarSesionDocumento extends JFrame {
                     try {
                         pst = cn.prepareStatement("insert into estudiante_ocasional(documento,nombres,apellidos,fechaIngreso)values (?,?,?,?)");
 
-                        pst.setInt(1, documento);
+                        pst.setString(1, doc);
                         pst.setString(2, nombres);
                         pst.setString(3, apellidos);
                         pst.setDate(4, fecha);
@@ -314,7 +314,7 @@ public class VentanaInciarSesionDocumento extends JFrame {
         try {
             // TODO add your handling code here:
 
-            int documento = Integer.parseInt(jTextFieldDocumentoIdentidad.getText());
+            String documento = jTextFieldDocumentoIdentidad.getText();
             Date fecha;
             Date ultimoIngresoFecha;
             fecha = (Date) instituto.fechaHoy();
@@ -324,7 +324,7 @@ public class VentanaInciarSesionDocumento extends JFrame {
             cn = dataConnection.conexion();
             try {
                 pst = cn.prepareStatement("select * from estudiante where documento=?");
-                pst.setInt(1, documento);
+                pst.setString(1, documento);
 
                 result = pst.executeQuery();
                 if (result.next()) {
@@ -481,7 +481,7 @@ public class VentanaInciarSesionDocumento extends JFrame {
         cn = dataConnection.conexion();
         try {
             pst = cn.prepareStatement("select * from estudiante_ocasional where documento=?");
-            pst.setInt(1, doc);
+            pst.setString(1, doc);
 
             result = pst.executeQuery();
             if (result.next()) {

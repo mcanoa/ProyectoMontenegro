@@ -529,13 +529,17 @@ public class VentanaGestionEstudiante extends JFrame {
      */
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
 
-               
+        
+        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
+        Integer tamanoHuella = template.serialize().length;
+        
          cn = dataConnection.conexion();
+         
         try {
 
             
             pst = cn.prepareStatement(
-                    "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=? where documento=?");
+                    "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=?,huella=? where documento=?");
             
             pst.setInt(1, Integer.parseInt(jTextFieldDocumento.getText()));
             pst.setString(2, jTextFieldNombres.getText());
@@ -544,11 +548,16 @@ public class VentanaGestionEstudiante extends JFrame {
             pst.setString(5, jTextFieldGrupo.getText());
             pst.setString(6, jTextFieldZonaAlumno.getText());
             pst.setString(7, jTextFieldJornada.getText());
-            pst.setInt(8, Integer.parseInt(jTextFieldDocumento.getText()));
+            pst.setBinaryStream(8, datosHuella, tamanoHuella);
+            pst.setInt(9, Integer.parseInt(jTextFieldDocumento.getText()));
             
-             int res = pst.executeUpdate();
+            
+            int res = pst.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "El estudiante se ha modificado");
+                limpiarFormulario();
+                pst.close();
+                cn.close();
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo modificar estudiante, ocurrió un error");
             }
@@ -812,12 +821,13 @@ public class VentanaGestionEstudiante extends JFrame {
         Lector.addDataListener(new DPFPDataAdapter() {
             @Override
             public void dataAcquired(final DPFPDataEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("La Huella Digital ha sido Capturada");
-                        ProcesarCaptura(e.getSample());
-                    }
-                });
+                ProcesarCaptura(e.getSample());
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    public void run() {
+//                        // EnviarTexto("La Huella Digital ha sido Capturada");
+//                        ProcesarCaptura(e.getSample());
+//                    }
+//                });
             }
         });
 
@@ -904,6 +914,7 @@ public class VentanaGestionEstudiante extends JFrame {
 
             } catch (DPFPImageQualityException ex) {
                 System.err.println("Error: " + ex.getMessage());
+                System.out.println("Hola mundo");
             } finally {
 
                 // Comprueba si la plantilla se ha creado.
@@ -987,14 +998,14 @@ public class VentanaGestionEstudiante extends JFrame {
         try {
             //Establece los valores para la sentencia SQL
             cn = dataConnection.conexion();
-            PreparedStatement guardarStmt = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
+            pst = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
 
-            guardarStmt.setInt(1, doc);
-            guardarStmt.setString(2, nombre);
-            guardarStmt.setBinaryStream(3, datosHuella, tamanoHuella);
+            pst.setInt(1, doc);
+            pst.setString(2, nombre);
+            pst.setBinaryStream(3, datosHuella, tamanoHuella);
             //Ejecuta la sentencia
-            guardarStmt.execute();
-            guardarStmt.close();
+            pst.execute();
+            pst.close();
             JOptionPane.showMessageDialog(null, "Huella Guardada Correctamente");
             cn.close();
             //btnGuardar.setEnabled(false);
@@ -1123,6 +1134,12 @@ public class VentanaGestionEstudiante extends JFrame {
         jTextFieldGrupo.setText("");
         jTextFieldZonaAlumno.setText("");
         jTextFieldJornada.setText("");
+        jLabelImagenHuella.setIcon(null);
+        
+        setTemplate(null);
+        Reclutador.clear();
+        stop();
+        
     }
 
 }

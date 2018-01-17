@@ -38,9 +38,13 @@ import logica.institutoMontenegro;
 
 /**
  *
- * @author user
+ * @author Maria Alejandra Martos Diaz
+ * @author Mateo Cano Alfonso
+ * @author Juan Jeferson Alape
  */
 public class VentanaGenerarInforme extends JFrame {
+    
+    private static VentanaGenerarInforme ventana;
 
     BaseColor grisClaro = new BaseColor(230, 230, 230);
     BaseColor azulClaro = new BaseColor(124, 195, 255);
@@ -59,6 +63,15 @@ public class VentanaGenerarInforme extends JFrame {
         editarDate2();
     }
 
+    public static VentanaGenerarInforme getInstanceSingleton(){
+        
+        if(ventana==null){
+            ventana=new VentanaGenerarInforme();
+        }
+        return ventana;
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -520,7 +533,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"6%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"6%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -588,7 +601,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"1%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"1%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -655,7 +668,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"2%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"2%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -722,7 +735,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"3%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"3%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -789,7 +802,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"4%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"4%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -857,7 +870,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"5%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"5%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -925,7 +938,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"7%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"7%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -992,7 +1005,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"8%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"8%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -1059,7 +1072,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"9%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"9%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -1126,7 +1139,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"10%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"10%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
@@ -1193,7 +1206,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
             cn = dataConnection.conexion();
 
             pst = cn.prepareStatement(
-                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.nombreGrupo like(\"11%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
+                    "select est.documento,est.nombres,est.apellidos,est.grado, count(*) as asistencias_Semanales from  instituto_montenegro im JOIN estudiante est ON(im.documentoEstudiante=est.documento) WHERE est.grupo like(\"11%\") and fechaIngreso between ? AND ? GROUP BY est.documento;");
             pst.setDate(1, (java.sql.Date) fechaInicial);
             pst.setDate(2, (java.sql.Date) fechaFinal);
             result = pst.executeQuery();
