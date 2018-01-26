@@ -5,38 +5,15 @@
  */
 package GUI;
 
-
-import com.digitalpersona.onetouch.DPFPDataPurpose;
-import com.digitalpersona.onetouch.DPFPFeatureSet;
-import com.digitalpersona.onetouch.DPFPGlobal;
-import com.digitalpersona.onetouch.DPFPSample;
-import com.digitalpersona.onetouch.DPFPTemplate;
-import com.digitalpersona.onetouch.capture.DPFPCapture;
-import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
-import com.digitalpersona.onetouch.capture.event.DPFPErrorAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPErrorEvent;
-import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
-import com.digitalpersona.onetouch.capture.event.DPFPSensorAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPSensorEvent;
-import com.digitalpersona.onetouch.processing.DPFPEnrollment;
-import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
-import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
-import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import logica.HiloGuardarHuella;
 import logica.dataConnection;
 
 /**
@@ -57,10 +35,14 @@ public class VentanaGestionEstudiante extends JFrame {
     String[] busquedas = {"Documento de Identidad", "Apellidos"};
     private int estadoGuardar;
 
-    // atributos para el manejo de la base de datos
     PreparedStatement pst;
     Connection cn;
-    ResultSet res;
+    ResultSet rst;
+
+    HiloGuardarHuella hilo;
+
+    static ByteArrayInputStream datosHuella;
+    static Integer tamanoHuella;
 
     DefaultTableModel modelo = new DefaultTableModel() {
         @Override
@@ -74,22 +56,39 @@ public class VentanaGestionEstudiante extends JFrame {
      */
     public VentanaGestionEstudiante() {
 
-        estadoGuardar=0;//estado que indica que se va a guardar un estdiante nuevo
+        estadoGuardar = 0;//estado que indica que se va a guardar un estdiante nuevo
         modelo.addColumn("Documento");
         modelo.addColumn("Nombres");
         modelo.addColumn("Apellidos");
         initComponents();
         jTableResultado.setModel(modelo);
+        hilo = new HiloGuardarHuella(jLabelImagenHuella, jButtonGuardar);
+
     }
 
-     public static VentanaGestionEstudiante getInstanceSingleton(){
-        if(ventana==null){
-            ventana=new VentanaGestionEstudiante();
+    public static VentanaGestionEstudiante getInstanceSingleton() {
+        if (ventana == null) {
+            ventana = new VentanaGestionEstudiante();
         }
         return ventana;
     }
-    
-    
+
+    /**
+     *
+     * @param datosHuella
+     */
+    public static void setDatosHuella(ByteArrayInputStream datosHuella) {
+        VentanaGestionEstudiante.datosHuella = datosHuella;
+    }
+
+    /**
+     *
+     * @param tamanoHuella
+     */
+    public static void setTamanoHuella(Integer tamanoHuella) {
+        VentanaGestionEstudiante.tamanoHuella = tamanoHuella;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -121,7 +120,7 @@ public class VentanaGestionEstudiante extends JFrame {
         jPanelContenedorHuella = new javax.swing.JPanel();
         jLabelImagenHuella = new javax.swing.JLabel();
         jLabelHuella = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonLimpiarCampos = new javax.swing.JButton();
         jPanelLista = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableResultado = new javax.swing.JTable();
@@ -131,8 +130,14 @@ public class VentanaGestionEstudiante extends JFrame {
         jButtonBuscar = new javax.swing.JButton();
         jButtonEliminar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("PAE Instituto Montenegro- Gestión estudiantes");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabelTitulo.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         jLabelTitulo.setText("Busqueda De Estudiantes");
@@ -163,22 +168,47 @@ public class VentanaGestionEstudiante extends JFrame {
         jTextFieldDocumento.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldDocumento.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldDocumento.setDoubleBuffered(true);
+        jTextFieldDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldDocumentoKeyTyped(evt);
+            }
+        });
 
         jTextFieldNombres.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldNombres.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldNombres.setDoubleBuffered(true);
+        jTextFieldNombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldNombresKeyTyped(evt);
+            }
+        });
 
         jTextFieldApellidos.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldApellidos.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldApellidos.setDoubleBuffered(true);
+        jTextFieldApellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldApellidosKeyTyped(evt);
+            }
+        });
 
         jTextFieldGrado.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldGrado.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldGrado.setDoubleBuffered(true);
+        jTextFieldGrado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldGradoKeyTyped(evt);
+            }
+        });
 
         jTextFieldGrupo.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldGrupo.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jTextFieldGrupo.setDoubleBuffered(true);
+        jTextFieldGrupo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldGrupoKeyTyped(evt);
+            }
+        });
 
         jTextFieldZonaAlumno.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldZonaAlumno.addActionListener(new java.awt.event.ActionListener() {
@@ -186,11 +216,21 @@ public class VentanaGestionEstudiante extends JFrame {
                 jTextFieldZonaAlumnoActionPerformed(evt);
             }
         });
+        jTextFieldZonaAlumno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldZonaAlumnoKeyTyped(evt);
+            }
+        });
 
         jTextFieldJornada.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jTextFieldJornada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldJornadaActionPerformed(evt);
+            }
+        });
+        jTextFieldJornada.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldJornadaKeyTyped(evt);
             }
         });
 
@@ -243,10 +283,10 @@ public class VentanaGestionEstudiante extends JFrame {
         jLabelHuella.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabelHuella.setText("Huella Dactilar:");
 
-        jButton1.setText("Limpiar Campos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonLimpiarCampos.setText("Limpiar Campos");
+        jButtonLimpiarCampos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonLimpiarCamposActionPerformed(evt);
             }
         });
 
@@ -289,7 +329,7 @@ public class VentanaGestionEstudiante extends JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDatosLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                                         .addGroup(jPanelDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                                            .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
                                             .addComponent(jButtonGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                             .addComponent(jTextFieldZonaAlumno)
                             .addComponent(jTextFieldJornada))))
@@ -335,7 +375,7 @@ public class VentanaGestionEstudiante extends JFrame {
                             .addComponent(jLabelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonActualizaHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonLimpiarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(46, 46, 46))
@@ -472,9 +512,9 @@ public class VentanaGestionEstudiante extends JFrame {
     private void jButtonActualizaHuellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizaHuellaActionPerformed
 
         jButtonGuardar.setEnabled(false);
-        start();
-        Iniciar();
-
+        jButtonActualizaHuella.setEnabled(false);
+        jButtonLimpiarCampos.setEnabled(false);
+        SwingUtilities.invokeLater(hilo);
     }//GEN-LAST:event_jButtonActualizaHuellaActionPerformed
 
     /**
@@ -528,44 +568,74 @@ public class VentanaGestionEstudiante extends JFrame {
      * @param evt
      */
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-
-        
-        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
-        Integer tamanoHuella = template.serialize().length;
-        
-         cn = dataConnection.conexion();
-         
         try {
+            cn = dataConnection.conexion();
 
-            
-            pst = cn.prepareStatement(
-                    "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=?,huella=? where documento=?");
-            
-            pst.setInt(1, Integer.parseInt(jTextFieldDocumento.getText()));
-            pst.setString(2, jTextFieldNombres.getText());
-            pst.setString(3, jTextFieldApellidos.getText());
-            pst.setString(4, jTextFieldGrado.getText());
-            pst.setString(5, jTextFieldGrupo.getText());
-            pst.setString(6, jTextFieldZonaAlumno.getText());
-            pst.setString(7, jTextFieldJornada.getText());
-            pst.setBinaryStream(8, datosHuella, tamanoHuella);
-            pst.setInt(9, Integer.parseInt(jTextFieldDocumento.getText()));
-            
-            
-            int res = pst.executeUpdate();
-            if (res > 0) {
-                JOptionPane.showMessageDialog(null, "El estudiante se ha modificado");
-                limpiarFormulario();
-                pst.close();
-                cn.close();
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo modificar estudiante, ocurrió un error");
+            if (estadoGuardar == 0) {
+
+                pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,grado,grupo,"
+                        + "zonaAlumno,jornada,huella) values(?,?,?,?,?,?,?,?)");
+
+                pst.setString(1, jTextFieldDocumento.getText());
+                pst.setString(2, jTextFieldNombres.getText());
+                pst.setString(3, jTextFieldApellidos.getText());
+                pst.setString(4, jTextFieldGrado.getText());
+                pst.setInt(5, Integer.parseInt(jTextFieldGrupo.getText()));
+                pst.setString(6, jTextFieldZonaAlumno.getText());
+                pst.setString(7, jTextFieldJornada.getText());
+
+                if (tamanoHuella == null && datosHuella == null) {
+                    pst.setBinaryStream(8, null);
+
+                } else {
+                    pst.setBinaryStream(8, datosHuella, tamanoHuella);
+                }
+                
+                int res = pst.executeUpdate();
+                if (res>0) {
+                    JOptionPane.showMessageDialog(null, "El estudiante se ha Guardado");
+                    limpiarFormulario();
+                    pst.close();
+                    cn.close();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo guardar el estudiante, ocurrió un error");
+                }
+
+            } else if (estadoGuardar == 1) {
+
+                pst = cn.prepareStatement(
+                        "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=?,huella=? where documento=?");
+
+                pst.setString(1, jTextFieldDocumento.getText());
+                pst.setString(2, jTextFieldNombres.getText());
+                pst.setString(3, jTextFieldApellidos.getText());
+                pst.setString(4, jTextFieldGrado.getText());
+                 pst.setInt(5, Integer.parseInt(jTextFieldGrupo.getText()));
+                pst.setString(6, jTextFieldZonaAlumno.getText());
+                pst.setString(7, jTextFieldJornada.getText());
+
+                if (datosHuella == null && tamanoHuella == null) {
+                    pst.setBinaryStream(8, null);
+                } else {
+                    pst.setBinaryStream(8, datosHuella, tamanoHuella);
+                }
+                pst.setString(9, jTextFieldDocumento.getText());
+
+                int resultado = pst.executeUpdate();
+                if (resultado > 0) {
+                    JOptionPane.showMessageDialog(null, "El estudiante se ha modificado");
+                    limpiarFormulario();
+                    pst.close();
+                    cn.close();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo modificar el estudiante, ocurrió un error");
+                }
             }
         } catch (SQLException e1) {
-            e1.printStackTrace();
+//            e1.printStackTrace();
         }
 
-        
+
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     /**
@@ -582,35 +652,33 @@ public class VentanaGestionEstudiante extends JFrame {
 
             if (filaseleccionada == -1) {
 
-                
                 JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila");
+                estadoGuardar = 0;
 
             } else {
 
-                estadoGuardar=1;//indica que va a actualizar un estudiante
-                
-                
+                estadoGuardar = 1;//indica que va a actualizar un estudiante
+
                 String documento = (String) modelo.getValueAt(filaseleccionada, 0);
                 String nombres = (String) modelo.getValueAt(filaseleccionada, 1);
                 String apellidos = (String) modelo.getValueAt(filaseleccionada, 2);
 
-                int doc = Integer.parseInt(documento);
                 cn = dataConnection.conexion();
                 pst = cn.prepareStatement(
                         "select grado,grupo,zonaAlumno,jornada from estudiante WHERE documento=?");
-                pst.setInt(1, doc);
+                pst.setString(1, documento);
 
-                res = pst.executeQuery();
-                if (res.next()) {
+                rst = pst.executeQuery();
+                if (rst.next()) {
 
                     jTextFieldDocumento.setText(documento);
                     jTextFieldDocumento.setEnabled(false);
                     jTextFieldNombres.setText(nombres);
                     jTextFieldApellidos.setText(apellidos);
-                    jTextFieldGrado.setText(res.getString("grado"));
-                    jTextFieldGrupo.setText(res.getString("grupo"));
-                    jTextFieldZonaAlumno.setText(res.getString("zonaAlumno"));
-                    jTextFieldJornada.setText(res.getString("jornada"));
+                    jTextFieldGrado.setText(rst.getString("grado"));
+                    jTextFieldGrupo.setText(rst.getString("grupo"));
+                    jTextFieldZonaAlumno.setText(rst.getString("zonaAlumno"));
+                    jTextFieldJornada.setText(rst.getString("jornada"));
 
                 }
 
@@ -639,38 +707,79 @@ public class VentanaGestionEstudiante extends JFrame {
         if (filaseleccionada == -1) {
             JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna fila");
         } else {
-            
+
             int eleccion = JOptionPane.showConfirmDialog(null, "Seguro desea eliminar el estudiante", "CONFIRMAR", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (eleccion == JOptionPane.YES_OPTION) {
-                    String documento = (String) modelo.getValueAt(filaseleccionada, 0);
-                    cn = dataConnection.conexion();
-                    try {
-                        pst = cn.prepareStatement("delete from estudiante where documento=?");
-                        pst.setString(1, documento);
-                        int res = pst.executeUpdate();
-                        if (res > 0) {
-                            limpiarFormulario();
-                            modelo.removeRow(jTableResultado.getSelectedRow()); 
-                            JOptionPane.showMessageDialog(null, "Estudiante eliminado satisfactoriamente");
-                            
-                        } else {
-                            JOptionPane.showMessageDialog(null, "el estudiante no existe");
-                        }
-                        cn.close();
+                String documento = (String) modelo.getValueAt(filaseleccionada, 0);
+                cn = dataConnection.conexion();
+                try {
+                    pst = cn.prepareStatement("delete from estudiante where documento=?");
+                    pst.setString(1, documento);
+                    int res = pst.executeUpdate();
+                    if (res > 0) {
+                        limpiarFormulario();
+                        modelo.removeRow(jTableResultado.getSelectedRow());
+                        JOptionPane.showMessageDialog(null, "Estudiante eliminado satisfactoriamente");
 
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "el estudiante no existe");
                     }
-                
+                    cn.close();
+
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+
             }
         }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        estadoGuardar=0;//estudiante nuevo
+    private void jButtonLimpiarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLimpiarCamposActionPerformed
+
+        estadoGuardar = 0;//estudiante nuevo
         limpiarFormulario();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonLimpiarCamposActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void jTextFieldDocumentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDocumentoKeyTyped
+        noTeclearLetras(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldDocumentoKeyTyped
+
+    private void jTextFieldNombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombresKeyTyped
+
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldNombresKeyTyped
+
+    private void jTextFieldApellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldApellidosKeyTyped
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldApellidosKeyTyped
+
+    private void jTextFieldGradoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldGradoKeyTyped
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldGradoKeyTyped
+
+    private void jTextFieldGrupoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldGrupoKeyTyped
+        noTeclearLetras(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldGrupoKeyTyped
+
+    private void jTextFieldZonaAlumnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldZonaAlumnoKeyTyped
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldZonaAlumnoKeyTyped
+
+    private void jTextFieldJornadaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldJornadaKeyTyped
+        noTeclearNumeros(evt);
+        noteclearCaracteres(evt);
+    }//GEN-LAST:event_jTextFieldJornadaKeyTyped
 
     /**
      *
@@ -686,18 +795,18 @@ public class VentanaGestionEstudiante extends JFrame {
 
                 pst.setString(1, "%" + atributo + "%");
 
-                res = pst.executeQuery();
+                rst = pst.executeQuery();
                 String[] datos = new String[3];
-                if (res.next()) {
-                    datos[0] = res.getString("documento");
-                    datos[1] = res.getString("nombres");
-                    datos[2] = res.getString("apellidos");
+                if (rst.next()) {
+                    datos[0] = rst.getString("documento");
+                    datos[1] = rst.getString("nombres");
+                    datos[2] = rst.getString("apellidos");
                     modelo.addRow(datos);
 
-                    while (res.next()) {
-                        datos[0] = res.getString("documento");
-                        datos[1] = res.getString("nombres");
-                        datos[2] = res.getString("apellidos");
+                    while (rst.next()) {
+                        datos[0] = rst.getString("documento");
+                        datos[1] = rst.getString("nombres");
+                        datos[2] = rst.getString("apellidos");
                         modelo.addRow(datos);
 
                     }
@@ -730,18 +839,18 @@ public class VentanaGestionEstudiante extends JFrame {
                     "select documento,nombres,apellidos from estudiante WHERE apellidos like ?");
             pst.setString(1, "%" + atributo + "%");
 
-            res = pst.executeQuery();
+            rst = pst.executeQuery();
             String[] datos = new String[3];
-            if (res.next()) {
-                datos[0] = String.valueOf(res.getInt("documento"));
-                datos[1] = res.getString("nombres");
-                datos[2] = res.getString("apellidos");
+            if (rst.next()) {
+                datos[0] = String.valueOf(rst.getInt("documento"));
+                datos[1] = rst.getString("nombres");
+                datos[2] = rst.getString("apellidos");
                 modelo.addRow(datos);
 
-                while (res.next()) {
-                    datos[0] = String.valueOf(res.getInt("documento"));
-                    datos[1] = res.getString("nombres");
-                    datos[2] = res.getString("apellidos");
+                while (rst.next()) {
+                    datos[0] = String.valueOf(rst.getInt("documento"));
+                    datos[1] = rst.getString("nombres");
+                    datos[2] = rst.getString("apellidos");
                     modelo.addRow(datos);
 
                 }
@@ -793,288 +902,6 @@ public class VentanaGestionEstudiante extends JFrame {
         }
     }
 
-    // Varible que permite iniciar el dispositivo de lector de huella conectado
-    // con sus distintos metodos.
-    private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
-
-    // Varible que permite establecer las capturas de la huellas, para determina
-    // sus caracteristicas
-    // y poder estimar la creacion de un template de la huella para luego poder
-    // guardarla
-    private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
-
-    // Esta variable tambien captura una huella del lector y crea sus
-    // caracteristcas para auntetificarla
-    // o verificarla con alguna guardada en la BD
-    private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
-
-    // Variable que para crear el template de la huella luego de que se hallan
-    // creado las caracteriticas
-    // necesarias de la huella si no ha ocurrido ningun problema
-    private DPFPTemplate template;
-    public static String TEMPLATE_PROPERTY = "template";
-
-    /**
-     * Metodo que sirve para iniciar el lector de huellas
-     */
-    protected void Iniciar() {
-        Lector.addDataListener(new DPFPDataAdapter() {
-            @Override
-            public void dataAcquired(final DPFPDataEvent e) {
-                ProcesarCaptura(e.getSample());
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    public void run() {
-//                        // EnviarTexto("La Huella Digital ha sido Capturada");
-//                        ProcesarCaptura(e.getSample());
-//                    }
-//                });
-            }
-        });
-
-        Lector.addReaderStatusListener(new DPFPReaderStatusAdapter() {
-            @Override
-            public void readerConnected(final DPFPReaderStatusEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("El Sensor de Huella Digital esta
-                        // Activado o Conectado");
-                    }
-                });
-            }
-
-            @Override
-            public void readerDisconnected(final DPFPReaderStatusEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("El Sensor de Huella Digital esta
-                        // Desactivado o no Conectado");
-                    }
-                });
-            }
-        });
-
-        Lector.addSensorListener(new DPFPSensorAdapter() {
-            @Override
-            public void fingerTouched(final DPFPSensorEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("El dedo ha sido colocado sobre el Lector
-                        // de Huella");
-                    }
-                });
-            }
-
-            @Override
-            public void fingerGone(final DPFPSensorEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("El dedo ha sido quitado del Lector de
-                        // Huella");
-                    }
-                });
-            }
-        });
-
-        Lector.addErrorListener(new DPFPErrorAdapter() {
-            public void errorReader(final DPFPErrorEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // EnviarTexto("Error: "+e.getError());
-                    }
-                });
-            }
-        });
-    }
-
-    public DPFPFeatureSet featuresinscripcion;
-    public DPFPFeatureSet featuresverificacion;
-
-    public void ProcesarCaptura(DPFPSample sample) {
-        // Procesar la muestra de la huella y crear un conjunto de
-        // caracter�sticas con el proposito de inscripcion.
-        featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
-
-        // Procesar la muestra de la huella y crear un conjunto de
-        // caracter�sticas con el proposito de verificacion.
-        featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
-
-        // Comprobar la calidad de la muestra de la huella y lo a�ade a su
-        // reclutador si es bueno
-        if (featuresinscripcion != null) {
-            try {
-                System.out.println("Las Características de la Huella han sido creada");
-                Reclutador.addFeatures(featuresinscripcion);// Agregar las
-                // caracteristicas
-                // de la huella a la
-                // plantilla a crear
-
-                // Dibuja la huella dactilar capturada.
-                Image image = CrearImagenHuella(sample);
-                DibujarHuella(image);
-
-            } catch (DPFPImageQualityException ex) {
-                System.err.println("Error: " + ex.getMessage());
-                System.out.println("Hola mundo");
-            } finally {
-
-                // Comprueba si la plantilla se ha creado.
-                switch (Reclutador.getTemplateStatus()) {
-                    case TEMPLATE_STATUS_READY: // informe de exito y detiene la
-                        // captura de huellas
-                        stop();
-                        setTemplate(Reclutador.getTemplate());
-
-                        JOptionPane.showMessageDialog(null, "Ya puede guardar el estudiante");
-                        jButtonGuardar.setEnabled(true);
-                        jButtonGuardar.grabFocus();
-                        break;
-
-                    case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la
-                        // captura de huellas
-                        Reclutador.clear();
-                        stop();
-
-                        setTemplate(null);
-                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this,
-                                "La Plantilla de la Huella no pudo ser creada, Repita el Proceso",
-                                "Inscripción de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
-                        start();
-                        break;
-                }
-            }
-        }
-    }
-
-    public void start() {
-        Lector.startCapture();
-        // EnviarTexto("Utilizando el Lector de Huella Dactilar ");
-    }
-
-    public void stop() {
-        Lector.stopCapture();
-        // EnviarTexto("No se esta usando el Lector de Huella Dactilar ");
-    }
-
-    public Image CrearImagenHuella(DPFPSample sample) {
-        return DPFPGlobal.getSampleConversionFactory().createImage(sample);
-    }
-
-    public void DibujarHuella(Image image) {
-        jLabelImagenHuella.setIcon(new ImageIcon(
-                image.getScaledInstance(jLabelImagenHuella.getWidth(), jLabelImagenHuella.getHeight(), Image.SCALE_DEFAULT)));
-        repaint();
-    }
-
-    public DPFPTemplate getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(DPFPTemplate template) {
-        DPFPTemplate old = this.template;
-        this.template = template;
-        firePropertyChange(TEMPLATE_PROPERTY, old, template);
-    }
-
-    public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
-        DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
-        try {
-            return extractor.createFeatureSet(sample, purpose);
-        } catch (DPFPImageQualityException e) {
-            return null;
-        }
-    }
-
-    /*
-		  * Guarda los datos de la huella digital actual en la base de datos
-     */
-    public void guardarHuella(String documento, String nombre) {
-        int doc = Integer.parseInt(documento);
-        //Obtiene los datos del template de la huella actual
-        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
-        Integer tamanoHuella = template.serialize().length;
-
-        //Pregunta el nombre de la persona a la cual corresponde dicha huella
-//		     String nombre = JOptionPane.showInputDialog("Nombre:");
-        try {
-            //Establece los valores para la sentencia SQL
-            cn = dataConnection.conexion();
-            pst = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
-
-            pst.setInt(1, doc);
-            pst.setString(2, nombre);
-            pst.setBinaryStream(3, datosHuella, tamanoHuella);
-            //Ejecuta la sentencia
-            pst.execute();
-            pst.close();
-            JOptionPane.showMessageDialog(null, "Huella Guardada Correctamente");
-            cn.close();
-            //btnGuardar.setEnabled(false);
-            //btnVerificar.grabFocus();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            //Si ocurre un error lo indica en la consola
-            System.err.println("Error al guardar los datos de la huella.");
-        } finally {
-            try {
-                cn.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Identifica a una persona registrada por medio de su huella digital
-     */
-    public void identificarHuella() throws IOException {
-        try {
-            //Establece los valores para la sentencia SQL
-            cn = dataConnection.conexion();
-
-            //Obtiene todas las huellas de la bd
-            PreparedStatement identificarStmt = cn.prepareStatement("SELECT huelladocumneto,huella FROM huella");
-            ResultSet rs = identificarStmt.executeQuery();
-
-            //Si se encuentra el nombre en la base de datos
-            while (rs.next()) {
-                //Lee la plantilla de la base de datos
-                byte templateBuffer[] = rs.getBytes("huella");
-                String documento = rs.getString("huelladocumneto");
-                //Crea una nueva plantilla a partir de la guardada en la base de datos
-                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
-                //Envia la plantilla creada al objeto contendor de Template del componente de huella digital
-                setTemplate(referenceTemplate);
-
-                // Compara las caracteriticas de la huella recientemente capturda con la
-                // alguna plantilla guardada en la base de datos que coincide con ese tipo
-                DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
-
-                //compara las plantilas (actual vs bd)
-                //Si encuentra correspondencia dibuja el mapa
-                //e indica el nombre de la persona que coincidio.
-                if (result.isVerified()) {
-                    //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
-                    JOptionPane.showMessageDialog(null, "Las huella capturada es de " + documento, "Verificación de Huella", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-            }
-            //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
-            JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificación de Huella", JOptionPane.ERROR_MESSAGE);
-            setTemplate(null);
-        } catch (SQLException e) {
-            //Si ocurre un error lo indica en la consola
-            System.err.println("Error al identificar huella dactilar." + e.getMessage());
-        } finally {
-            try {
-                cn.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      *
      */
@@ -1087,12 +914,30 @@ public class VentanaGestionEstudiante extends JFrame {
 
     }
 
+    /**
+     * Metodo para limpiar los campos de un formulario
+     */
+    private void limpiarFormulario() {
+        jTextFieldDocumento.setEnabled(true);
+        jTextFieldDocumento.setText("");
+        jTextFieldNombres.setText("");
+        jTextFieldApellidos.setText("");
+        jTextFieldGrado.setText("");
+        jTextFieldGrupo.setText("");
+        jTextFieldZonaAlumno.setText("");
+        jTextFieldJornada.setText("");
+        jLabelImagenHuella.setIcon(null);
+        jButtonActualizaHuella.setEnabled(true);
+        jButtonLimpiarCampos.setEnabled(true);
+        estadoGuardar = 0;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonActualizaHuella;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonGuardar;
+    private javax.swing.JButton jButtonLimpiarCampos;
     private javax.swing.JComboBox<String> jComboBoxBuscarPor;
     private javax.swing.JLabel jLabelApellidos;
     private javax.swing.JLabel jLabelBuscaPor;
@@ -1120,26 +965,5 @@ public class VentanaGestionEstudiante extends JFrame {
     private javax.swing.JTextField jTextFieldNombres;
     private javax.swing.JTextField jTextFieldZonaAlumno;
     // End of variables declaration//GEN-END:variables
-
-
-    /**
-     * Metodo para limpiar los campos de un formulario
-     */
-    private void limpiarFormulario() {
-        jTextFieldDocumento.setEnabled(true);
-        jTextFieldDocumento.setText("");
-        jTextFieldNombres.setText("");
-        jTextFieldApellidos.setText("");
-        jTextFieldGrado.setText("");
-        jTextFieldGrupo.setText("");
-        jTextFieldZonaAlumno.setText("");
-        jTextFieldJornada.setText("");
-        jLabelImagenHuella.setIcon(null);
-        
-        setTemplate(null);
-        Reclutador.clear();
-        stop();
-        
-    }
 
 }

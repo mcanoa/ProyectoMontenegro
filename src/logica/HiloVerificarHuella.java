@@ -23,6 +23,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ * @author Maria Alejandra Martos Diaz
+ * @author Mateo Cano Alfonso
+ * @author Juan Jeferson Alape
+ */
 public class HiloVerificarHuella implements Runnable {
 
     // Varible que permite establecer las capturas de la huellas, para determina
@@ -42,6 +48,10 @@ public class HiloVerificarHuella implements Runnable {
     private DPFPTemplate template;
     public static String TEMPLATE_PROPERTY = "template";
 
+    /**
+     * Constructor de la clase
+     * @param imagenHuella 
+     */
     public HiloVerificarHuella(JLabel imagenHuella) {
 
         this.imagenHuella = imagenHuella;
@@ -73,7 +83,6 @@ public class HiloVerificarHuella implements Runnable {
         // reclutador si es bueno
         if (featuresverificacion != null) {
             try {
-                System.out.println("Las Caracteristicas de la Huella han sido creada");
                 Reclutador.addFeatures(featuresverificacion);// Agregar las
                 // caracteristicas
                 // de la huella a la
@@ -145,7 +154,7 @@ public class HiloVerificarHuella implements Runnable {
             while (rst.next()) {
                 //Lee la plantilla de la base de datos
                 byte templateBuffer[] = rst.getBytes("huella");
-                String nombre = rst.getString("nombres");
+                this.nombre= rst.getString("nombres");
                 this.documento = rst.getString("documento");
 
                 //Crea una nueva plantilla a partir de la guardada en la base de datos
@@ -162,8 +171,10 @@ public class HiloVerificarHuella implements Runnable {
                 //e indica el nombre de la persona que coincidio.
                 if (result.isVerified()) {
                     //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
-                    JOptionPane.showMessageDialog(null, "Bienvenido " + nombre, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                    //JOptionPane.showMessageDialog(null, "Bienvenido " + nombre, "Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
+                    Reclutador.clear();
                     setTemplate(null);
+                    cn.close();
                     return true;
                 }
             }
@@ -185,6 +196,8 @@ public class HiloVerificarHuella implements Runnable {
      * @throws java.text.ParseException
      */
     public void registrarIngreso() throws ParseException {
+        
+        ImageIcon iconoAprovado=new ImageIcon("src/imagenes/aprovado.png");
         Date fecha; // TODO Auto-generated catch block
         Date ultimoIngresoFecha;
         fecha = (Date) instituto.fechaHoy();
@@ -199,10 +212,10 @@ public class HiloVerificarHuella implements Runnable {
             if (rst.next()) {
                 if (instituto.validarFechas(fecha, ultimoIngresoFecha) == false) {
                     instituto.insertarRegistro(documento, fecha, ultimoIngresoFecha);
-
+                    JOptionPane.showMessageDialog(null, "El estduiante "+ nombre+" puede ingresar al restaurante.","Bienvenido",JOptionPane.INFORMATION_MESSAGE,iconoAprovado);
                 } else {
 
-                    JOptionPane.showMessageDialog(null, "EL ESTUDIANTE YA INGRESO");
+                    JOptionPane.showMessageDialog(null, "El estudainte "+nombre+" ya ingreso","INGRESO FALLIDO",JOptionPane.ERROR_MESSAGE);
 
                 }
             } else {
@@ -281,6 +294,7 @@ public class HiloVerificarHuella implements Runnable {
     private PreparedStatement pst;
     private ResultSet rst;
     private String documento;
+    private String nombre;
 
     private JLabel imagenHuella;
     public DPFPFeatureSet featuresinscripcion;

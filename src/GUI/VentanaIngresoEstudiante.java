@@ -243,12 +243,14 @@ public class VentanaIngresoEstudiante extends JFrame {
             public void readerConnected(final DPFPReaderStatusEvent e) {
                 jLabelConexionHuellero.setForeground(Color.GREEN);
                 jLabelConexionHuellero.setText("El Sensor de Huella Digital esta Conectado");
+                
             }
 
             @Override
             public void readerDisconnected(final DPFPReaderStatusEvent e) {
                 jLabelConexionHuellero.setForeground(Color.RED);
                 jLabelConexionHuellero.setText("El Sensor de Huella Digital No esta Conectado");
+                
             }
         });
 

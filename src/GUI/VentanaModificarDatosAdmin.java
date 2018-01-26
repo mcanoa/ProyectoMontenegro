@@ -355,14 +355,14 @@ public class VentanaModificarDatosAdmin extends JFrame {
                 JOptionPane.showMessageDialog(null, "El administrador no existe", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(VentanaBuscarEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VentanaModificarDatosAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
    
     }//GEN-LAST:event_jButtonBuscarAdministradorActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        // TODO add your handling code here:
-         VentanaAdministrador.cambiarestado(true);
+        
+        this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
     private void jTextFieldNombreABuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNombreABuscarKeyTyped

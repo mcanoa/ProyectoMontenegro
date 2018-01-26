@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documentos/NetBeansProjects/ProyectoMontenegro/src/logica/HiloVerificarHuella.java</file>
             <file>file:/D:/Documentos/NetBeansProjects/ProyectoMontenegro/src/GUI/VentanaIngresoEstudiante.java</file>
             <file>file:/D:/Documentos/NetBeansProjects/ProyectoMontenegro/src/GUI/VentanaGestionEstudiante.java</file>
             <file>file:/D:/Documentos/NetBeansProjects/ProyectoMontenegro/src/logica/institutoMontenegro.java</file>
-            <file>file:/D:/Documentos/NetBeansProjects/ProyectoMontenegro/src/GUI/VentanaPrincipal.java</file>
+            <file>file:/D:/Documentos/NetBeansProjects/ProyectoMontenegro/src/logica/HiloGuardarHuella.java</file>
         </group>
     </open-files>
 </project-private>

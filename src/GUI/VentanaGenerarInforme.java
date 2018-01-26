@@ -323,7 +323,7 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        VentanaAdministrador.cambiarestado(true);
+        this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
     private void jDateChooser1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooser1KeyTyped

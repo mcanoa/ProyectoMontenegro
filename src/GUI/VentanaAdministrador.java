@@ -49,7 +49,7 @@ public class VentanaAdministrador extends JFrame {
         cn = dataConnection.conexion();
         initComponents();
         this.getContentPane().setBackground(Color.white);
-        VentanaAdministrador.cambiarestado(true);
+        
     }
 
     public static VentanaAdministrador getInstanceSingleton() {
@@ -266,10 +266,7 @@ public class VentanaAdministrador extends JFrame {
         return retValue;
     }
 
-    public static void cambiarestado(boolean cambio) {
-        v = cambio;
-    }
-    static boolean v = true;
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GenerarInforme;
     private javax.swing.JButton jButtonCargarListado;
