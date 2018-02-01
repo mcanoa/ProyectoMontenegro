@@ -1,5 +1,6 @@
 package GUI;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.JToolBar.Separator;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -49,7 +51,7 @@ public class VentanaAdministrador extends JFrame {
         cn = dataConnection.conexion();
         initComponents();
         this.getContentPane().setBackground(Color.white);
-        
+
     }
 
     public static VentanaAdministrador getInstanceSingleton() {
@@ -179,13 +181,13 @@ public class VentanaAdministrador extends JFrame {
     }//GEN-LAST:event_GenerarInformeActionPerformed
 
     private void jButtonModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarDatosActionPerformed
-        
+
         VentanaModificarDatosAdmin.getInstanceSingleton().setVisible(true);
 
     }//GEN-LAST:event_jButtonModificarDatosActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        
+
         VentanaPrincipal.getInstaceSingleton().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonSalirActionPerformed
@@ -198,6 +200,7 @@ public class VentanaAdministrador extends JFrame {
     private void jButtonCargarListadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarListadoActionPerformed
         try {
 
+            int i = 0;
             File archivo = null;
             String documento;
             String nombres;
@@ -228,7 +231,7 @@ public class VentanaAdministrador extends JFrame {
                     * Obtenemos la primera pestaña a la que se quiera procesar indicando el indice.
                     * Una vez obtenida la hoja excel con las filas que se quieren leer obtenemos el iterator
                     * que nos permite recorrer cada una de las filas que contiene.
-                    */
+                     */
                     XSSFSheet sheet = workbook.getSheetAt(0);
                     String[] doc;
                     Iterator<Row> rowIterator = sheet.iterator();
@@ -237,7 +240,7 @@ public class VentanaAdministrador extends JFrame {
                     // Recorremos todas las filas para mostrar el contenido de cada celda
                     while (rowIterator.hasNext()) {
                         row = rowIterator.next();
-                        
+
                         grupo = String.valueOf(row.getCell(0));
                         grado = String.valueOf(row.getCell(1));
                         documento = String.valueOf(row.getCell(2));
@@ -245,11 +248,16 @@ public class VentanaAdministrador extends JFrame {
                         nombres = String.valueOf(row.getCell(4));
                         zonaAlumno = String.valueOf(row.getCell(5));
                         jornada = String.valueOf(row.getCell(6));
-                        
+
                         procesarFila(grupo, grado, documento, apellidos, nombres, zonaAlumno, jornada);
+                        i++;
                     }
                     // cerramos el libro excel
+                    workbook.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                JOptionPane.showMessageDialog(null, "Se registrarón " + i + " estudiantes.");
             }
         } catch (IOException | InvalidFormatException ex) {
             Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,7 +274,7 @@ public class VentanaAdministrador extends JFrame {
         return retValue;
     }
 
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton GenerarInforme;
     private javax.swing.JButton jButtonCargarListado;
@@ -280,7 +288,6 @@ public class VentanaAdministrador extends JFrame {
     private javax.swing.JToolBar jToolBarOpcionsAdmin;
     // End of variables declaration//GEN-END:variables
 
-  
     public boolean validarDoc(String documento) {
         try {
 
@@ -313,44 +320,62 @@ public class VentanaAdministrador extends JFrame {
     String[] doc = new String[2];
     String[] grup = new String[3];
 
-    private void procesarFila(String grupo, String grado, String documento, String apellidos, String nombres, String zonaAlumno, String jornada) {
+    private void procesarFila(String grupo, String grado, String documento, String apellidos, String nombres, String zonaAlumno, String jornada) throws SQLException {
 
-        
         documento = documento.replace(".", "");
         doc = documento.split("E");
         documento = doc[0];
 
-        
+        try {
+            cn = dataConnection.conexion();
+            pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,grado,grupo,"
+                    + "zonaAlumno,jornada) values (?,?,?,?,?,?,?)");
 
-           
-                try {
-                    cn = dataConnection.conexion();
-                    pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,grado,grupo,"
-                            + "zonaAlumno,jornada) values (?,?,?,?,?,?,?)");
-                    
-                    pst.setString(1, documento);
-                    pst.setString(2, nombres);
-                    pst.setString(3, apellidos);
-                    pst.setString(4, grado);
-                    pst.setString(5, grupo);
-                    pst.setString(6, zonaAlumno);
-                    pst.setString(7, jornada);
-                    
-                    int res = pst.executeUpdate();
-                    if (res > 0) {
-                        Date fecha = fechaIncio();
-                        
-                        instituto.insertarRegistro(documento, fecha, fecha);
-                        
-                    }
-                } catch (SQLException | ParseException ex) {
-                    Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-                }
-           
+            pst.setString(1, documento);
+            pst.setString(2, nombres);
+            pst.setString(3, apellidos);
+            pst.setString(4, grado);
+            pst.setString(5, grupo);
+            pst.setString(6, zonaAlumno);
+            pst.setString(7, jornada);
 
-            System.out.println(grupo + " " + grado + " " + documento + " " + apellidos + " " + nombres + " " + zonaAlumno + " " + jornada);
+            int res = pst.executeUpdate();
+            if (res > 0) {
+                Date fecha = fechaIncio();
 
-        
+                instituto.insertarRegistro(documento, fecha, fecha);
+                 pst.close();
+                cn.close();
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MySQLIntegrityConstraintViolationException w) {
+
+            pst = cn.prepareStatement(
+                    "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=? where documento=?");
+
+            pst.setString(1, documento);
+            pst.setString(2, nombres);
+            pst.setString(3, apellidos);
+            pst.setString(4, grado);
+            pst.setString(5, grupo);
+            pst.setString(6, zonaAlumno);
+            pst.setString(7, jornada);
+            pst.setString(8, documento);
+
+            int res = pst.executeUpdate();
+            if (res > 0) {
+                pst.close();
+                cn.close();
+                
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        System.out.println(grupo + " " + grado + " " + documento + " " + apellidos + " " + nombres + " " + zonaAlumno + " " + jornada);
+
     }
 
     /**

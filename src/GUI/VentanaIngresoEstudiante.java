@@ -20,7 +20,7 @@ import javax.swing.SwingUtilities;
 import logica.HiloVerificarHuella;
 
 /**
- *@author Maria Alejandra Martos Diaz
+ * @author Maria Alejandra Martos Diaz
  * @author Mateo Cano Alfonso
  * @author Juan Jefferson Alape
  */
@@ -39,11 +39,10 @@ public class VentanaIngresoEstudiante extends JFrame {
      */
     public VentanaIngresoEstudiante() {
 
-        start();
-        Iniciar();
         initComponents();
+        
         this.getContentPane().setBackground(Color.white);
-         hiloVerificarHuella= new HiloVerificarHuella(jLabelImagenHuella);
+        hiloVerificarHuella = new HiloVerificarHuella(jLabelImagenHuella);
 
     }
 
@@ -56,6 +55,7 @@ public class VentanaIngresoEstudiante extends JFrame {
         if (ventana == null) {
             ventana = new VentanaIngresoEstudiante();
         }
+
         return ventana;
     }
 
@@ -77,12 +77,18 @@ public class VentanaIngresoEstudiante extends JFrame {
         jButtonInicioSesionDoc = new JButton();
         jButtonAtras = new JButton();
         jLabelConexionHuellero = new javax.swing.JLabel();
+        jButtonIniciarLectura = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrar Ingreso del Estudiante");
         setIconImage(getIconImage());
         setName("VentanaInicioSesionEstudiante"); // NOI18N
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabelTitulo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabelTitulo.setText("Registrar Ingreso del Estudiante");
@@ -146,30 +152,40 @@ public class VentanaIngresoEstudiante extends JFrame {
 
         jLabelConexionHuellero.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
 
+        jButtonIniciarLectura.setText("Iniciar Lectura");
+        jButtonIniciarLectura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIniciarLecturaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addComponent(jLabelTitulo))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabelContenido2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabelConexionHuellero, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(140, 140, 140)
+                .addComponent(jButtonIniciarLectura, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanelHuella, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonInicioSesionDoc)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonAtras))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelContenido2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addComponent(jLabelTitulo))
-                            .addComponent(jLabelConexionHuellero, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButtonInicioSesionDoc)
+                        .addGap(43, 43, 43)
+                        .addComponent(jButtonAtras))
+                    .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,17 +194,19 @@ public class VentanaIngresoEstudiante extends JFrame {
                 .addComponent(jLabelTitulo)
                 .addGap(18, 18, 18)
                 .addComponent(jLabelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jLabelContenido2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabelConexionHuellero, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6)
                 .addComponent(jPanelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(13, 13, 13)
+                .addComponent(jButtonIniciarLectura)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonInicioSesionDoc)
                     .addComponent(jButtonAtras))
-                .addGap(25, 25, 25))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,6 +219,7 @@ public class VentanaIngresoEstudiante extends JFrame {
      */
     private void jButtonInicioSesionDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInicioSesionDocActionPerformed
         stop();
+        jButtonIniciarLectura.setEnabled(true);
         VentanaInciarSesionDocumento.getInstaceSingleton().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonInicioSesionDocActionPerformed
@@ -211,10 +230,23 @@ public class VentanaIngresoEstudiante extends JFrame {
      */
     private void jButtonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasActionPerformed
         stop();
+        jButtonIniciarLectura.setEnabled(true);
+        jLabelImagenHuella.setIcon(null);
         VentanaPrincipal.getInstaceSingleton().setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_jButtonAtrasActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+        
+        Iniciar();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jButtonIniciarLecturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIniciarLecturaActionPerformed
+        jButtonIniciarLectura.setEnabled(false);
+          start();
+    }//GEN-LAST:event_jButtonIniciarLecturaActionPerformed
 
     /**
      *
@@ -243,21 +275,21 @@ public class VentanaIngresoEstudiante extends JFrame {
             public void readerConnected(final DPFPReaderStatusEvent e) {
                 jLabelConexionHuellero.setForeground(Color.GREEN);
                 jLabelConexionHuellero.setText("El Sensor de Huella Digital esta Conectado");
-                
+
             }
 
             @Override
             public void readerDisconnected(final DPFPReaderStatusEvent e) {
                 jLabelConexionHuellero.setForeground(Color.RED);
                 jLabelConexionHuellero.setText("El Sensor de Huella Digital No esta Conectado");
-                
+
             }
         });
 
     }
 
     /**
-    * Método que indica que el lector de huella se va a empezar a utilizar
+     * Método que indica que el lector de huella se va a empezar a utilizar
      */
     public final void start() {
         Lector.startCapture();
@@ -283,6 +315,7 @@ public class VentanaIngresoEstudiante extends JFrame {
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAtras;
+    private javax.swing.JButton jButtonIniciarLectura;
     private javax.swing.JButton jButtonInicioSesionDoc;
     private javax.swing.JLabel jLabelConexionHuellero;
     private javax.swing.JLabel jLabelContenido;
@@ -292,8 +325,5 @@ public class VentanaIngresoEstudiante extends JFrame {
     private javax.swing.JPanel jPanelContenedorHuella;
     private javax.swing.JPanel jPanelHuella;
     // End of variables declaration//GEN-END:variables
-
-    
-  
 
 }

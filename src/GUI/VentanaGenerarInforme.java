@@ -225,7 +225,6 @@ if (opcion == JFileChooser.APPROVE_OPTION) {
     documento.add(saltoLinea);
     documento.add(new Paragraph("Informe Asistencias \n"));
     documento.add(saltoLinea);
-    documento.add(i.imagenPdf());
     generarTabla1();
     documento.add(saltoLinea);
     generarTabla2();

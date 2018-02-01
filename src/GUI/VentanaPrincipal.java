@@ -166,6 +166,7 @@ public class VentanaPrincipal extends JFrame {
      */
     private void jButtonEstudianteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEstudianteActionPerformed
         VentanaIngresoEstudiante.getInstaceSingleton().setVisible(true);
+        
         this.dispose();
     }//GEN-LAST:event_jButtonEstudianteActionPerformed
 

@@ -48,6 +48,8 @@ public class HiloVerificarHuella implements Runnable {
     private DPFPTemplate template;
     public static String TEMPLATE_PROPERTY = "template";
 
+    ImageIcon iconoAprovado;
+    
     /**
      * Constructor de la clase
      * @param imagenHuella 
@@ -197,8 +199,8 @@ public class HiloVerificarHuella implements Runnable {
      */
     public void registrarIngreso() throws ParseException {
         
-        ImageIcon iconoAprovado=new ImageIcon("src/imagenes/aprovado.png");
-        Date fecha; // TODO Auto-generated catch block
+    iconoAprovado=new ImageIcon("/imagenes/aprovado.png");
+        Date fecha;
         Date ultimoIngresoFecha;
         fecha = (Date) instituto.fechaHoy();
         ultimoIngresoFecha = (Date) instituto.ultimaFechaIngreso(documento);

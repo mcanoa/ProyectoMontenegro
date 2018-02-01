@@ -34,7 +34,7 @@ public class VentanaIngresoAdministrador extends JFrame {
      */
     public VentanaIngresoAdministrador() {
         initComponents();
-        
+        jPasswordAdministrador.grabFocus();
         this.getContentPane().setBackground(Color.white);
     }
 
@@ -180,6 +180,7 @@ public class VentanaIngresoAdministrador extends JFrame {
                 if (rst.next()) {
                    JOptionPane.showMessageDialog(null, "Bienvenido " + rst.getString("nombres"));
                    VentanaAdministrador.getInstanceSingleton().setVisible(true);
+                   jPasswordAdministrador.setText("");
                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Contraseña erronea");

@@ -9,9 +9,11 @@ import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -23,10 +25,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import logica.HiloGuardarHuella;
 import logica.dataConnection;
+import logica.institutoMontenegro;
 
 /**
  *
+ * @author Maria Alejandra Martos Diaz
  * @author Mateo Cano Alfonso
+ * @author Juan Jeferson alape
  *
  */
 public class VentanaGestionEstudiante extends JFrame {
@@ -34,6 +39,8 @@ public class VentanaGestionEstudiante extends JFrame {
     private static VentanaGestionEstudiante ventana;
     String[] busquedas = {"Documento de Identidad", "Apellidos"};
     private int estadoGuardar;
+
+    institutoMontenegro instituto = new institutoMontenegro();
 
     PreparedStatement pst;
     Connection cn;
@@ -60,10 +67,12 @@ public class VentanaGestionEstudiante extends JFrame {
         modelo.addColumn("Documento");
         modelo.addColumn("Nombres");
         modelo.addColumn("Apellidos");
+
         initComponents();
         jTableResultado.setModel(modelo);
         hilo = new HiloGuardarHuella(jLabelImagenHuella, jButtonGuardar);
 
+//        Iniciar();
     }
 
     public static VentanaGestionEstudiante getInstanceSingleton() {
@@ -511,10 +520,13 @@ public class VentanaGestionEstudiante extends JFrame {
 
     private void jButtonActualizaHuellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizaHuellaActionPerformed
 
+        jTableResultado.setEnabled(false);
         jButtonGuardar.setEnabled(false);
         jButtonActualizaHuella.setEnabled(false);
         jButtonLimpiarCampos.setEnabled(false);
+
         SwingUtilities.invokeLater(hilo);
+
     }//GEN-LAST:event_jButtonActualizaHuellaActionPerformed
 
     /**
@@ -534,7 +546,7 @@ public class VentanaGestionEstudiante extends JFrame {
                     buscarDocumento(atributo);
                     break;
                 case "Apellidos": //buscar por apellidos
-                    buscarNombre(atributo);
+                    buscarApellidos(atributo);
                     break;
             }
         } catch (Exception ex) {
@@ -569,70 +581,65 @@ public class VentanaGestionEstudiante extends JFrame {
      */
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         try {
-            cn = dataConnection.conexion();
-
+            boolean resultado;
             if (estadoGuardar == 0) {
 
-                pst = cn.prepareStatement("insert into estudiante (documento,nombres,apellidos,grado,grupo,"
-                        + "zonaAlumno,jornada,huella) values(?,?,?,?,?,?,?,?)");
-
-                pst.setString(1, jTextFieldDocumento.getText());
-                pst.setString(2, jTextFieldNombres.getText());
-                pst.setString(3, jTextFieldApellidos.getText());
-                pst.setString(4, jTextFieldGrado.getText());
-                pst.setInt(5, Integer.parseInt(jTextFieldGrupo.getText()));
-                pst.setString(6, jTextFieldZonaAlumno.getText());
-                pst.setString(7, jTextFieldJornada.getText());
-
                 if (tamanoHuella == null && datosHuella == null) {
-                    pst.setBinaryStream(8, null);
+
+                    resultado = instituto.guardarEstudiante(jTextFieldDocumento.getText(), jTextFieldNombres.getText(),
+                            jTextFieldApellidos.getText(), jTextFieldGrado.getText(),
+                            Integer.parseInt(jTextFieldGrupo.getText()), jTextFieldZonaAlumno.getText(),
+                            jTextFieldJornada.getText(), datosHuella, 0);
+
+                    if (resultado) {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante se ha Guardado", "EXITO", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante No se ha Guardado", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
 
                 } else {
-                    pst.setBinaryStream(8, datosHuella, tamanoHuella);
-                }
-                
-                int res = pst.executeUpdate();
-                if (res>0) {
-                    JOptionPane.showMessageDialog(null, "El estudiante se ha Guardado");
-                    limpiarFormulario();
-                    pst.close();
-                    cn.close();
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo guardar el estudiante, ocurrió un error");
+                    resultado = instituto.guardarEstudiante(jTextFieldDocumento.getText(), jTextFieldNombres.getText(),
+                            jTextFieldApellidos.getText(), jTextFieldGrado.getText(),
+                            Integer.parseInt(jTextFieldGrupo.getText()), jTextFieldZonaAlumno.getText(),
+                            jTextFieldJornada.getText(), datosHuella, tamanoHuella);
+                    if (resultado) {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante se ha Guardado", "EXITO", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante No se ha Guardado", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
             } else if (estadoGuardar == 1) {
 
-                pst = cn.prepareStatement(
-                        "update estudiante set documento=?,nombres=?,apellidos=?,grado=?,grupo=?,zonaAlumno=?,jornada=?,huella=? where documento=?");
-
-                pst.setString(1, jTextFieldDocumento.getText());
-                pst.setString(2, jTextFieldNombres.getText());
-                pst.setString(3, jTextFieldApellidos.getText());
-                pst.setString(4, jTextFieldGrado.getText());
-                 pst.setInt(5, Integer.parseInt(jTextFieldGrupo.getText()));
-                pst.setString(6, jTextFieldZonaAlumno.getText());
-                pst.setString(7, jTextFieldJornada.getText());
-
                 if (datosHuella == null && tamanoHuella == null) {
-                    pst.setBinaryStream(8, null);
-                } else {
-                    pst.setBinaryStream(8, datosHuella, tamanoHuella);
-                }
-                pst.setString(9, jTextFieldDocumento.getText());
 
-                int resultado = pst.executeUpdate();
-                if (resultado > 0) {
-                    JOptionPane.showMessageDialog(null, "El estudiante se ha modificado");
-                    limpiarFormulario();
-                    pst.close();
-                    cn.close();
+                    resultado = instituto.actualizarEstudiante(jTextFieldDocumento.getText(), jTextFieldNombres.getText(),
+                            jTextFieldApellidos.getText(), jTextFieldGrado.getText(),
+                            Integer.parseInt(jTextFieldGrupo.getText()), jTextFieldZonaAlumno.getText(),
+                            jTextFieldJornada.getText(), datosHuella, tamanoHuella);
+                    if (resultado) {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante se ha Guardado", "EXITO", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante No se ha Guardado", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo modificar el estudiante, ocurrió un error");
+                    resultado = instituto.actualizarEstudiante(jTextFieldDocumento.getText(), jTextFieldNombres.getText(),
+                            jTextFieldApellidos.getText(), jTextFieldGrado.getText(),
+                            Integer.parseInt(jTextFieldGrupo.getText()), jTextFieldZonaAlumno.getText(),
+                            jTextFieldJornada.getText(), datosHuella, tamanoHuella);
+                    if (resultado) {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante se ha Modificado", "EXITO", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(VentanaGestionEstudiante.this, "El estudiante No se ha Modificado", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
-        } catch (SQLException e1) {
-//            e1.printStackTrace();
+
+            hilo.Reclutador.clear();
+            limpiarFormulario();
+
+        } catch (SQLException | ParseException e1) {
+            JOptionPane.showMessageDialog(null, e1.getStackTrace());
         }
 
 
@@ -831,24 +838,25 @@ public class VentanaGestionEstudiante extends JFrame {
      *
      * @throws java.lang.Exception
      */
-    public void buscarNombre(String atributo) throws Exception {
+    public void buscarApellidos(String atributo) throws Exception {
 
         if (atributo != null) {
             cn = dataConnection.conexion();
             pst = cn.prepareStatement(
                     "select documento,nombres,apellidos from estudiante WHERE apellidos like ?");
             pst.setString(1, "%" + atributo + "%");
+           
 
             rst = pst.executeQuery();
             String[] datos = new String[3];
             if (rst.next()) {
-                datos[0] = String.valueOf(rst.getInt("documento"));
+                datos[0] = rst.getString("documento");
                 datos[1] = rst.getString("nombres");
                 datos[2] = rst.getString("apellidos");
                 modelo.addRow(datos);
 
                 while (rst.next()) {
-                    datos[0] = String.valueOf(rst.getInt("documento"));
+                    datos[0] = rst.getString("documento");
                     datos[1] = rst.getString("nombres");
                     datos[2] = rst.getString("apellidos");
                     modelo.addRow(datos);
@@ -929,7 +937,18 @@ public class VentanaGestionEstudiante extends JFrame {
         jLabelImagenHuella.setIcon(null);
         jButtonActualizaHuella.setEnabled(true);
         jButtonLimpiarCampos.setEnabled(true);
+        jTableResultado.setEnabled(true);
         estadoGuardar = 0;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Date fechaIncio() {
+        String date1 = "1999-05-24";
+        Date fecha = java.sql.Date.valueOf(date1);
+        return fecha;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

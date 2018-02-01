@@ -25,7 +25,6 @@ import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -45,7 +44,7 @@ public class HiloGuardarHuella implements Runnable {
     // sus caracteristicas
     // y poder estimar la creacion de un template de la huella para luego poder
     // guardarla
-    private final DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
+    public final DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
 
     // Variable que para crear el template de la huella luego de que se hallan
     // creado las caracteriticas
@@ -58,7 +57,8 @@ public class HiloGuardarHuella implements Runnable {
     public HiloGuardarHuella(JLabel imagenHuella, JButton botonGuardar) {
         instituto = new institutoMontenegro();
         this.imagenHuella = imagenHuella;
-        this.botonGuardar=botonGuardar;
+        this.botonGuardar = botonGuardar;
+        Iniciar();
     }
 
     /**
@@ -138,20 +138,19 @@ public class HiloGuardarHuella implements Runnable {
                         VentanaGestionEstudiante.setDatosHuella(datosHuella);
                         VentanaGestionEstudiante.setTamanoHuella(template.serialize().length);
                         System.err.println("Datos Huella creada y pasada a la clase ventana gestion estudiante");
-                        Reclutador.clear();
-                        setTemplate(null);
+
+                      
                         botonGuardar.setEnabled(true);
+                        botonGuardar.grabFocus();
                         break;
 
                     case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la
                         // captura de huellas
                         Reclutador.clear();
                         stop();
-
+                        EstadoHuellas();
                         setTemplate(null);
-                        JOptionPane.showMessageDialog(null,
-                                "La Plantilla de la Huella no pudo ser creada, Repita el Proceso",
-                                "Inscripción de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
                         start();
                         break;
                 }
@@ -241,8 +240,14 @@ public class HiloGuardarHuella implements Runnable {
      */
     private PropertyChangeSupport changeSupport;
 
+    /**
+     *
+     * @param sample
+     * @param purpose
+     * @return
+     */
     public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
-        DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+
         try {
             return extractor.createFeatureSet(sample, purpose);
         } catch (DPFPImageQualityException e) {
@@ -250,51 +255,16 @@ public class HiloGuardarHuella implements Runnable {
         }
     }
 
-    /*
-		  * Guarda los datos de la huella digital actual en la base de datos
-     */
-    public void guardarHuella(String documento, String nombre) {
-        int doc = Integer.parseInt(documento);
-        //Obtiene los datos del template de la huella actual
-        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
-        Integer tamanoHuella = template.serialize().length;
-
-        //Pregunta el nombre de la persona a la cual corresponde dicha huella
-//		     String nombre = JOptionPane.showInputDialog("Nombre:");
-        try {
-            //Establece los valores para la sentencia SQL
-            cn = dataConnection.conexion();
-            pst = cn.prepareStatement("INSERT INTO huella(documento,nombres, huella) values(?,?,?)");
-
-            pst.setInt(1, doc);
-            pst.setString(2, nombre);
-            pst.setBinaryStream(3, datosHuella, tamanoHuella);
-            //Ejecuta la sentencia
-            pst.execute();
-            pst.close();
-            JOptionPane.showMessageDialog(null, "Huella Guardada Correctamente");
-            cn.close();
-            //btnGuardar.setEnabled(false);
-            //btnVerificar.grabFocus();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            //Si ocurre un error lo indica en la consola
-            System.err.println("Error al guardar los datos de la huella.");
-        } finally {
-            try {
-                cn.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
     @Override
     public void run() {
 
         start();
-        Iniciar();
+        
+    }
+
+    public void EstadoHuellas() {
+        System.out.println("Muestra de Huellas Necesarias para Guardar Template " + Reclutador.getFeaturesNeeded());
+
     }
 
     private final institutoMontenegro instituto;
@@ -304,5 +274,6 @@ public class HiloGuardarHuella implements Runnable {
     private JLabel imagenHuella;
     ByteArrayInputStream datosHuella;
     Integer tamanoHuella;
+    DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
 
 }

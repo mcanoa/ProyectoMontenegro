@@ -16,7 +16,7 @@ public class dataConnection {
 
 	
 	private static final String user = "root";
-	private static final String password = "123456";
+	private static final String password = "";
 	private static final String dataBase = "instituto_montenegro";
 	private static final String url = "jdbc:mysql://localhost/" + dataBase;
 	private static Connection connection = null;
@@ -36,7 +36,7 @@ public class dataConnection {
 
 		try {
 			Class.forName("com.mysql.jdbc.Connection");
-			connection = DriverManager.getConnection(url, user, password);
+			connection = DriverManager.getConnection(url, user,password);
 		} catch (SQLException ex) {
 			System.out.println("Problema al conectarse a: " + url);
 		} catch (ClassNotFoundException ex) {
